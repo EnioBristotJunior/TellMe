@@ -1,0 +1,145 @@
+//React
+import { useEffect } from "react";
+//Realm
+import { UserProvider, AppProvider } from "@realm/react";
+import { RealmProvider } from "./src/databases";
+//Rotas
+import { TabRoutes } from "./src/routes/tab.routes";
+import { AuthRoutes } from "./src/routes/auth.routes";
+
+//Tema
+import { ThemeProvider } from "styled-components/native";
+import theme from "./src/theme";
+
+//Barra de navegação
+import * as NavigationBar from "expo-navigation-bar";
+
+//Fontes
+import {
+  useFonts,
+  Comfortaa_300Light,
+  Comfortaa_400Regular,
+  Comfortaa_500Medium,
+  Comfortaa_600SemiBold,
+  Comfortaa_700Bold,
+} from "@expo-google-fonts/comfortaa";
+import {
+  ComicNeue_300Light,
+  ComicNeue_400Regular,
+  ComicNeue_700Bold,
+} from "@expo-google-fonts/comic-neue";
+
+//Barra de Status
+import { StatusBar, View, Text } from "react-native";
+
+//Navegação
+import { NavigationContainer } from "@react-navigation/native";
+
+//Icons
+import { FontAwesome5 } from "@expo/vector-icons";
+
+//Configuração da mensagem Toast
+import Toast from "react-native-toast-message";
+
+const config = {
+  authError: ({ text1, props }) => (
+    <View
+      style={{
+        height: 60,
+        width: "80%",
+        backgroundColor: "#091837",
+        borderRadius: 12,
+        padding: 20,
+        flexDirection: "row",
+        gap: 10,
+        elevation: 10,
+        marginTop: 25,
+      }}
+    >
+        <FontAwesome5 name="exclamation-circle" size={19} color={"#fff"} />
+        <Text
+          style={{
+            fontFamily: "Comfortaa_600SemiBold",
+            color: "#fff",
+            fontSize: 12,
+          }}
+        >
+          {text1}
+        </Text>
+        <Text>{props.uuid}</Text>
+    </View>
+  ),
+  newUser: ({ text1, props }) => (
+    <View
+      style={{
+        height: 60,
+        width: "80%",
+        backgroundColor: "#091837",
+        borderRadius: 15,
+        padding: 20,
+        flexDirection: "row",
+        gap: 10,
+        elevation: 10,
+        marginTop: 25,
+      }}
+    >
+      <FontAwesome5 name="user-plus" size={19} color={"#fff"} />
+      <View>
+        <Text
+          style={{
+            fontFamily: "Comfortaa_600SemiBold",
+            color: "#fff",
+            fontSize: 12,
+          }}
+        >
+          {text1}
+        </Text>
+        <Text>{props.uuid}</Text>
+      </View>
+    </View>
+  ),
+};
+
+export default function App() {
+  //Loading das fontes
+  let [fontsLoaded, fontError] = useFonts({
+    Comfortaa_300Light,
+    Comfortaa_400Regular,
+    Comfortaa_500Medium,
+    Comfortaa_600SemiBold,
+    Comfortaa_700Bold,
+    ComicNeue_700Bold,
+    ComicNeue_300Light,
+    ComicNeue_400Regular,
+    ComicNeue_700Bold,
+  });
+
+  //Configuração da cor da barra de navegação
+  useEffect(() => {
+    NavigationBar.setBackgroundColorAsync(theme.background);
+  }, []);
+  if (!fontsLoaded && !fontError) {
+    return null;
+  }
+
+
+  return (
+    <NavigationContainer>
+      <ThemeProvider theme={theme}>
+        <StatusBar
+          backgroundColor="transparent"
+          translucent
+          style="light-content"
+        />
+        <AppProvider id={"application-0-hfxgp"}>
+          <UserProvider fallback={<AuthRoutes />}>
+            <RealmProvider>
+              <TabRoutes />
+            </RealmProvider>
+          </UserProvider>
+        </AppProvider>
+      </ThemeProvider>
+      <Toast config={config} />
+    </NavigationContainer>
+  );
+}
