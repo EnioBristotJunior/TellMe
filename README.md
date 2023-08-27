@@ -1,3 +1,3 @@
 # TellMe
 
-## Aplicativo de auxílio a pessoas com deficiência auditiva e oral.
+Aplicativo de auxílio a pessoas com deficiência auditiva e oral.
