@@ -2,7 +2,7 @@
 import { React, useState } from "react";
 
 //Realm
-import Realm from 'realm'
+import Realm from "realm";
 import { useApp } from "@realm/react";
 //Estilos
 import {
@@ -47,16 +47,28 @@ export function Login({ navigation }) {
     });
   };
 
+  const Logged = () => {
+    Toast.show({
+      type: "loggedUser",
+      text1: "Sessão iniciada com sucesso!",
+    });
+  };
+
   //Verificar se os campos estãos vazios
   function verification() {
     if (email != "" && password != "") {
-      if(email.includes('@gmail.com') || email.includes('@outlook.com') || email.includes('@yahoo.com')){
+      if (
+        email.includes("@gmail.com") ||
+        email.includes("@outlook.com") ||
+        email.includes("@yahoo.com")
+      ) {
         register(email, password);
+      } else {
+        Toast.show({
+          type: "authError",
+          text1: "Endereço de e-mail inválido!",
+        });
       }
-      else{Toast.show({
-        type : 'authError',
-        text1: 'Endereço de e-mail inválido!'
-      })}
     } else {
       NeedCamps();
     }
@@ -64,13 +76,14 @@ export function Login({ navigation }) {
   //Função de login
   async function register(email, password) {
     try {
-      await app.logIn(Realm.Credentials.emailPassword(email, password))
+      Logged();
+      await app.logIn(Realm.Credentials.emailPassword(email, password));
     } catch (error) {
-      if (error.message.includes('invalid username/password')){
+      if (error.message.includes("invalid username/password")) {
         Toast.show({
           type: "authError",
           text1: "E-mail ou senha incorretos!",
-        })
+        });
       }
     }
   }

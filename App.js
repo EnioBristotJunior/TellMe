@@ -56,17 +56,17 @@ const config = {
         marginTop: 25,
       }}
     >
-        <FontAwesome5 name="exclamation-circle" size={19} color={"#fff"} />
-        <Text
-          style={{
-            fontFamily: "Comfortaa_600SemiBold",
-            color: "#fff",
-            fontSize: 12,
-          }}
-        >
-          {text1}
-        </Text>
-        <Text>{props.uuid}</Text>
+      <FontAwesome5 name="exclamation-circle" size={19} color={"#fff"} />
+      <Text
+        style={{
+          fontFamily: "Comfortaa_600SemiBold",
+          color: "#fff",
+          fontSize: 12,
+        }}
+      >
+        {text1}
+      </Text>
+      <Text>{props.uuid}</Text>
     </View>
   ),
   newUser: ({ text1, props }) => (
@@ -84,6 +84,35 @@ const config = {
       }}
     >
       <FontAwesome5 name="user-plus" size={19} color={"#fff"} />
+      <View>
+        <Text
+          style={{
+            fontFamily: "Comfortaa_600SemiBold",
+            color: "#fff",
+            fontSize: 12,
+          }}
+        >
+          {text1}
+        </Text>
+        <Text>{props.uuid}</Text>
+      </View>
+    </View>
+  ),
+  loggedUser: ({ text1, props }) => (
+    <View
+      style={{
+        height: 60,
+        width: "80%",
+        backgroundColor: "#091837",
+        borderRadius: 15,
+        padding: 20,
+        flexDirection: "row",
+        gap: 10,
+        elevation: 10,
+        marginTop: 25,
+      }}
+    >
+      <FontAwesome5 name="user-check" size={19} color={"#fff"} />
       <View>
         <Text
           style={{
@@ -121,7 +150,6 @@ export default function App() {
   if (!fontsLoaded && !fontError) {
     return null;
   }
-
 
   return (
     <NavigationContainer>
