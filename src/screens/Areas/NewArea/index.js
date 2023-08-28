@@ -1,5 +1,8 @@
 //React
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+
+import { useRealm } from "../../../databases";
+import { useUser } from "@realm/react";
 
 //React Native
 import { View, Dimensions, TouchableOpacity } from "react-native";
@@ -24,14 +27,23 @@ import {
 //SVG
 import BgSvg from "../../../imgs/Areas/backArea-g9.svg";
 
+//Icons
 import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
+
+//Mensagem Toast
+import Toast from "react-native-toast-message";
 
 //Dimensão da tela
 const { width, height } = Dimensions.get("screen");
 
 export function NewArea({ navigation }) {
+  //Estados
+  const [areaTitle, setAreaTitle] = useState("");
+
+  const user = useUser();
+  const realm = useRealm();
   //Remoção do bottom navigator
   useEffect(() => {
     navigation.getParent().setOptions({ tabBarStyle: { display: "none" } });
@@ -51,6 +63,35 @@ export function NewArea({ navigation }) {
       });
     };
   }, []);
+
+  const NeedCamps = () => {
+    Toast.show({
+      type: "authError",
+      text1: "Campo vazio ou incorreto!",
+    });
+  };
+
+  async function newArea() {
+    try {
+      console.log(user.id);
+      console.log(areaTitle);
+      realm.write(() => {
+        realm.create("Area", { userId: user.id, title: areaTitle });
+      });
+      console.log("foi");
+      setAreaTitle("");
+    } catch (erro) {
+      console.log(erro);
+    }
+  }
+
+  function verification() {
+    if (areaTitle != "" && areaTitle != null) {
+      newArea();
+    } else {
+      NeedCamps();
+    }
+  }
 
   return (
     <Container>
@@ -94,6 +135,8 @@ export function NewArea({ navigation }) {
               placeholder="Título da área"
               placeholderTextColor={"#d9d9d9"}
               cursorColor={"#ff7f00"}
+              onChangeText={setAreaTitle}
+              value={areaTitle}
             />
             <AlertView>
               <Ionicons name="alert-circle-outline" size={24} color="#FF7F00" />
@@ -103,7 +146,7 @@ export function NewArea({ navigation }) {
         </Form>
       </Main>
       <Bottom>
-        <Confirm>
+        <Confirm onPress={verification}>
           <TextButton>Criar Área</TextButton>
         </Confirm>
       </Bottom>
