@@ -37,6 +37,7 @@ export function Login({ navigation }) {
   //Estados
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [secureText, setSecureText] = useState(true);
   //Função do Realm
   const app = useApp();
   //Mensagem Toast de erro
@@ -118,6 +119,7 @@ export function Login({ navigation }) {
               placeholderTextColor={"#d9d9d9"}
               cursorColor={"#ff7f00"}
               onChangeText={setPassword}
+              secureTextEntry={secureText}
             />
             <FontAwesome5
               name="lock"
@@ -125,6 +127,21 @@ export function Login({ navigation }) {
               color={"#ff7f00"}
               style={{ position: "absolute", left: 17, top: 17 }}
             />
+            {secureText ? (
+              <TouchableOpacity
+                style={{ position: "absolute", right: 20, top: 17.5 }}
+                onPress={() => setSecureText(false)}
+              >
+                <Ionicons name="eye" size={25} color={"#d9d9d9"} />
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                style={{ position: "absolute", right: 20, top: 17.5 }}
+                onPress={() => setSecureText(true)}
+              >
+                <Ionicons name="eye-off-outline" size={25} color={"#fff"} />
+              </TouchableOpacity>
+            )}
           </View>
           <TouchableOpacity>
             <ForgotPassword>Esqueceu a senha?</ForgotPassword>

@@ -38,6 +38,8 @@ export function Cadastro({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [secureText, setSecureText] = useState(true);
+  const [confirmSecureText, setConfirmSecureText] = useState(true);
   //Função do Realm
   const app = useApp();
   //Mensagem Toast - Campos incorretos
@@ -56,30 +58,31 @@ export function Cadastro({ navigation }) {
     });
   };
 
-
-
   //Verificar se os campos estão vazios
   async function verification() {
     //Verificação de campos vazios
     if (confirmPassword != "" && email != "" && password != "") {
       //Verificação de email
-      if(email.includes('@gmail.com') || email.includes('@outlook.com') || email.includes('@yahoo.com')){
+      if (
+        email.includes("@gmail.com") ||
+        email.includes("@outlook.com") ||
+        email.includes("@yahoo.com")
+      ) {
         //Verificação de senha
-        if(password == confirmPassword){
+        if (password == confirmPassword) {
           await register(email, password);
-        }
-        else{
+        } else {
           Toast.show({
-            type : 'authError',
-            text1: 'As senhas não coincidem'
-          })
+            type: "authError",
+            text1: "As senhas não coincidem",
+          });
         }
-      }
-      else{
+      } else {
         Toast.show({
-        type : 'authError',
-        text1: 'Endereço de e-mail inválido!'
-      })}
+          type: "authError",
+          text1: "Endereço de e-mail inválido!",
+        });
+      }
     } else {
       NeedCamps();
     }
@@ -88,30 +91,33 @@ export function Cadastro({ navigation }) {
   //Função de cadastro
   async function register(email, password) {
     try {
-      const algo = await app.emailPasswordAuth.registerUser({ email, password });
-      console.log(algo)
-      console.log(app.currentUser)
+      const algo = await app.emailPasswordAuth.registerUser({
+        email,
+        password,
+      });
+      console.log(algo);
+      console.log(app.currentUser);
       Registred();
-      setTimeout(() => navigation.navigate('login'), 2500)
+      setTimeout(() => navigation.navigate("login"), 2500);
     } catch (error) {
-      console.log( error.message);
-      if (error.message == 'password must be between 6 and 128 characters'){
+      console.log(error.message);
+      if (error.message == "password must be between 6 and 128 characters") {
         Toast.show({
           type: "authError",
           text1: "A senha deve conter no mínimo 6 digitos!",
-        })
+        });
       }
-      if (error.message == 'name already in use'){
+      if (error.message == "name already in use") {
         Toast.show({
           type: "authError",
           text1: "O email informado já está em uso!",
-        })
+        });
       }
-      if (error.message.includes('Network request failed')){
+      if (error.message.includes("Network request failed")) {
         Toast.show({
           type: "authError",
           text1: "Sem conexão com internet!",
-        })
+        });
       }
     }
   }
@@ -128,14 +134,14 @@ export function Cadastro({ navigation }) {
         <Section>
           <Form>
             <View>
-            <Input
+              <Input
                 placeholder="E-mail"
                 placeholderTextColor={"#d9d9d9"}
                 cursorColor={"#ff7f00"}
                 onChangeText={setEmail}
                 value={email}
               />
-               <Ionicons
+              <Ionicons
                 name="mail"
                 size={25}
                 color={"#ff7f00"}
@@ -143,29 +149,13 @@ export function Cadastro({ navigation }) {
               />
             </View>
             <View>
-            <Input
+              <Input
                 placeholder="Senha"
                 placeholderTextColor={"#d9d9d9"}
                 cursorColor={"#ff7f00"}
                 onChangeText={setPassword}
                 value={password}
-                secureTextEntry={true}
-              />
-             <FontAwesome5
-                name="lock"
-                size={22}
-                color={"#ff7f00"}
-                style={{ position: "absolute", left: 17, top: 17 }}
-              />
-            </View>
-            <View>
-            <Input
-                placeholder="Confirmar senha"
-                placeholderTextColor={"#d9d9d9"}
-                cursorColor={"#ff7f00"}
-                onChangeText={setConfirmPassword}
-                value={confirmPassword}
-                secureTextEntry={true}
+                secureTextEntry={secureText}
               />
               <FontAwesome5
                 name="lock"
@@ -173,6 +163,52 @@ export function Cadastro({ navigation }) {
                 color={"#ff7f00"}
                 style={{ position: "absolute", left: 17, top: 17 }}
               />
+              {secureText ? (
+                <TouchableOpacity
+                  style={{ position: "absolute", right: 20, top: 17.5 }}
+                  onPress={() => setSecureText(false)}
+                >
+                  <Ionicons name="eye" size={25} color={"#d9d9d9"} />
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  style={{ position: "absolute", right: 20, top: 17.5 }}
+                  onPress={() => setSecureText(true)}
+                >
+                  <Ionicons name="eye-off-outline" size={25} color={"#fff"} />
+                </TouchableOpacity>
+              )}
+            </View>
+            <View>
+              <Input
+                placeholder="Confirmar senha"
+                placeholderTextColor={"#d9d9d9"}
+                cursorColor={"#ff7f00"}
+                onChangeText={setConfirmPassword}
+                value={confirmPassword}
+                secureTextEntry={confirmSecureText}
+              />
+              <FontAwesome5
+                name="lock"
+                size={22}
+                color={"#ff7f00"}
+                style={{ position: "absolute", left: 17, top: 17 }}
+              />
+              {confirmSecureText ? (
+                <TouchableOpacity
+                  style={{ position: "absolute", right: 20, top: 17.5 }}
+                  onPress={() => setConfirmSecureText(false)}
+                >
+                  <Ionicons name="eye" size={25} color={"#d9d9d9"} />
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  style={{ position: "absolute", right: 20, top: 17.5 }}
+                  onPress={() => setConfirmSecureText(true)}
+                >
+                  <Ionicons name="eye-off-outline" size={25} color={"#fff"} />
+                </TouchableOpacity>
+              )}
             </View>
           </Form>
           <NextContainer>
