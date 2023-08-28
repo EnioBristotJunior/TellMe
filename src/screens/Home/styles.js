@@ -6,14 +6,14 @@ export const Container = styled.View`
   flex: 1;
   background-color: ${(props) => props.theme.background};
   gap: 20px;
+  padding: 25px;
 `;
 
 //Header
 export const Header = styled.View`
   align-items: flex-start;
-  padding-left: 25px;
   justify-content: center;
-  margin-top: 70px;
+  margin-top: 50px;
 `;
 
 export const Title = styled.Text`
@@ -27,7 +27,7 @@ export const Title = styled.Text`
 export const AreasSection = styled.View``;
 
 export const NewArea = styled.TouchableOpacity`
-  width: 350px;
+  width: 100%;
   height: 120px;
   border-radius: 10px;
   background-color: ${(props) => props.theme.secondBackground};
