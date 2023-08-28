@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { UserProvider, AppProvider } from "@realm/react";
 import { RealmProvider } from "./src/databases";
 //Rotas
-import { TabRoutes } from "./src/routes/tab.routes";
+import { MainRoutes } from "./src/routes/main.routes";
 import { AuthRoutes } from "./src/routes/auth.routes";
 
 //Tema
@@ -162,7 +162,7 @@ export default function App() {
         <AppProvider id={"application-0-hfxgp"}>
           <UserProvider fallback={<AuthRoutes />}>
             <RealmProvider>
-              <TabRoutes />
+              <MainRoutes />
             </RealmProvider>
           </UserProvider>
         </AppProvider>
