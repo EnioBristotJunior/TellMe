@@ -1,5 +1,10 @@
+//React
 import React, { useState, useEffect } from "react";
+
+//Componentes
 import { View, Dimensions } from "react-native";
+
+//Estilizições
 import {
   Container,
   FastTalk,
@@ -10,18 +15,27 @@ import {
   AreasSection,
 } from "./styles";
 
+//Imagem SVG
 import BgSvg from "../../imgs/Home/backHome-g9.svg";
 
+//Icons
 import { FontAwesome } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
+
+//Realm
 import { useUser } from "@realm/react";
 import { useQuery, useRealm } from "../../databases";
 import { AreaSchema } from "../../databases/schemas/AreaSchema";
+import { FlatList } from "react-native";
+import { Area } from "../../components/Area";
 
+//Dimensão da tela
 const { width, height } = Dimensions.get("screen");
 
 export function Home({ navigation }) {
+  //Estados
   const [areas, setAreas] = useState([]);
+  //Realm
   const realm = useRealm();
   const user = useUser();
 
@@ -60,6 +74,16 @@ export function Home({ navigation }) {
         <Title>Áreas</Title>
       </Header>
       <AreasSection>
+        <FlatList
+          data={areas}
+          columnWrapperStyle={{ columnGap: 10 }}
+          numColumns={2}
+          showsVerticalScrollIndicator={false}
+          keyExtractor={(item) => item._id}
+          renderItem={({ item }) => (
+            <Area title={item.title} press={() => console.log("clicado")} />
+          )}
+        />
         <NewArea onPress={() => navigation.navigate("newArea")}>
           <FontAwesome5 name="plus" size={45} color={"#091837"} />
         </NewArea>
