@@ -28,13 +28,15 @@ export const AreasSection = styled.View``;
 
 export const NewArea = styled.TouchableOpacity`
   width: 100%;
-  height: 120px;
-  border-radius: 10px;
-  background-color: ${(props) => props.theme.secondBackground};
+  height: 140px;
+  border-radius: 15px;
+  background-color: transparent;
   align-items: center;
   justify-content: center;
   opacity: 0.8;
   align-self: center;
+  border-width: 2px;
+  border-color: ${(props) => props.theme.secondBackground};
 `;
 
 //FastTalk

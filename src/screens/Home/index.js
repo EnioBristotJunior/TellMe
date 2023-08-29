@@ -34,12 +34,19 @@ const { width, height } = Dimensions.get("screen");
 
 export function Home({ navigation }) {
   //Estados
+  const [userAreas, setUserAreas] = useState([]);
   const [areas, setAreas] = useState([]);
+
   //Realm
   const realm = useRealm();
   const user = useUser();
-
   const areaQuery = useQuery(AreaSchema);
+
+  // areas.forEach((value, i, array) => {
+  //   if (areas[i].userId == user.id) {
+  //     setUserAreas(areas[i]);
+  //   }
+  // });
 
   //Sair da conta
   function logout() {
@@ -76,7 +83,7 @@ export function Home({ navigation }) {
       <AreasSection>
         <FlatList
           data={areas}
-          columnWrapperStyle={{ columnGap: 10 }}
+          columnWrapperStyle={{ columnGap: 15 }}
           numColumns={2}
           showsVerticalScrollIndicator={false}
           keyExtractor={(item) => item._id}
@@ -85,7 +92,7 @@ export function Home({ navigation }) {
           )}
         />
         <NewArea onPress={() => navigation.navigate("newArea")}>
-          <FontAwesome5 name="plus" size={45} color={"#091837"} />
+          <FontAwesome5 name="plus" size={45} color={"#fff"} />
         </NewArea>
       </AreasSection>
 

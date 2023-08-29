@@ -5,7 +5,7 @@ export const Container = styled.TouchableOpacity`
   width: 180px;
   height: 140px;
   background-color: ${(props) => props.theme.secondBackground};
-  border-radius: 20px;
+  border-radius: 15px;
   flex-direction: row;
   align-items: flex-end;
   gap: 10px;

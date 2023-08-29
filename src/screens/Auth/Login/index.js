@@ -77,8 +77,8 @@ export function Login({ navigation }) {
   //Função de login
   async function register(email, password) {
     try {
-      Logged();
       await app.logIn(Realm.Credentials.emailPassword(email, password));
+      Logged();
     } catch (error) {
       if (error.message.includes("invalid username/password")) {
         Toast.show({
