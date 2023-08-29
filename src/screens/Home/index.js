@@ -56,8 +56,10 @@ export function Home({ navigation }) {
   //Lista de Áreas
   async function fetchAreas() {
     const response = areaQuery.toJSON();
-    setAreas(response);
-    console.log(response);
+    const filt = (registro) => registro.userId == user.id;
+    let result = response.filter(filt);
+    setAreas(result);
+    console.log(result);
   }
 
   useEffect(() => {
