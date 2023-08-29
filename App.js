@@ -37,6 +37,7 @@ import { NavigationContainer } from "@react-navigation/native";
 
 //Icons
 import { FontAwesome5 } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 
 //Configuração da mensagem Toast
 import Toast from "react-native-toast-message";
@@ -113,6 +114,35 @@ const config = {
       }}
     >
       <FontAwesome5 name="user-check" size={19} color={"#fff"} />
+      <View>
+        <Text
+          style={{
+            fontFamily: "Comfortaa_600SemiBold",
+            color: "#fff",
+            fontSize: 12,
+          }}
+        >
+          {text1}
+        </Text>
+        <Text>{props.uuid}</Text>
+      </View>
+    </View>
+  ),
+  newArea: ({ text1, props }) => (
+    <View
+      style={{
+        height: 60,
+        width: "80%",
+        backgroundColor: "#FF7F00",
+        borderRadius: 15,
+        padding: 20,
+        flexDirection: "row",
+        gap: 10,
+        elevation: 10,
+        marginTop: 25,
+      }}
+    >
+      <MaterialIcons name="playlist-add-check" size={19} color={"#fff"} />
       <View>
         <Text
           style={{

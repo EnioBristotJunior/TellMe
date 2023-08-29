@@ -7,6 +7,10 @@ import { useUser } from "@realm/react";
 //React Native
 import { View, Dimensions, TouchableOpacity } from "react-native";
 
+//uuid
+
+import uuid from "react-native-uuid";
+
 //Componentes
 import {
   AlertView,
@@ -70,16 +74,27 @@ export function NewArea({ navigation }) {
       text1: "Campo vazio ou incorreto!",
     });
   };
+  const ToastNewArea = () => {
+    Toast.show({
+      type: "newArea",
+      text1: "Área criada com sucesso",
+    });
+  };
 
   async function newArea() {
     try {
       console.log(user.id);
       console.log(areaTitle);
       realm.write(() => {
-        realm.create("Area", { userId: user.id, title: areaTitle });
+        realm.create("Area", {
+          _id: uuid.v4(),
+          userId: user.id,
+          title: areaTitle,
+        });
       });
-      console.log("foi");
       setAreaTitle("");
+      ToastNewArea();
+      setTimeout(() => navigation.navigate("home"), 2000);
     } catch (erro) {
       console.log(erro);
     }
