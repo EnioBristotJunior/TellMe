@@ -90,7 +90,11 @@ export function Home({ navigation }) {
           showsVerticalScrollIndicator={false}
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => (
-            <Area title={item.title} press={() => console.log("clicado")} />
+            <Area
+              title={item.title}
+              press={() => console.log("clicado")}
+              icon={() => navigation.navigate("editArea")}
+            />
           )}
         />
         <NewArea onPress={() => navigation.navigate("newArea")}>
