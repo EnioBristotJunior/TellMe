@@ -88,6 +88,7 @@ export function Home({ navigation }) {
           columnWrapperStyle={{ columnGap: 15 }}
           numColumns={2}
           showsVerticalScrollIndicator={false}
+          style={{ maxHeight: 610, marginBottom: 10 }}
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => (
             <Area
@@ -96,10 +97,12 @@ export function Home({ navigation }) {
               icon={() => navigation.navigate("editArea")}
             />
           )}
+          ListFooterComponent={() => (
+            <NewArea onPress={() => navigation.navigate("newArea")}>
+              <FontAwesome5 name="plus" size={45} color={"#fff"} />
+            </NewArea>
+          )}
         />
-        <NewArea onPress={() => navigation.navigate("newArea")}>
-          <FontAwesome5 name="plus" size={45} color={"#fff"} />
-        </NewArea>
       </AreasSection>
 
       <FastTalk onPress={() => logout()}>

@@ -46,9 +46,10 @@ export const FastTalk = styled.TouchableOpacity`
   border-radius: 20px;
   flex-direction: row;
   position: absolute;
-  right: 50px;
+  left: 50px;
   bottom: 140px;
-  background-color: transparent;
+  z-index: 2;
+  background-color: ${(props) => props.theme.background};
   border-color: ${(props) => props.theme.secondBackground};
   border-width: 2px;
   align-items: center;
