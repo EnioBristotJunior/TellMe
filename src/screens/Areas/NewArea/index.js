@@ -42,9 +42,13 @@ import Toast from "react-native-toast-message";
 //Dimensão da tela
 const { width, height } = Dimensions.get("screen");
 
+//Image Picker
+import * as ImagePicker from "expo-image-picker";
+
 export function NewArea({ navigation }) {
   //Estados
   const [areaTitle, setAreaTitle] = useState("");
+  const [image, setImage] = useState(null);
 
   const user = useUser();
   const realm = useRealm();
@@ -67,6 +71,27 @@ export function NewArea({ navigation }) {
       });
     };
   }, []);
+
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    } else {
+      Toast.show({
+        type: "authError",
+        text1: "Upload de imagem cancelado.",
+      });
+    }
+  };
 
   const NeedCamps = () => {
     Toast.show({
@@ -141,7 +166,7 @@ export function NewArea({ navigation }) {
           <Title>Criar nova área</Title>
         </Header>
         <Form>
-          <SelectImage>
+          <SelectImage onPress={pickImage}>
             <FontAwesome5 name="camera" size={50} color={"#091837"} />
             <TextImage>Adicionar imagem</TextImage>
           </SelectImage>
