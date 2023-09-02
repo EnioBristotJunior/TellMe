@@ -47,14 +47,13 @@ export const FastTalk = styled.TouchableOpacity`
   flex-direction: row;
   position: absolute;
   left: 50px;
-  bottom: 110px;
+  bottom: 140px;
   z-index: 1;
   background-color: ${(props) => props.theme.background};
   border-color: ${(props) => props.theme.secondBackground};
   border-width: 2px;
   align-items: center;
   justify-content: space-evenly;
-  display: none;
 `;
 
 export const TextFastTalk = styled.Text`

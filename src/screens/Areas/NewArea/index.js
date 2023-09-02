@@ -49,7 +49,7 @@ import { Image } from "react-native";
 export function NewArea({ navigation }) {
   //Estados
   const [areaTitle, setAreaTitle] = useState("");
-  const [image, setImage] = useState('');
+  const [image, setImage] = useState("");
   //Realm
   const user = useUser();
   const realm = useRealm();
@@ -88,10 +88,9 @@ export function NewArea({ navigation }) {
     if (result.assets) {
       setImage(result.assets[0].uri);
     } else {
-      CancelUpload()
+      CancelUpload();
     }
   };
-
 
   //Funções de mensagem Toast
   const NeedCamps = () => {
@@ -122,7 +121,7 @@ export function NewArea({ navigation }) {
           _id: uuid.v4(),
           userId: user.id,
           title: areaTitle.trim(),
-          imageURl: image
+          imageURl: image,
         });
       });
       setAreaTitle("");
@@ -176,11 +175,17 @@ export function NewArea({ navigation }) {
         </Header>
         <Form>
           <SelectImage onPress={pickImage}>
-            {image ? <Image source={{uri: image}} style={{width: '100%', height: '100%', borderRadius: 12}}/> : 
-            <View style={{alignItems: "center"}}><FontAwesome5 name="camera" size={50} color={"#091837"} />
-            <TextImage>Adicionar imagem</TextImage></View>
-            }
-            
+            {image ? (
+              <Image
+                source={{ uri: image }}
+                style={{ width: "100%", height: "100%", borderRadius: 12 }}
+              />
+            ) : (
+              <View style={{ alignItems: "center" }}>
+                <FontAwesome5 name="camera" size={50} color={"#091837"} />
+                <TextImage>Adicionar imagem de fundo</TextImage>
+              </View>
+            )}
           </SelectImage>
           <View style={{ gap: 8 }}>
             <Input
