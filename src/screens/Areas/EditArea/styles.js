@@ -82,8 +82,28 @@ export const Confirm = styled.TouchableOpacity`
   margin-bottom: 12px;
 `;
 
-export const TextButton = styled.Text`
+export const Delete = styled.TouchableOpacity`
+  background-color: transparent;
+  width: 100%;
+  height: 65px;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 20px;
+  margin-bottom: 12px;
+  border-color: ${(props) => props.theme.secondBackground};
+  border-width: 1px;
+`;
+
+export const TextConfirm = styled.Text`
   font-size: 20px;
   font-family: "ComicNeue_700Bold";
   color: ${(props) => props.theme.background};
+`;
+
+export const TextDelete = styled.Text`
+  font-size: 20px;
+  font-family: "ComicNeue_700Bold";
+  color: ${(props) => props.theme.color};
 `;

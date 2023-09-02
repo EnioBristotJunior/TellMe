@@ -1,10 +1,18 @@
+//React
 import React, { useEffect, useState } from "react";
 
-import { useRealm } from "../../../databases";
+//Realm
+import { useRealm, useObject } from "../../../databases";
 import { useUser } from "@realm/react";
+import { AreaSchema } from "../../../databases/schemas/AreaSchema";
 
+//Componentes
 import { View, Dimensions, TouchableOpacity } from "react-native";
 
+//Navegação
+import { useRoute } from "@react-navigation/native";
+
+//Estilizações
 import {
   Container,
   Main,
@@ -17,9 +25,12 @@ import {
   TextImage,
   AlertView,
   Confirm,
-  TextButton,
+  TextConfirm,
+  Delete,
+  TextDelete,
 } from "./styles";
 
+//SVG
 import BgSvg from "../../../imgs/Areas/backArea-g9.svg";
 
 //Icons
@@ -33,12 +44,23 @@ import Toast from "react-native-toast-message";
 //Dimensão da tela
 const { width, height } = Dimensions.get("screen");
 
-export function EditArea({ navigation }) {
-  //Estados
-  const [areaTitle, setAreaTitle] = useState("");
+//Image Picker
+import * as ImagePicker from "expo-image-picker";
+import { Image } from "react-native";
 
-  const user = useUser();
+export function EditArea({ navigation }) {
+  //Realm
   const realm = useRealm();
+  const route = useRoute();
+  const {id} = route.params;
+  const area = id ? useObject(AreaSchema, id) : undefined
+  const firstTitle = area?.title
+  const firstImage = area?.imageURl
+  //Estados
+  const [areaTitle, setAreaTitle] = useState(area?.title);
+  const [image, setImage] = useState(area?.imageURl);
+
+  // const firstTitle = area?.title;
 
   //Remoção do bottom navigator
   useEffect(() => {
@@ -60,12 +82,67 @@ export function EditArea({ navigation }) {
     };
   }, []);
 
+    //Função para pegar imagem da galeria
+    const pickImage = async () => {
+      // No permissions request is necessary for launching the image library
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+  
+      console.log(result);
+  
+      if (result.assets) {
+        setImage(result.assets[0].uri);
+      } else {
+        Toast.show({
+          type: "authError",
+          text1: "Upload de imagem cancelado.",
+        });
+      }
+    };
+
+  //Toast de Erro
   const NeedCamps = () => {
     Toast.show({
       type: "authError",
       text1: "Campo vazio ou incorreto!",
     });
   };
+
+  function HandleSave(title, image){
+    try{
+      realm.write(() => {
+     area.title = title;
+     area.imageURl = image
+      })
+      Toast.show({
+        type: 'authError',
+        text1: 'Área modificada com sucesso'
+      })
+      setTimeout(() => navigation.navigate("home"), 2000);
+    }catch(error){
+      console.log(error)
+    }
+  }
+
+  //Excluir área
+  async function HandleRemove(){
+    try{
+      realm.write(() => {
+      realm.delete(area);
+      })
+      Toast.show({
+        type: 'authError',
+        text1: 'Área exluída com sucesso!'
+      })
+      setTimeout(() => navigation.navigate("home"), 2000);
+    }catch(error){
+      console.log(error)
+    }
+  }
 
   return (
     <Container>
@@ -100,9 +177,11 @@ export function EditArea({ navigation }) {
           <Title>Editar Área</Title>
         </Header>
         <Form>
-          <SelectImage>
-            <FontAwesome5 name="camera" size={50} color={"#091837"} />
-            <TextImage>Adicionar imagem</TextImage>
+          <SelectImage onPress={pickImage}>
+          {image ? <Image source={{uri: image}} style={{width: '100%', height: '100%', borderRadius: 12}}/> : 
+            <View style={{alignItems: "center"}}><FontAwesome5 name="camera" size={50} color={"#091837"} />
+            <TextImage>Adicionar imagem</TextImage></View>
+            }
           </SelectImage>
           <View style={{ gap: 8 }}>
             <Input
@@ -118,12 +197,20 @@ export function EditArea({ navigation }) {
             </AlertView>
           </View>
         </Form>
+        <Delete onPress={HandleRemove}>
+          <FontAwesome5 name="trash-alt" color={"#fff"} size={24} />
+          <TextDelete>Excluir Área</TextDelete>
+        </Delete>
       </Main>
       <View>
-        <Confirm>
-          <FontAwesome5 name="trash-alt" color={"#091837"} size={24} />
-          <TextButton>Excluir Área</TextButton>
-        </Confirm>
+        {firstTitle != areaTitle || firstImage != image ?
+          <Confirm onPress={() => HandleSave(areaTitle.trim(), image)}>
+          <TextConfirm>Confirmar alterações</TextConfirm>
+          </Confirm>
+        :
+          <Confirm onPress={() => navigation.navigate('home')}>
+          <TextConfirm>Voltar</TextConfirm>
+          </Confirm>}
       </View>
     </Container>
   );

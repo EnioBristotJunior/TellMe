@@ -34,19 +34,12 @@ const { width, height } = Dimensions.get("screen");
 
 export function Home({ navigation }) {
   //Estados
-  const [userAreas, setUserAreas] = useState([]);
   const [areas, setAreas] = useState([]);
 
   //Realm
   const realm = useRealm();
   const user = useUser();
   const areaQuery = useQuery(AreaSchema);
-
-  // areas.forEach((value, i, array) => {
-  //   if (areas[i].userId == user.id) {
-  //     setUserAreas(areas[i]);
-  //   }
-  // });
 
   //Sair da conta
   function logout() {
@@ -59,18 +52,23 @@ export function Home({ navigation }) {
     const filt = (registro) => registro.userId == user.id;
     let result = response.filter(filt);
     setAreas(result);
-    console.log(result);
+    // console.log(result);
   }
-
+  //Carrega a função
   useEffect(() => {
     fetchAreas();
   }, []);
-
+  //Atualiza toda vez que a variável mudar
   useEffect(() => {
     realm.addListener("change", fetchAreas);
 
     return () => realm.removeListener("change", fetchAreas);
   }, []);
+  //Navega para a tela de editar área
+  function openEditArea(id){
+    navigation.navigate('editArea', {id})
+  }
+
 
   return (
     <Container>
@@ -88,14 +86,15 @@ export function Home({ navigation }) {
           columnWrapperStyle={{ columnGap: 15 }}
           numColumns={2}
           showsVerticalScrollIndicator={false}
-          style={{ maxHeight: 610, marginBottom: 10 }}
+          style={{ maxHeight: 600, marginBottom: 10 }}
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => (
             <Area
               title={item.title}
               press={() => console.log("clicado")}
-              icon={() => navigation.navigate("editArea")}
-            />
+              icon={() => openEditArea(item._id)}
+              img={item.imageURl}
+            /> 
           )}
           ListFooterComponent={() => (
             <NewArea onPress={() => navigation.navigate("newArea")}>

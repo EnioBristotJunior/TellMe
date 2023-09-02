@@ -86,6 +86,12 @@ export function Login({ navigation }) {
           text1: "E-mail ou senha incorretos!",
         });
       }
+      if (error.message.includes("Network request failed")) {
+        Toast.show({
+          type: "authError",
+          text1: "Sem conexão com internet!",
+        });
+      }
     }
   }
 

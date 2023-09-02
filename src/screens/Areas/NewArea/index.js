@@ -44,12 +44,13 @@ const { width, height } = Dimensions.get("screen");
 
 //Image Picker
 import * as ImagePicker from "expo-image-picker";
+import { Image } from "react-native";
 
 export function NewArea({ navigation }) {
   //Estados
   const [areaTitle, setAreaTitle] = useState("");
-  const [image, setImage] = useState(null);
-
+  const [image, setImage] = useState('');
+  //Realm
   const user = useUser();
   const realm = useRealm();
   //Remoção do bottom navigator
@@ -72,6 +73,7 @@ export function NewArea({ navigation }) {
     };
   }, []);
 
+  //Função para pegar imagem da galeria
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -83,19 +85,18 @@ export function NewArea({ navigation }) {
 
     console.log(result);
 
-    if (!result.canceled) {
+    if (result.assets) {
       setImage(result.assets[0].uri);
     } else {
-      Toast.show({
-        type: "authError",
-        text1: "Upload de imagem cancelado.",
-      });
+      CancelUpload()
     }
   };
 
+
+  //Funções de mensagem Toast
   const NeedCamps = () => {
     Toast.show({
-      type: "authError",
+      type: "appError",
       text1: "Campo vazio ou incorreto!",
     });
   };
@@ -105,7 +106,13 @@ export function NewArea({ navigation }) {
       text1: "Área criada com sucesso",
     });
   };
-
+  const CancelUpload = () => {
+    Toast.show({
+      type: "appError",
+      text1: "Upload de imagem cancelado",
+    });
+  };
+  //Criar área
   async function newArea() {
     try {
       console.log(user.id);
@@ -114,7 +121,8 @@ export function NewArea({ navigation }) {
         realm.create("Area", {
           _id: uuid.v4(),
           userId: user.id,
-          title: areaTitle,
+          title: areaTitle.trim(),
+          imageURl: image
         });
       });
       setAreaTitle("");
@@ -125,6 +133,7 @@ export function NewArea({ navigation }) {
     }
   }
 
+  //Verificação se os campos estão vazios
   function verification() {
     if (areaTitle != "" && areaTitle != null) {
       newArea();
@@ -167,8 +176,11 @@ export function NewArea({ navigation }) {
         </Header>
         <Form>
           <SelectImage onPress={pickImage}>
-            <FontAwesome5 name="camera" size={50} color={"#091837"} />
-            <TextImage>Adicionar imagem</TextImage>
+            {image ? <Image source={{uri: image}} style={{width: '100%', height: '100%', borderRadius: 12}}/> : 
+            <View style={{alignItems: "center"}}><FontAwesome5 name="camera" size={50} color={"#091837"} />
+            <TextImage>Adicionar imagem</TextImage></View>
+            }
+            
           </SelectImage>
           <View style={{ gap: 8 }}>
             <Input
