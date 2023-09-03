@@ -122,7 +122,7 @@ export function EditArea({ navigation }) {
         type: "appChecked",
         text1: "Área modificada com sucesso",
       });
-      setTimeout(() => navigation.navigate("home"), 2000);
+      setTimeout(() => navigation.navigate("home"), 1500);
     } catch (error) {
       console.log(error);
     }
@@ -135,10 +135,10 @@ export function EditArea({ navigation }) {
         realm.delete(area);
       });
       Toast.show({
-        type: "authError",
+        type: "appChecked",
         text1: "Área exluída com sucesso!",
       });
-      setTimeout(() => navigation.navigate("home"), 2000);
+      setTimeout(() => navigation.navigate("home"), 1500);
     } catch (error) {
       console.log(error);
     }

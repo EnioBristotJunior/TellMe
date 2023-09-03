@@ -28,6 +28,7 @@ import { useQuery, useRealm } from "../../databases";
 import { AreaSchema } from "../../databases/schemas/AreaSchema";
 import { FlatList } from "react-native";
 import { Area } from "../../components/Area";
+import Toast from "react-native-toast-message";
 
 //Dimensão da tela
 const { width, height } = Dimensions.get("screen");
@@ -41,9 +42,15 @@ export function Home({ navigation }) {
   const user = useUser();
   const areaQuery = useQuery(AreaSchema);
 
+  function processLogout() {}
+
   //Sair da conta
   function logout() {
     user.logOut();
+    Toast.show({
+      type: "appChecked",
+      text1: "Sessão encerrada com sucesso!",
+    });
   }
 
   //Lista de Áreas
@@ -65,10 +72,9 @@ export function Home({ navigation }) {
     return () => realm.removeListener("change", fetchAreas);
   }, []);
   //Navega para a tela de editar área
-  function openEditArea(id){
-    navigation.navigate('editArea', {id})
+  function openEditArea(id) {
+    navigation.navigate("editArea", { id });
   }
-
 
   return (
     <Container>
@@ -94,7 +100,7 @@ export function Home({ navigation }) {
               press={() => console.log("clicado")}
               icon={() => openEditArea(item._id)}
               img={item.imageURl}
-            /> 
+            />
           )}
           ListFooterComponent={() => (
             <NewArea onPress={() => navigation.navigate("newArea")}>

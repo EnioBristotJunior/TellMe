@@ -53,7 +53,7 @@ const config = {
         padding: 20,
         flexDirection: "row",
         gap: 10,
-        elevation: 10,
+        elevation: 1,
         marginTop: 25,
       }}
     >
@@ -80,7 +80,7 @@ const config = {
         padding: 20,
         flexDirection: "row",
         gap: 10,
-        elevation: 10,
+        elevation: 1,
         marginTop: 25,
       }}
     >
@@ -104,12 +104,12 @@ const config = {
       style={{
         height: 60,
         width: "80%",
-        backgroundColor: "#091837",
+        backgroundColor: "#FF7F00",
         borderRadius: 15,
         padding: 20,
         flexDirection: "row",
         gap: 10,
-        elevation: 10,
+        elevation: 1,
         marginTop: 25,
       }}
     >
@@ -168,6 +168,7 @@ const config = {
         flexDirection: "row",
         gap: 10,
         marginTop: 25,
+        elevation: 1,
       }}
     >
       <FontAwesome5 name="exclamation-circle" size={19} color={"#fff"} />

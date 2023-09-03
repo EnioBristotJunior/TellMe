@@ -126,7 +126,7 @@ export function NewArea({ navigation }) {
       });
       setAreaTitle("");
       ToastNewArea();
-      setTimeout(() => navigation.navigate("home"), 2000);
+      setTimeout(() => navigation.navigate("home"), 1500);
     } catch (erro) {
       console.log(erro);
     }
