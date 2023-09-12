@@ -54,6 +54,7 @@ export const Input = styled.TextInput`
   padding-left: 25px;
   color: ${(props) => props.theme.color};
   font-family: "Comfortaa_500Medium";
+  padding-right: 25px;
 `;
 
 export const AlertView = styled.View`

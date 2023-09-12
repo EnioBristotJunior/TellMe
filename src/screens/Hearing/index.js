@@ -153,7 +153,6 @@ export function Hearing() {
         </ListeningContainer>
       )}
       <HeardModal visible={visible} setVisible={setVisible} result={result} />
-      {/* <Timer>resultado :{result}</Timer> */}
     </Container>
   );
 }

@@ -47,8 +47,11 @@ const { width, height } = Dimensions.get("screen");
 //Image Picker
 import * as ImagePicker from "expo-image-picker";
 import { Image } from "react-native";
+import { ConfirmModal } from "../../../components/ConfirmModal";
 
 export function EditArea({ navigation }) {
+  const [visible, setVisible] = useState(false);
+
   //Realm
   const realm = useRealm();
   const route = useRoute();
@@ -104,11 +107,17 @@ export function EditArea({ navigation }) {
     }
   };
 
-  //Toast de Erro
+  //Mensagens Toast
   const NeedCamps = () => {
     Toast.show({
       type: "appError",
       text1: "Campo vazio ou incorreto!",
+    });
+  };
+  const ExceededCharacters = () => {
+    Toast.show({
+      type: "appError",
+      text1: "Limite de caracteres excedido!",
     });
   };
 
@@ -128,26 +137,14 @@ export function EditArea({ navigation }) {
     }
   }
 
-  //Excluir área
-  async function HandleRemove() {
-    try {
-      realm.write(() => {
-        realm.delete(area);
-      });
-      Toast.show({
-        type: "appChecked",
-        text1: "Área exluída com sucesso!",
-      });
-      setTimeout(() => navigation.navigate("home"), 1500);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  //Verificação se os campos estão vazios
+  //Verificação se os campos estão com irregularidades
   function verification() {
     if (areaTitle != "" && areaTitle != null) {
-      HandleSave(areaTitle.trim(), image);
+      if (areaTitle.length <= 25) {
+        HandleSave(areaTitle.trim(), image);
+      } else {
+        ExceededCharacters();
+      }
     } else {
       NeedCamps();
     }
@@ -209,11 +206,11 @@ export function EditArea({ navigation }) {
             />
             <AlertView>
               <Ionicons name="alert-circle-outline" size={24} color="#FF7F00" />
-              <TextAlert>Máximo de 14 caracteres</TextAlert>
+              <TextAlert>Máximo de 25 caracteres</TextAlert>
             </AlertView>
           </View>
         </Form>
-        <Delete onPress={HandleRemove}>
+        <Delete onPress={() => setVisible(true)}>
           <FontAwesome5 name="trash-alt" color={"#fff"} size={24} />
           <TextDelete>Excluir Área</TextDelete>
         </Delete>
@@ -229,6 +226,12 @@ export function EditArea({ navigation }) {
           </Confirm>
         )}
       </View>
+      <ConfirmModal
+        visible={visible}
+        setVisible={setVisible}
+        area={area}
+        navigation={navigation}
+      />
     </Container>
   );
 }

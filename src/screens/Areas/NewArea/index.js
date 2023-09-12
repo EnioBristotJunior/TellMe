@@ -111,6 +111,12 @@ export function NewArea({ navigation }) {
       text1: "Upload de imagem cancelado",
     });
   };
+  const ExceededCharacters = () => {
+    Toast.show({
+      type: "appError",
+      text1: "Limite de caracteres excedido!",
+    });
+  };
   //Criar área
   async function newArea() {
     try {
@@ -132,10 +138,14 @@ export function NewArea({ navigation }) {
     }
   }
 
-  //Verificação se os campos estão vazios
+  //Verificação se os campos estão com irregularidades
   function verification() {
     if (areaTitle != "" && areaTitle != null) {
-      newArea();
+      if (areaTitle.length <= 14) {
+        newArea();
+      } else {
+        ExceededCharacters();
+      }
     } else {
       NeedCamps();
     }

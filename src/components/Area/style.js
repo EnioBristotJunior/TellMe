@@ -4,12 +4,10 @@ export const Container = styled.TouchableOpacity`
   flex: 1;
   width: 180px;
   height: 130px;
-  background-color: ${(props) => props.theme.secondBackground};
-  border-radius: 15px;
+  border-radius: 10px;
   margin-bottom: 15px;
   position: relative;
 `;
-
 export const Content = styled.View`
   flex: 1;
   padding: 20px;

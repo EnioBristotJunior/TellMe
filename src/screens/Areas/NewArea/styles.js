@@ -52,6 +52,7 @@ export const Input = styled.TextInput`
   border-radius: 10px;
   border: 1px solid ${(props) => props.theme.secondBackground};
   padding-left: 25px;
+  padding-right: 25px;
   color: ${(props) => props.theme.color};
   font-family: "Comfortaa_500Medium";
 `;
