@@ -49,9 +49,10 @@ export function ConfirmModal({ visible, setVisible, area, navigation }) {
           <AreaTitle>{area?.title}</AreaTitle>
           <PhraseNumber>8 frases registradas</PhraseNumber>
         </Area>
+
         <Bottom>
           <AlertView>
-            <Ionicons name="alert-circle-outline" size={24} color="#FF7F00" />
+            {/* <Ionicons name="alert-circle-outline" size={24} color="#FF7F00" /> */}
             <TextAlert>
               Todas as frases dessa área também serão excluidas!
             </TextAlert>

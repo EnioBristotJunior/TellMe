@@ -6,9 +6,9 @@ import { Container, Content, TextArea, ImageFalse, ImageTrue } from "./style";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Image } from "expo-image";
 
-export function Area({ title, press, icon, img }) {
+export function Area({ title, icon, img, navigation }) {
   return (
-    <Container onPress={press}>
+    <Container onPress={() => console.log("clicado")}>
       {img ? (
         <Image
           source={img}

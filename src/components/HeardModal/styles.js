@@ -1,17 +1,19 @@
 import styled from "styled-components/native";
 
 export const Container = styled.View`
-  background-color: ${(props) => props.theme.color};
+  background-color: ${(props) => props.theme.background};
   z-index: 2;
   width: 325px;
   height: 500px;
   border-radius: 20px;
   position: absolute;
   align-self: center;
-  top: 175px;
+  top: 160px;
   align-items: center;
   justify-content: space-between;
   padding: 20px;
+  /* border-width: 1px;
+  border-color: ${(props) => props.theme.secondBackground}; */
 `;
 
 export const TapClose = styled.TouchableOpacity`
@@ -21,8 +23,8 @@ export const TapClose = styled.TouchableOpacity`
   top: 0;
   left: 0;
   z-index: 1;
-  background-color: ${(props) => props.theme.background};
-  opacity: 0.4;
+  background-color: ${(props) => props.theme.secondBackground};
+  opacity: 0.13;
 `;
 
 export const Title = styled.Text`
@@ -43,7 +45,7 @@ export const HearAgain = styled.TouchableOpacity`
 `;
 
 export const HeardText = styled.Text`
-  color: ${(props) => props.theme.background};
+  color: ${(props) => props.theme.color};
   font-size: 18px;
   font-family: "Comfortaa_400Regular";
   text-align: center;

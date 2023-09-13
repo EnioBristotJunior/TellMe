@@ -76,6 +76,8 @@ export function Home({ navigation }) {
     navigation.navigate("editArea", { id });
   }
 
+  //Acessa as frases
+
   return (
     <Container>
       <BgSvg
@@ -97,7 +99,7 @@ export function Home({ navigation }) {
           renderItem={({ item }) => (
             <Area
               title={item.title}
-              press={() => console.log("clicado")}
+              navigation={navigation}
               icon={() => openEditArea(item._id)}
               img={item.imageURl}
             />

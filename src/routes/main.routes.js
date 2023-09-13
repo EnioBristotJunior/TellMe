@@ -4,11 +4,11 @@ import { Octicons, MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
 
 const { Screen, Navigator } = createBottomTabNavigator();
 
-import { Home } from "../screens/Home";
 import { Hearing } from "../screens/Hearing";
 import { Profile } from "../screens/Profile";
 import { HomeRoutes } from "./home.routes";
 
+// import House from "../imgs/components/home-fill.svg";
 export function MainRoutes() {
   return (
     <Navigator
@@ -25,7 +25,7 @@ export function MainRoutes() {
           position: "absolute",
           bottom: 30,
           right: 40,
-          borderRadius: 30,
+          borderRadius: 25,
           left: 40,
           borderTopWidth: 0,
         },
@@ -36,6 +36,11 @@ export function MainRoutes() {
         component={HomeRoutes}
         options={{
           tabBarIcon: ({ color, size }) => (
+            // color == "#091837" ? (
+            //   <House color={"#091837"} width={28} height={28} />
+            // ) : (
+            //   <Octicons name="home" color={color} size={size} />
+            // ),
             <Octicons name="home" color={color} size={size} />
           ),
         }}

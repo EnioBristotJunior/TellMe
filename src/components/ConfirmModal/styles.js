@@ -60,17 +60,14 @@ export const Bottom = styled.View`
 `;
 
 export const AlertView = styled.View`
-  flex-direction: row;
-  gap: 10px;
   align-items: center;
-  padding-right: 20px;
 `;
 
 export const TextAlert = styled.Text`
   font-size: 12px;
   font-family: "Comfortaa_700Bold";
   color: ${(props) => props.theme.secondBackground};
-  /* text-align: center; */
+  text-align: center;
 `;
 
 export const Confirm = styled.TouchableOpacity`
