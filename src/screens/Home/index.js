@@ -78,6 +78,10 @@ export function Home({ navigation }) {
 
   //Acessa as frases
 
+  function openPhrases(id){
+    navigation.navigate('phrasesList', {id});
+  }
+
   return (
     <Container>
       <BgSvg
@@ -99,7 +103,7 @@ export function Home({ navigation }) {
           renderItem={({ item }) => (
             <Area
               title={item.title}
-              navigation={navigation}
+              navigation={() => openPhrases(item._id)}
               icon={() => openEditArea(item._id)}
               img={item.imageURl}
             />

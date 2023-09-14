@@ -8,7 +8,7 @@ import { Image } from "expo-image";
 
 export function Area({ title, icon, img, navigation }) {
   return (
-    <Container onPress={() => console.log("clicado")}>
+    <Container onPress={navigation}>
       {img ? (
         <Image
           source={img}
