@@ -9,7 +9,20 @@ import { useUser } from "@realm/react";
 import { View, Dimensions, TouchableOpacity } from "react-native";
 
 //Styles
-import { Container, Main, Header, Title, Form, Input, AlertView, TextAlert, Bottom, Confirm, ConfirmText, PhraseContent } from "./styles";
+import {
+  Container,
+  Main,
+  Header,
+  Title,
+  Form,
+  Input,
+  AlertView,
+  TextAlert,
+  Bottom,
+  Confirm,
+  ConfirmText,
+  PhraseContent,
+} from "./styles";
 
 //uuid
 import uuid from "react-native-uuid";
@@ -29,9 +42,7 @@ import Toast from "react-native-toast-message";
 const { width, height } = Dimensions.get("screen");
 
 export function NewPhrase({ navigation }) {
-
-
-  const [contentInputFocus, setContentInputFocus] = useState(false)
+  const [contentInputFocus, setContentInputFocus] = useState(false);
   return (
     <Container>
       <BgSvg
@@ -41,36 +52,39 @@ export function NewPhrase({ navigation }) {
       />
       <Main>
         <Header>
-          <TouchableOpacity onPress={() => navigation.goBack()} >
+          <TouchableOpacity onPress={() => navigation.goBack()}>
             <AntDesign name="arrowleft" size={35} color={"#FF7F00"} />
           </TouchableOpacity>
           <Title>Criar nova frase</Title>
         </Header>
         <Form>
-          <Input 
-          placeholder="Número da frase" 
-          keyboardType="numeric" 
-          placeholderTextColor={"#d9d9d9"}
-          cursorColor={"#ff7f00"} />
-          <View style={{ gap: 8 }}>
-            <Input 
-            placeholder="Título" 
-            keyboardType="numeric" 
+          <Input
+            placeholder="Número da frase"
+            keyboardType="numeric"
             placeholderTextColor={"#d9d9d9"}
-            cursorColor={"#ff7f00"} />
+            cursorColor={"#ff7f00"}
+          />
+          <View style={{ gap: 8 }}>
+            <Input
+              placeholder="Título da frase"
+              placeholderTextColor={"#d9d9d9"}
+              cursorColor={"#ff7f00"}
+            />
             <AlertView>
               <Ionicons name="alert-circle-outline" size={24} color="#FF7F00" />
               <TextAlert>Máximo de 15 caracteres</TextAlert>
             </AlertView>
           </View>
-          <PhraseContent 
+          <PhraseContent
             is={contentInputFocus}
-            numberOfLines={4}  
-            placeholder="Conteúdo da frase" 
-            placeholderTextColor={"#091837"}
-            cursorColor={"#d9d9d9"}
+            numberOfLines={4}
+            placeholder="Conteúdo da frase"
+            placeholderTextColor={"#d9d9d9"}
+            cursorColor={"#FF7F00"}
             multiline
-            />
+            onFocus={() => setContentInputFocus(true)}
+            onBlur={() => setContentInputFocus(false)}
+          />
         </Form>
       </Main>
       <Bottom>

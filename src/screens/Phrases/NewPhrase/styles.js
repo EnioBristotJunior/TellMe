@@ -1,8 +1,8 @@
-import styled from 'styled-components/native';
+import styled from "styled-components/native";
 
 export const Container = styled.View`
   flex: 1;
-  background-color: ${props => props.theme.background};
+  background-color: ${(props) => props.theme.background};
   padding: 25px;
   justify-content: space-between;
 `;
@@ -73,7 +73,7 @@ export const ConfirmText = styled.Text`
 `;
 
 export const PhraseContent = styled.TextInput`
-background-color: ${(props) => props.theme.secondBackground};
+  background-color: ${(props) => props.theme.background};
   width: 100%;
   height: 120px;
   border-radius: 10px;
@@ -81,4 +81,5 @@ background-color: ${(props) => props.theme.secondBackground};
   padding-right: 25px;
   color: ${(props) => props.theme.color};
   font-family: "Comfortaa_500Medium";
+  border: 1px solid ${(props) => props.theme.secondBackground};
 `;
