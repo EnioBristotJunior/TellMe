@@ -9,6 +9,7 @@ import { Image } from "expo-image";
 export function Area({ title, icon, img, navigation }) {
   return (
     <Container onPress={navigation}>
+      {/* Verificar se a imagem de fundo existe */}
       {img ? (
         <Image
           source={img}

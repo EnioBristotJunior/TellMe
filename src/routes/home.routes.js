@@ -6,6 +6,7 @@ import { Home } from "../screens/Home";
 import { NewArea } from "../screens/Areas/NewArea";
 import { EditArea } from "../screens/Areas/EditArea";
 import { PhrasesList } from "../screens/Phrases/PhrasesList";
+import { NewPhrase } from "../screens/Phrases/NewPhrase";
 
 export function HomeRoutes() {
   return (
@@ -14,6 +15,7 @@ export function HomeRoutes() {
       <Screen name="newArea" component={NewArea} />
       <Screen name="editArea" component={EditArea} />
       <Screen name="phrasesList" component={PhrasesList} />
+      <Screen name="newPhrase" component={NewPhrase} />
     </Navigator>
   );
 }

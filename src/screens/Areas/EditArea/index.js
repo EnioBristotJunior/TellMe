@@ -120,12 +120,13 @@ export function EditArea({ navigation }) {
       text1: "Limite de caracteres excedido!",
     });
   };
-
+  //Salvar alterações da área
   function HandleSave(title, image) {
     try {
       realm.write(() => {
         area.title = title;
         area.imageURl = image;
+        area.updated_at = new Date();
       });
       Toast.show({
         type: "appChecked",

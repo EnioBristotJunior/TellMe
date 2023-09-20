@@ -22,6 +22,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 
 export function ConfirmModal({ visible, setVisible, area, navigation }) {
+  //Realm
   const realm = useRealm();
 
   //Excluir área
@@ -31,11 +32,11 @@ export function ConfirmModal({ visible, setVisible, area, navigation }) {
         realm.delete(area);
       });
       setVisible(false);
-      navigation.navigate("home");
       Toast.show({
         type: "appChecked",
         text1: "Área exluída com sucesso!",
       });
+      setTimeout(() => navigation.navigate("home"), 1500)
     } catch (error) {
       console.log(error);
     }

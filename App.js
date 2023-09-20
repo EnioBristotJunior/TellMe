@@ -245,7 +245,7 @@ export default function App() {
         />
         <AppProvider id={"application-0-hfxgp"}>
           <UserProvider fallback={<AuthRoutes />}>
-            <RealmProvider>
+            <RealmProvider deleteRealmIfMigrationNeeded={true}>
               <MainRoutes />
             </RealmProvider>
           </UserProvider>

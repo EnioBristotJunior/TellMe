@@ -12,6 +12,9 @@ export const PhraseSchema = {
     content: "string",
     number: "int",
     userId: "string",
+    areaId: "string",
+    created_at: { type: "date", default: new Date() },
+    updated_at: { type: "date", default: new Date() },
   },
   primaryKey: "_id",
 };

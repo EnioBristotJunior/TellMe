@@ -10,6 +10,8 @@ export class AreaSchema extends Realm.Object {
       title: "string",
       imageURl: { type: "string", default: "" },
       userId: "string",
+      created_at: { type: "date", default: new Date() },
+      updated_at: { type: "date", default: new Date() },
     },
   };
 }

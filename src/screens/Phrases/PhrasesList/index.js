@@ -1,6 +1,6 @@
 //React
 import React, { useEffect, useState } from "react";
-import { Container, Header, Main, Title, ChangeView } from './styles';
+import { Container, Header, Main, Title, ChangeView, NewPhraseOne, NewPhraseText } from './styles';
 import { Dimensions, View, TouchableOpacity } from 'react-native';
 
 //Realm
@@ -49,6 +49,11 @@ export function PhrasesList({navigation}) {
     };
   }, []);
 
+  function HandleOpen(){
+    navigation.navigate("newPhrase");
+    
+  }
+
   return (
     <Container>
         <BgSvg
@@ -89,6 +94,10 @@ export function PhrasesList({navigation}) {
             </TouchableOpacity>
           </ChangeView>
         </Header>
+        <NewPhraseOne onPress={() => HandleOpen()}>
+          <FontAwesome5 name="plus" size={25} color={"#fff"} />
+          <NewPhraseText>Adicionar nova frase</NewPhraseText>
+        </NewPhraseOne>
       </Main>
       
     </Container>

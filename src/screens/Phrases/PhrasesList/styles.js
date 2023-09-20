@@ -22,12 +22,32 @@ export const Title = styled.Text`
 `;
 
 export const ChangeView = styled.View`
+margin-top: 5px;
 width: 120px;
 height: 50px;
 border-radius: 15px;
-background-color:  ${props => props.theme.color};
+background-color:  ${props => props.theme.secondBackground};
 flex-direction: row;
 align-items: center;
 justify-content: space-around;
 `;
+
+export const NewPhraseOne = styled.TouchableOpacity`
+width: 100%;
+height: 65px;
+border-radius: 12px;
+background-color: transparent;
+border-width: 2px;
+border-color: ${(props) => props.theme.secondBackground};
+align-items: center;
+justify-content: space-evenly;
+flex-direction: row;
+`;
+
+export const NewPhraseText = styled.Text`
+font-size: 20px;
+font-family: "ComicNeue_700Bold";
+color: ${(props) => props.theme.color};
+`;
+
 

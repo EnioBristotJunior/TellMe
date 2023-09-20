@@ -59,7 +59,7 @@ export function Home({ navigation }) {
     const filt = (registro) => registro.userId == user.id;
     let result = response.filter(filt);
     setAreas(result);
-    // console.log(result);
+    //console.log(result);
   }
   //Carrega a função
   useEffect(() => {
@@ -78,8 +78,8 @@ export function Home({ navigation }) {
 
   //Acessa as frases
 
-  function openPhrases(id){
-    navigation.navigate('phrasesList', {id});
+  function openPhrases(id) {
+    navigation.navigate("phrasesList", { id });
   }
 
   return (

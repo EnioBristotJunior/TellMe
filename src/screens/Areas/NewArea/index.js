@@ -141,7 +141,7 @@ export function NewArea({ navigation }) {
   //Verificação se os campos estão com irregularidades
   function verification() {
     if (areaTitle != "" && areaTitle != null) {
-      if (areaTitle.length <= 14) {
+      if (areaTitle.length <= 25) {
         newArea();
       } else {
         ExceededCharacters();
@@ -207,7 +207,7 @@ export function NewArea({ navigation }) {
             />
             <AlertView>
               <Ionicons name="alert-circle-outline" size={24} color="#FF7F00" />
-              <TextAlert>Máximo de 14 caracteres</TextAlert>
+              <TextAlert>Máximo de 25 caracteres</TextAlert>
             </AlertView>
           </View>
         </Form>
