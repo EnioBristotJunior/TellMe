@@ -1,11 +1,22 @@
 //React
 import React, { useEffect, useState } from "react";
-import { Container, Header, Main, Title, ChangeView, NewPhraseOne, NewPhraseText } from './styles';
-import { Dimensions, View, TouchableOpacity } from 'react-native';
+import {
+  Container,
+  Header,
+  Main,
+  Title,
+  ChangeView,
+  NewPhraseOne,
+  NewPhraseText,
+  PhrasesSection,
+} from "./styles";
+import { Dimensions, View, TouchableOpacity } from "react-native";
 
 //Realm
-import { useRealm, useObject } from "../../../databases";
+import { useRealm, useObject, useQuery } from "../../../databases";
 import { AreaSchema } from "../../../databases/schemas/AreaSchema";
+import { PhraseSchema } from "../../../databases/schemas/PhraseSchema";
+import { useUser } from "@realm/react";
 
 //Navegação
 import { useRoute } from "@react-navigation/native";
@@ -16,20 +27,48 @@ import BgSvg from "../../../imgs/Phrases/backPhrase-g9.svg";
 import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
-
+import { FlatList } from "react-native";
+import { Phrase } from "../../../components/Phrase";
 
 const { width, height } = Dimensions.get("screen");
 
+export function PhrasesList({ navigation }) {
+  //estados
+  const [phrases, setPhrases] = useState([]);
+  //Parametros
+  const route = useRoute();
+  const { id } = route.params;
+  //Realm
+  const realm = useRealm();
+  const user = useUser();
+  const area = id ? useObject(AreaSchema, id) : undefined;
+  const phrasesQuery = useQuery(PhraseSchema);
 
-export function PhrasesList({navigation}) {
-    //Parametros
-    const route = useRoute();
-    const { id } = route.params;
-    //Realm
-    const realm = useRealm();
-    const area = id ? useObject(AreaSchema, id) : undefined;
+  //Lista de Frases
+  async function fetchPhrases() {
+    try {
+      const response = phrasesQuery.toJSON();
+      const filtUser = (registro) => registro.userId == user.id;
+      const filtArea = (registro) => registro.areaId == area._id;
+      let result = response.filter(filtUser).filter(filtArea);
+      setPhrases(result);
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  //Carrega a função
+  useEffect(() => {
+    fetchPhrases();
+  }, []);
+  //Atualiza toda vez que a variável mudar
+  useEffect(() => {
+    realm.addListener("change", fetchPhrases);
 
-     //Remoção do bottom navigator
+    return () => realm.removeListener("change", fetchPhrases);
+  }, []);
+
+  //Remoção do bottom navigator
   useEffect(() => {
     navigation.getParent().setOptions({ tabBarStyle: { display: "none" } });
     return () => {
@@ -49,20 +88,20 @@ export function PhrasesList({navigation}) {
     };
   }, []);
 
-  function HandleOpen(){
-    navigation.navigate("newPhrase");
-    
+  function HandleOpen(areaId) {
+    navigation.navigate("newPhrase", { areaId });
+    // console.log(areaId)
   }
 
   return (
     <Container>
-        <BgSvg
+      <BgSvg
         width={width}
         height={height}
         style={{ position: "absolute", top: 0, left: 0, zIndex: -1 }}
       />
       <Main>
-      <Header>
+        <Header>
           <TouchableOpacity
             onPress={() => {
               navigation.getParent().setOptions({
@@ -73,7 +112,7 @@ export function PhrasesList({navigation}) {
                   position: "absolute",
                   bottom: 30,
                   right: 40,
-                  borderRadius: 30,
+                  borderRadius: 25,
                   left: 40,
                   borderTopWidth: 0,
                 },
@@ -86,20 +125,36 @@ export function PhrasesList({navigation}) {
 
           <Title>{area.title}</Title>
           <ChangeView>
-            <TouchableOpacity >
-                <FontAwesome5 name="grip-lines" size={25} color={"#091837"} />
+            <TouchableOpacity>
+              <FontAwesome5 name="grip-lines" size={25} color={"#091837"} />
             </TouchableOpacity>
             <TouchableOpacity>
-                <Ionicons name="grid" size={25} color={"#091837"} />
+              <Ionicons name="grid" size={25} color={"#091837"} />
             </TouchableOpacity>
           </ChangeView>
         </Header>
-        <NewPhraseOne onPress={() => HandleOpen()}>
-          <FontAwesome5 name="plus" size={25} color={"#fff"} />
-          <NewPhraseText>Adicionar nova frase</NewPhraseText>
-        </NewPhraseOne>
+        <PhrasesSection>
+          <FlatList
+            data={phrases}
+            showsVerticalScrollIndicator={false}
+            style={{ maxHeight: 600, marginBottom: 10 }}
+            keyExtractor={(item) => item._id}
+            renderItem={({ item }) => (
+              <Phrase
+                title={item.title}
+                number={item.number}
+                content={item.content}
+              />
+            )}
+            ListFooterComponent={() => (
+              <NewPhraseOne onPress={() => HandleOpen(area._id)}>
+                <FontAwesome5 name="plus" size={25} color={"#fff"} />
+                <NewPhraseText>Adicionar nova frase</NewPhraseText>
+              </NewPhraseOne>
+            )}
+          />
+        </PhrasesSection>
       </Main>
-      
     </Container>
   );
 }

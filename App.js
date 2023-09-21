@@ -221,7 +221,6 @@ export default function App() {
     Comfortaa_500Medium,
     Comfortaa_600SemiBold,
     Comfortaa_700Bold,
-    ComicNeue_700Bold,
     ComicNeue_300Light,
     ComicNeue_400Regular,
     ComicNeue_700Bold,

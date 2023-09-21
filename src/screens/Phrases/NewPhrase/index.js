@@ -2,8 +2,10 @@
 import React, { useEffect, useState } from "react";
 
 //Realm
-import { useRealm } from "../../../databases";
+import { useRealm, useObject, useQuery } from "../../../databases";
 import { useUser } from "@realm/react";
+import { AreaSchema } from "../../../databases/schemas/AreaSchema";
+import { PhraseSchema } from "../../../databases/schemas/PhraseSchema";
 
 //React Native
 import { View, Dimensions, TouchableOpacity } from "react-native";
@@ -27,6 +29,9 @@ import {
 //uuid
 import uuid from "react-native-uuid";
 
+//Navegação
+import { useRoute } from "@react-navigation/native";
+
 //SVG
 import BgSvg from "../../../imgs/Areas/backArea-g9.svg";
 
@@ -42,7 +47,100 @@ import Toast from "react-native-toast-message";
 const { width, height } = Dimensions.get("screen");
 
 export function NewPhrase({ navigation }) {
+  //Estados
+  const [phraseTitle, setPhraseTitle] = useState("");
+  const [phraseContent, setPhraseContent] = useState("");
   const [contentInputFocus, setContentInputFocus] = useState(false);
+
+  const [phrases, setPhrases] = useState([]);
+
+  //Parametros
+  const route = useRoute();
+  const { areaId } = route.params;
+  const area = areaId ? useObject(AreaSchema, areaId) : undefined;
+
+  //Realm
+  const user = useUser();
+  const realm = useRealm();
+  const phrasesQuery = useQuery(PhraseSchema);
+
+  //Lista de Frases
+  async function fetchPhrases() {
+    try {
+      const response = phrasesQuery.toJSON();
+      const filtUser = (registro) => registro.userId == user.id;
+      const filtArea = (registro) => registro.areaId == area._id;
+      let result = response.filter(filtUser).filter(filtArea);
+      setPhrases(result);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  //Carrega a função
+  useEffect(() => {
+    fetchPhrases();
+  }, []);
+
+  function needCamps() {
+    Toast.show({
+      type: "appError",
+      text1: "Por favor, preencha todos os campos",
+    });
+  }
+
+  function exceededCharacters() {
+    Toast.show({
+      type: "appError",
+      text1: "Número de caracteres excedido",
+    });
+  }
+
+  function ToastNewPhrase() {
+    Toast.show({
+      type: "newArea",
+      text1: "Frase criada com sucesso",
+    });
+  }
+
+  //Verificação se os campos estão com irregularidades
+
+  function Verification() {
+    if (phraseTitle != "" && phraseContent != "") {
+      if (phraseTitle.length <= 25) {
+        newPhrase();
+      } else {
+        exceededCharacters();
+      }
+    } else {
+      needCamps();
+      console.log(phrases.length);
+    }
+  }
+
+  function newPhrase() {
+    try {
+      console.log(area._id);
+      realm.write(() => {
+        realm.create("Phrase", {
+          _id: uuid.v4(),
+          userId: user.id,
+          areaId: area._id,
+          title: phraseTitle.trim(),
+          content: phraseContent.trim(),
+          number: phrases.length + 1,
+        });
+      });
+      ToastNewPhrase();
+      setPhraseTitle("");
+      setPhraseContent("");
+      setTimeout(() => HandleBack(area._id), 1500);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  function HandleBack(id) {
+    navigation.navigate("phrasesList", { id });
+  }
   return (
     <Container>
       <BgSvg
@@ -58,21 +156,18 @@ export function NewPhrase({ navigation }) {
           <Title>Criar nova frase</Title>
         </Header>
         <Form>
-          <Input
-            placeholder="Número da frase"
-            keyboardType="numeric"
-            placeholderTextColor={"#d9d9d9"}
-            cursorColor={"#ff7f00"}
-          />
           <View style={{ gap: 8 }}>
             <Input
               placeholder="Título da frase"
               placeholderTextColor={"#d9d9d9"}
               cursorColor={"#ff7f00"}
+              onChangeText={setPhraseTitle}
+              s
+              value={phraseTitle}
             />
             <AlertView>
               <Ionicons name="alert-circle-outline" size={24} color="#FF7F00" />
-              <TextAlert>Máximo de 15 caracteres</TextAlert>
+              <TextAlert>Máximo de 25 caracteres</TextAlert>
             </AlertView>
           </View>
           <PhraseContent
@@ -84,11 +179,13 @@ export function NewPhrase({ navigation }) {
             multiline
             onFocus={() => setContentInputFocus(true)}
             onBlur={() => setContentInputFocus(false)}
+            onChangeText={setPhraseContent}
+            value={phraseContent}
           />
         </Form>
       </Main>
       <Bottom>
-        <Confirm>
+        <Confirm onPress={() => Verification()}>
           <ConfirmText>Criar frase</ConfirmText>
         </Confirm>
       </Bottom>

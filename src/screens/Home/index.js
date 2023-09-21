@@ -42,8 +42,6 @@ export function Home({ navigation }) {
   const user = useUser();
   const areaQuery = useQuery(AreaSchema);
 
-  function processLogout() {}
-
   //Sair da conta
   function logout() {
     user.logOut();

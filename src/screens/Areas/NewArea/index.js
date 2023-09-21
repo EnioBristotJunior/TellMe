@@ -65,7 +65,7 @@ export function NewArea({ navigation }) {
           position: "absolute",
           bottom: 30,
           right: 40,
-          borderRadius: 30,
+          borderRadius: 25,
           left: 40,
           borderTopWidth: 0,
         },
