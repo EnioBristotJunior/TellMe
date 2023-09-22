@@ -52,34 +52,14 @@ export function NewPhrase({ navigation }) {
   const [phraseContent, setPhraseContent] = useState("");
   const [contentInputFocus, setContentInputFocus] = useState(false);
 
-  const [phrases, setPhrases] = useState([]);
-
   //Parametros
   const route = useRoute();
-  const { areaId } = route.params;
+  const { areaId, phrasesLength } = route.params;
   const area = areaId ? useObject(AreaSchema, areaId) : undefined;
-
+  console.log(phrasesLength);
   //Realm
   const user = useUser();
   const realm = useRealm();
-  const phrasesQuery = useQuery(PhraseSchema);
-
-  //Lista de Frases
-  async function fetchPhrases() {
-    try {
-      const response = phrasesQuery.toJSON();
-      const filtUser = (registro) => registro.userId == user.id;
-      const filtArea = (registro) => registro.areaId == area._id;
-      let result = response.filter(filtUser).filter(filtArea);
-      setPhrases(result);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-  //Carrega a função
-  useEffect(() => {
-    fetchPhrases();
-  }, []);
 
   function needCamps() {
     Toast.show({
@@ -127,7 +107,7 @@ export function NewPhrase({ navigation }) {
           areaId: area._id,
           title: phraseTitle.trim(),
           content: phraseContent.trim(),
-          number: phrases.length + 1,
+          number: phrasesLength + 1,
         });
       });
       ToastNewPhrase();
