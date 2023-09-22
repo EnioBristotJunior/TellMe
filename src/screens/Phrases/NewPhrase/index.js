@@ -56,7 +56,7 @@ export function NewPhrase({ navigation }) {
   const route = useRoute();
   const { areaId, phrasesLength } = route.params;
   const area = areaId ? useObject(AreaSchema, areaId) : undefined;
-  console.log(phrasesLength);
+  // console.log(phrasesLength);
   //Realm
   const user = useUser();
   const realm = useRealm();
