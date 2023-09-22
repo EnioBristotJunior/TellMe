@@ -88,9 +88,13 @@ export function PhrasesList({ navigation }) {
     };
   }, []);
 
-  function HandleOpen(areaId, phrasesLength) {
+  function HandleNewPhrase(areaId, phrasesLength) {
     navigation.navigate("newPhrase", { areaId, phrasesLength });
     // console.log(areaId)
+  }
+
+  function HandleOpenPhrase(phraseId) {
+    navigation.navigate("speak", { phraseId });
   }
 
   return (
@@ -144,11 +148,12 @@ export function PhrasesList({ navigation }) {
                 title={item.title}
                 number={item.number}
                 content={item.content}
+                navigation={() => HandleOpenPhrase(item._id)}
               />
             )}
             ListFooterComponent={() => (
               <NewPhraseOne
-                onPress={() => HandleOpen(area._id, phrases.length)}
+                onPress={() => HandleNewPhrase(area._id, phrases.length)}
               >
                 <FontAwesome5 name="plus" size={25} color={"#fff"} />
                 <NewPhraseText>Adicionar nova frase</NewPhraseText>

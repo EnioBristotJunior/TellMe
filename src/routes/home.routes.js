@@ -7,6 +7,7 @@ import { NewArea } from "../screens/Areas/NewArea";
 import { EditArea } from "../screens/Areas/EditArea";
 import { PhrasesList } from "../screens/Phrases/PhrasesList";
 import { NewPhrase } from "../screens/Phrases/NewPhrase";
+import { Speak } from "../screens/Phrases/Speak";
 
 export function HomeRoutes() {
   return (
@@ -16,6 +17,7 @@ export function HomeRoutes() {
       <Screen name="editArea" component={EditArea} />
       <Screen name="phrasesList" component={PhrasesList} />
       <Screen name="newPhrase" component={NewPhrase} />
+      <Screen name="speak" component={Speak} />
     </Navigator>
   );
 }

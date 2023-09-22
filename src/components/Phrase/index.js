@@ -4,11 +4,13 @@ import { View } from "react-native";
 
 export function Phrase({ title, content, number, navigation }) {
   return (
-    <Container>
+    <Container onPress={navigation}>
       <Number>{number}</Number>
       <View>
         <Title>{title}</Title>
-        <Content>{content}</Content>
+        <Content>
+          {content.length > 40 ? content.substring(0, 40) + "..." : content}
+        </Content>
       </View>
     </Container>
   );
