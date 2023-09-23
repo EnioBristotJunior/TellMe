@@ -120,8 +120,8 @@ export function NewArea({ navigation }) {
   //Criar área
   async function newArea() {
     try {
-      console.log(user.id);
-      console.log(areaTitle);
+      // console.log(user.id);
+      // console.log(areaTitle);
       realm.write(() => {
         realm.create("Area", {
           _id: uuid.v4(),

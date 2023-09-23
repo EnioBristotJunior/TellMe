@@ -52,7 +52,7 @@ export function PhrasesList({ navigation }) {
       const filtArea = (registro) => registro.areaId == area._id;
       let result = response.filter(filtUser).filter(filtArea);
       setPhrases(result);
-      console.log(result);
+      // console.log(result);
     } catch (error) {
       console.log(error);
     }

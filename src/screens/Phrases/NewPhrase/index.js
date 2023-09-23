@@ -56,7 +56,6 @@ export function NewPhrase({ navigation }) {
   const route = useRoute();
   const { areaId, phrasesLength } = route.params;
   const area = areaId ? useObject(AreaSchema, areaId) : undefined;
-  // console.log(phrasesLength);
   //Realm
   const user = useUser();
   const realm = useRealm();
@@ -93,7 +92,6 @@ export function NewPhrase({ navigation }) {
       }
     } else {
       needCamps();
-      console.log(phrases.length);
     }
   }
 
@@ -119,6 +117,7 @@ export function NewPhrase({ navigation }) {
     }
   }
   function HandleBack(id) {
+    navigation.navigate("home");
     navigation.navigate("phrasesList", { id });
   }
   return (

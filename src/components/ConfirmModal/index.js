@@ -1,6 +1,8 @@
 import React from "react";
 import { View, Modal } from "react-native";
-import { useRealm, useObject } from "../../databases/";
+import { useRealm, useQuery } from "../../databases/";
+import { PhraseSchema } from "../../databases/schemas/PhraseSchema";
+import { useUser } from "@realm/react";
 //Mensagem Toast
 import Toast from "react-native-toast-message";
 
@@ -24,19 +26,25 @@ import { Ionicons } from "@expo/vector-icons";
 export function ConfirmModal({ visible, setVisible, area, navigation }) {
   //Realm
   const realm = useRealm();
+  const user = useUser();
+  const phrases = useQuery(PhraseSchema);
 
   //Excluir área
   async function HandleRemove(area) {
     try {
+      const phrasesToDelete = phrases
+        .filtered(`userId == '${user.id}'`)
+        .filtered(`areaId == '${area._id || 372387}'`);
       realm.write(() => {
         realm.delete(area);
+        realm.delete(phrasesToDelete);
       });
       setVisible(false);
       Toast.show({
         type: "appChecked",
         text1: "Área exluída com sucesso!",
       });
-      setTimeout(() => navigation.navigate("home"), 1500)
+      setTimeout(() => navigation.navigate("home"), 1500);
     } catch (error) {
       console.log(error);
     }
@@ -48,7 +56,9 @@ export function ConfirmModal({ visible, setVisible, area, navigation }) {
         <Title>Tem certeza que deseja excluir essa área?</Title>
         <Area>
           <AreaTitle>{area?.title}</AreaTitle>
-          <PhraseNumber>8 frases registradas</PhraseNumber>
+          {/* <PhraseNumber>
+            {toJSON().length} frase(s) registradas
+          </PhraseNumber> */}
         </Area>
 
         <Bottom>

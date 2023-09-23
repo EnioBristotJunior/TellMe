@@ -2,10 +2,9 @@
 import React, { useEffect, useState } from "react";
 
 //Realm
-import { useRealm, useObject } from "../../../databases";
+import { useRealm, useObject, useQuery } from "../../../databases";
 import { useUser } from "@realm/react";
 import { AreaSchema } from "../../../databases/schemas/AreaSchema";
-
 //Componentes
 import { View, Dimensions, TouchableOpacity } from "react-native";
 
@@ -53,6 +52,7 @@ export function EditArea({ navigation }) {
   const [visible, setVisible] = useState(false);
 
   //Realm
+  const user = useUser();
   const realm = useRealm();
   const route = useRoute();
   const { id } = route.params;
@@ -62,8 +62,6 @@ export function EditArea({ navigation }) {
   //Estados
   const [areaTitle, setAreaTitle] = useState(area?.title);
   const [image, setImage] = useState(area?.imageURl);
-
-  // const firstTitle = area?.title;
 
   //Remoção do bottom navigator
   useEffect(() => {
@@ -94,8 +92,6 @@ export function EditArea({ navigation }) {
       aspect: [4, 3],
       quality: 1,
     });
-
-    console.log(result);
 
     if (result.assets) {
       setImage(result.assets[0].uri);
