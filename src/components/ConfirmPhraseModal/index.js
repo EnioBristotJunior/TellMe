@@ -1,5 +1,7 @@
 import React from "react";
-import { useRealm } from "../../databases/";
+import { useRealm, useQuery } from "../../databases/";
+import { useUser } from "@realm/react";
+import { PhraseSchema } from "../../databases/schemas/PhraseSchema";
 import {
   AreaTitle,
   Bottom,
@@ -20,14 +22,23 @@ export function ConfirmPhraseModal({
   visible,
   setVisible,
   phrase,
-  areaTitle,
+  area,
   navigation,
 }) {
   const realm = useRealm();
+  const user = useUser();
+  const phrases = useQuery(PhraseSchema)
+    .filtered(`userId == '${user.id}'`)
+    .filtered(`areaId == '${area._id}'`);
+
+  //Excluir Frase
   async function HandleRemove(phrase) {
     try {
       realm.write(() => {
         realm.delete(phrase);
+        for (let i = 0; i < phrases.toJSON().length; i++) {
+          phrases[i].number = i + 1;
+        }
       });
       setVisible(false);
       Toast.show({
@@ -48,7 +59,7 @@ export function ConfirmPhraseModal({
         <Title>Tem certeza de que deseja excluir essa frase?</Title>
         <Phrase>
           <PhraseTitle>{phrase?.title}</PhraseTitle>
-          <AreaTitle>Área: {areaTitle}</AreaTitle>
+          <AreaTitle>Área: {area.title}</AreaTitle>
         </Phrase>
         <Bottom>
           <Cancel onPress={() => setVisible(false)}>

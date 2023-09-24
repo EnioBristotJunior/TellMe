@@ -45,7 +45,6 @@ export function PhrasesList({ navigation }) {
     .filtered(`areaId == '${area._id}'`);
 
   const [phrases, setPhrases] = useState(phrasesQuery.toJSON());
-  console.log(phrases);
 
   //Lista de Frases
   // async function fetchPhrases() {
@@ -96,8 +95,8 @@ export function PhrasesList({ navigation }) {
     // console.log(areaId)
   }
 
-  function HandleOpenPhrase(phraseId, areaTitle) {
-    navigation.navigate("speak", { phraseId, areaTitle });
+  function HandleOpenPhrase(phraseId, areaId) {
+    navigation.navigate("speak", { phraseId, areaId });
   }
 
   return (
@@ -151,7 +150,7 @@ export function PhrasesList({ navigation }) {
                 title={item.title}
                 number={item.number}
                 content={item.content}
-                navigation={() => HandleOpenPhrase(item._id, area.title)}
+                navigation={() => HandleOpenPhrase(item._id, area._id)}
               />
             )}
             ListFooterComponent={() => (

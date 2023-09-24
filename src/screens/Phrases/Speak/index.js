@@ -31,20 +31,23 @@ import { FontAwesome } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { ConfirmPhraseModal } from "../../../components/ConfirmPhraseModal";
 import { Area } from "../../../components/ConfirmModal/styles";
+import { AreaSchema } from "../../../databases/schemas/AreaSchema";
 
 //Tamanho da tela
 const { width, height } = Dimensions.get("screen");
 
 export function Speak({ navigation }) {
+  //Variaveis da rota
   const route = useRoute();
-  const { phraseId, areaTitle } = route.params;
+  const { phraseId, areaId } = route.params;
   const phrase = phraseId ? useObject(PhraseSchema, phraseId) : undefined;
-  // console.log(phrase.title);
-  // console.log(areaTitle);
+  const area = areaId ? useObject(AreaSchema, areaId) : undefined;
+  //Estados
   const [visible, setVisible] = useState(false);
   const [phraseNumber, setPhraseNumber] = useState(phrase?.number);
   const [phraseTitle, setPhraseTitle] = useState(phrase?.title);
   const [phraseContent, setPhraseContent] = useState(phrase?.content);
+
   return (
     <Container>
       <BgSvg
@@ -75,7 +78,7 @@ export function Speak({ navigation }) {
       <ConfirmPhraseModal
         visible={visible}
         setVisible={setVisible}
-        areaTitle={areaTitle}
+        area={area}
         navigation={navigation}
         phrase={phrase}
       />

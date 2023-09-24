@@ -5,7 +5,6 @@ import React, { useEffect, useState } from "react";
 import { useRealm, useObject, useQuery } from "../../../databases";
 import { useUser } from "@realm/react";
 import { AreaSchema } from "../../../databases/schemas/AreaSchema";
-import { PhraseSchema } from "../../../databases/schemas/PhraseSchema";
 
 //React Native
 import { View, Dimensions, TouchableOpacity } from "react-native";
