@@ -93,8 +93,8 @@ export function PhrasesList({ navigation }) {
     // console.log(areaId)
   }
 
-  function HandleOpenPhrase(phraseId) {
-    navigation.navigate("speak", { phraseId });
+  function HandleOpenPhrase(phraseId, areaTitle) {
+    navigation.navigate("speak", { phraseId, areaTitle });
   }
 
   return (
@@ -148,7 +148,7 @@ export function PhrasesList({ navigation }) {
                 title={item.title}
                 number={item.number}
                 content={item.content}
-                navigation={() => HandleOpenPhrase(item._id)}
+                navigation={() => HandleOpenPhrase(item._id, area.title)}
               />
             )}
             ListFooterComponent={() => (

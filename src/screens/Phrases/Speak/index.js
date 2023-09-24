@@ -1,5 +1,5 @@
 //React
-import React from "react";
+import React, { useState } from "react";
 //Componentes
 import { View, Dimensions, TouchableOpacity } from "react-native";
 //Styled Components
@@ -29,15 +29,22 @@ import BgSvg from "../../../imgs/SpeakPhrase/backSpeakPhrase-g9.svg";
 import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { ConfirmPhraseModal } from "../../../components/ConfirmPhraseModal";
+import { Area } from "../../../components/ConfirmModal/styles";
 
 //Tamanho da tela
 const { width, height } = Dimensions.get("screen");
 
 export function Speak({ navigation }) {
   const route = useRoute();
-  const { phraseId } = route.params;
+  const { phraseId, areaTitle } = route.params;
   const phrase = phraseId ? useObject(PhraseSchema, phraseId) : undefined;
-  console.log(phrase.title);
+  // console.log(phrase.title);
+  // console.log(areaTitle);
+  const [visible, setVisible] = useState(false);
+  const [phraseNumber, setPhraseNumber] = useState(phrase?.number);
+  const [phraseTitle, setPhraseTitle] = useState(phrase?.title);
+  const [phraseContent, setPhraseContent] = useState(phrase?.content);
   return (
     <Container>
       <BgSvg
@@ -49,12 +56,12 @@ export function Speak({ navigation }) {
         <AntDesign name="arrowleft" size={35} color={"#FF7F00"} />
       </ArrowButton>
       <Main>
-        <NumberTitle>{phrase.number}</NumberTitle>
-        <Title>{phrase.title}</Title>
-        <Content>{phrase.content}</Content>
+        <NumberTitle>{phraseNumber}</NumberTitle>
+        <Title>{phraseTitle}</Title>
+        <Content>{phraseContent}</Content>
       </Main>
       <Bottom>
-        <DeleteButton>
+        <DeleteButton onPress={() => setVisible(true)}>
           <FontAwesome5 name="trash-alt" color={"#fff"} size={24} />
         </DeleteButton>
         <EditButton>
@@ -65,6 +72,13 @@ export function Speak({ navigation }) {
           <FontAwesome name="microphone" size={30} color={"#fff"} />
         </SpeakPhrase>
       </Bottom>
+      <ConfirmPhraseModal
+        visible={visible}
+        setVisible={setVisible}
+        areaTitle={areaTitle}
+        navigation={navigation}
+        phrase={phrase}
+      />
     </Container>
   );
 }

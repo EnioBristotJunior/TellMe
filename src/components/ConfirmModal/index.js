@@ -56,9 +56,6 @@ export function ConfirmModal({ visible, setVisible, area, navigation }) {
         <Title>Tem certeza que deseja excluir essa área?</Title>
         <Area>
           <AreaTitle>{area?.title}</AreaTitle>
-          {/* <PhraseNumber>
-            {toJSON().length} frase(s) registradas
-          </PhraseNumber> */}
         </Area>
 
         <Bottom>
