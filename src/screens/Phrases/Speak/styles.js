@@ -31,10 +31,11 @@ export const Title = styled.Text`
   font-size: 50px;
   font-family: "ComicNeue_700Bold";
   color: ${(props) => props.theme.secondBackground};
+  text-align: center;
 `;
 
 export const Content = styled.Text`
-  font-size: 20px;
+  font-size: 16px;
   font-family: "Comfortaa_400Regular";
   color: ${(props) => props.theme.color};
   max-width: 250px;

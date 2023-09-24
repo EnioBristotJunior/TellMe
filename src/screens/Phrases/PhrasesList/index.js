@@ -9,6 +9,8 @@ import {
   NewPhraseOne,
   NewPhraseText,
   PhrasesSection,
+  StandartView,
+  GridView,
 } from "./styles";
 import { Dimensions, View, TouchableOpacity } from "react-native";
 
@@ -45,7 +47,7 @@ export function PhrasesList({ navigation }) {
     .filtered(`areaId == '${area._id}'`);
 
   const [phrases, setPhrases] = useState(phrasesQuery.toJSON());
-
+  const [gridExibition, setGridExibition] = useState(false);
   //Lista de Frases
   // async function fetchPhrases() {
   //   try {
@@ -131,37 +133,74 @@ export function PhrasesList({ navigation }) {
 
           <Title>{area.title}</Title>
           <ChangeView>
-            <TouchableOpacity>
+            <StandartView
+              isSelected={gridExibition}
+              onPress={() => setGridExibition(false)}
+            >
               <FontAwesome5 name="grip-lines" size={25} color={"#091837"} />
-            </TouchableOpacity>
-            <TouchableOpacity>
+            </StandartView>
+            <GridView
+              isSelected={gridExibition}
+              onPress={() => setGridExibition(true)}
+            >
               <Ionicons name="grid" size={25} color={"#091837"} />
-            </TouchableOpacity>
+            </GridView>
           </ChangeView>
         </Header>
         <PhrasesSection>
-          <FlatList
-            data={phrases}
-            showsVerticalScrollIndicator={false}
-            style={{ maxHeight: 600, marginBottom: 10 }}
-            keyExtractor={(item) => item._id}
-            renderItem={({ item }) => (
-              <Phrase
-                title={item.title}
-                number={item.number}
-                content={item.content}
-                navigation={() => HandleOpenPhrase(item._id, area._id)}
-              />
-            )}
-            ListFooterComponent={() => (
-              <NewPhraseOne
-                onPress={() => HandleNewPhrase(area._id, phrases.length)}
-              >
-                <FontAwesome5 name="plus" size={25} color={"#fff"} />
-                <NewPhraseText>Adicionar nova frase</NewPhraseText>
-              </NewPhraseOne>
-            )}
-          />
+          {gridExibition ? (
+            <FlatList
+              data={phrases}
+              key={"#"}
+              columnWrapperStyle={{ columnGap: 15 }}
+              numColumns={2}
+              showsVerticalScrollIndicator={false}
+              style={{ maxHeight: 600, marginBottom: 10 }}
+              keyExtractor={(item) => item._id}
+              renderItem={({ item }) => (
+                <Phrase
+                  title={item.title}
+                  number={item.number}
+                  content={item.content}
+                  navigation={() => HandleOpenPhrase(item._id, area._id)}
+                  gridExibition={gridExibition}
+                />
+              )}
+              ListFooterComponent={() => (
+                <NewPhraseOne
+                  onPress={() => HandleNewPhrase(area._id, phrases.length)}
+                >
+                  <FontAwesome5 name="plus" size={25} color={"#fff"} />
+                  <NewPhraseText>Adicionar nova frase</NewPhraseText>
+                </NewPhraseOne>
+              )}
+            />
+          ) : (
+            <FlatList
+              data={phrases}
+              key={"-"}
+              showsVerticalScrollIndicator={false}
+              style={{ maxHeight: 600, marginBottom: 10 }}
+              keyExtractor={(item) => item._id}
+              renderItem={({ item }) => (
+                <Phrase
+                  title={item.title}
+                  number={item.number}
+                  content={item.content}
+                  navigation={() => HandleOpenPhrase(item._id, area._id)}
+                  gridExibition={gridExibition}
+                />
+              )}
+              ListFooterComponent={() => (
+                <NewPhraseOne
+                  onPress={() => HandleNewPhrase(area._id, phrases.length)}
+                >
+                  <FontAwesome5 name="plus" size={25} color={"#fff"} />
+                  <NewPhraseText>Adicionar nova frase</NewPhraseText>
+                </NewPhraseOne>
+              )}
+            />
+          )}
         </PhrasesSection>
       </Main>
     </Container>

@@ -27,10 +27,32 @@ export const ChangeView = styled.View`
   width: 120px;
   height: 50px;
   border-radius: 15px;
-  background-color: ${(props) => props.theme.secondBackground};
+  background-color: ${(props) => props.theme.color};
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
+`;
+
+export const StandartView = styled.TouchableOpacity`
+  background-color: ${(props) =>
+    props.isSelected ? props.theme.color : props.theme.secondBackground};
+  width: 50%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+`;
+
+export const GridView = styled.TouchableOpacity`
+  background-color: ${(props) =>
+    props.isSelected ? props.theme.secondBackground : props.theme.color};
+  width: 50%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
 `;
 
 export const PhrasesSection = styled.View``;
