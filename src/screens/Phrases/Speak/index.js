@@ -48,6 +48,10 @@ export function Speak({ navigation }) {
   const [phraseTitle, setPhraseTitle] = useState(phrase?.title);
   const [phraseContent, setPhraseContent] = useState(phrase?.content);
 
+  function HandleOpenEdit(phraseId, areaId) {
+    navigation.navigate("editPhrase", { phraseId, areaId });
+  }
+
   return (
     <Container>
       <BgSvg
@@ -67,7 +71,7 @@ export function Speak({ navigation }) {
         <DeleteButton onPress={() => setVisible(true)}>
           <FontAwesome5 name="trash-alt" color={"#fff"} size={24} />
         </DeleteButton>
-        <EditButton>
+        <EditButton onPress={() => HandleOpenEdit(phrase._id, area._id)}>
           <FontAwesome5 name="pen" size={24} color="#fff" />
         </EditButton>
         <SpeakPhrase>
