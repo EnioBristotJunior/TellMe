@@ -33,8 +33,6 @@ import { Phrase } from "../../../components/Phrase";
 const { width, height } = Dimensions.get("screen");
 
 export function PhrasesList({ navigation }) {
-  //estados
-  const [phrases, setPhrases] = useState([]);
   //Parametros
   const route = useRoute();
   const { id } = route.params;
@@ -42,31 +40,36 @@ export function PhrasesList({ navigation }) {
   const realm = useRealm();
   const user = useUser();
   const area = id ? useObject(AreaSchema, id) : undefined;
-  const phrasesQuery = useQuery(PhraseSchema);
+  const phrasesQuery = useQuery(PhraseSchema)
+    .filtered(`userId == '${user.id}'`)
+    .filtered(`areaId == '${area._id}'`);
+
+  const [phrases, setPhrases] = useState(phrasesQuery.toJSON());
+  console.log(phrases);
 
   //Lista de Frases
-  async function fetchPhrases() {
-    try {
-      const response = phrasesQuery.toJSON();
-      const filtUser = (registro) => registro.userId == user.id;
-      const filtArea = (registro) => registro.areaId == area._id;
-      let result = response.filter(filtUser).filter(filtArea);
-      setPhrases(result);
-      // console.log(result);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-  //Carrega a função
-  useEffect(() => {
-    fetchPhrases();
-  }, []);
-  //Atualiza toda vez que a variável mudar
-  useEffect(() => {
-    realm.addListener("change", fetchPhrases);
+  // async function fetchPhrases() {
+  //   try {
+  //     const response = phrasesQuery.toJSON();
+  //     const filtUser = (registro) => registro.userId == user.id;
+  //     const filtArea = (registro) => registro.areaId == area._id;
+  //     let result = response.filter(filtUser).filter(filtArea);
+  //     setPhrases(result);
+  //     // console.log(result);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
+  // //Carrega a função
+  // useEffect(() => {
+  //   fetchPhrases();
+  // }, []);
+  // //Atualiza toda vez que a variável mudar
+  // useEffect(() => {
+  //   realm.addListener("change", fetchPhrases);
 
-    return () => realm.removeListener("change", fetchPhrases);
-  }, []);
+  //   return () => realm.removeListener("change", fetchPhrases);
+  // }, []);
 
   //Remoção do bottom navigator
   useEffect(() => {

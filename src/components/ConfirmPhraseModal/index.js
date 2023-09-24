@@ -32,7 +32,7 @@ export function ConfirmPhraseModal({
       setVisible(false);
       Toast.show({
         type: "appChecked",
-        text1: "Área exluída com sucesso!",
+        text1: "Frase exluída com sucesso!",
       });
       setTimeout(() => {
         navigation.navigate("home");
