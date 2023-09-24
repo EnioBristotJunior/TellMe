@@ -82,7 +82,7 @@ export function PhrasesList({ navigation }) {
           position: "absolute",
           bottom: 30,
           right: 40,
-          borderRadius: 30,
+          borderRadius: 20,
           left: 40,
           borderTopWidth: 0,
         },
