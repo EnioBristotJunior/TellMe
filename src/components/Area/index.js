@@ -1,7 +1,7 @@
 import React from "react";
 import { View, TouchableOpacity } from "react-native";
 
-import { Container, Content, TextArea, ImageFalse, ImageTrue } from "./style";
+import { Container, Content, TextArea } from "./style";
 
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Image } from "expo-image";
