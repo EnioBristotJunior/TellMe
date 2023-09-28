@@ -211,6 +211,33 @@ const config = {
       <Text>{props.uuid}</Text>
     </View>
   ),
+  speaking: ({ text1, props }) => (
+    <View
+      style={{
+        height: 60,
+        width: "80%",
+        backgroundColor: "#FF7F00",
+        borderRadius: 12,
+        padding: 20,
+        flexDirection: "row",
+        gap: 10,
+        elevation: 1,
+        marginTop: 25,
+      }}
+    >
+      <MaterialIcons name="multitrack-audio" size={22} color={"#fff"} />
+      <Text
+        style={{
+          fontFamily: "Comfortaa_600SemiBold",
+          color: "#fff",
+          fontSize: 12,
+        }}
+      >
+        {text1}
+      </Text>
+      <Text>{props.uuid}</Text>
+    </View>
+  ),
 };
 
 export default function App() {

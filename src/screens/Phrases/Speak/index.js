@@ -22,8 +22,13 @@ import { useObject, useQuery } from "../../../databases";
 import { PhraseSchema } from "../../../databases/schemas/PhraseSchema";
 //Navegação
 import { useRoute } from "@react-navigation/native";
+//Expo Speech
+import * as Speech from "expo-speech";
 //Fundo
 import BgSvg from "../../../imgs/SpeakPhrase/backSpeakPhrase-g9.svg";
+
+//Mensagem Toast
+import Toast from "react-native-toast-message";
 
 //Icons
 import { AntDesign } from "@expo/vector-icons";
@@ -52,6 +57,32 @@ export function Speak({ navigation }) {
     navigation.navigate("editPhrase", { phraseId, areaId });
   }
 
+  //Mensagem Toast
+
+  function ToastIsSpeaking() {
+    Toast.show({
+      type: "speaking",
+      text1: "Emição em andamento!",
+    });
+  }
+
+  function ToastSpeakError() {
+    Toast.show({
+      type: "appError",
+      text1: "Erro ao converter texto para voz",
+    });
+  }
+
+  function StartSpeak(content) {
+    try {
+      console.log(content);
+      Speech.speak(content);
+      ToastIsSpeaking();
+    } catch (error) {
+      console.log(error);
+      ToastSpeakError();
+    }
+  }
   return (
     <Container>
       <BgSvg
@@ -74,7 +105,7 @@ export function Speak({ navigation }) {
         <EditButton onPress={() => HandleOpenEdit(phrase._id, area._id)}>
           <FontAwesome5 name="pen" size={24} color="#fff" />
         </EditButton>
-        <SpeakPhrase>
+        <SpeakPhrase onPress={() => StartSpeak(phraseContent)}>
           <SpeakPhraseText>Falar Frase</SpeakPhraseText>
           <FontAwesome name="microphone" size={30} color={"#fff"} />
         </SpeakPhrase>
