@@ -54,6 +54,7 @@ export const FastTalk = styled.TouchableOpacity`
   border-width: 2px;
   align-items: center;
   justify-content: space-evenly;
+  display: none;
 `;
 
 export const TextFastTalk = styled.Text`

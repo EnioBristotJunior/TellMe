@@ -2,7 +2,7 @@ import styled from "styled-components/native";
 
 //Tudo
 
-export const Container = styled.View`
+export const Container = styled.ScrollView`
   flex: 1;
   background-color: ${(props) => props.theme.background};
 `;
@@ -10,7 +10,8 @@ export const Container = styled.View`
 export const Main = styled.View`
   padding: 25px;
   flex: 1;
-  gap: 25px;
+  gap: 30px;
+  padding-bottom: 120px;
 `;
 
 //Informações do usuário
@@ -27,6 +28,8 @@ export const UserImage = styled.View`
   width: 150px;
   height: 150px;
   border-radius: 12px;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const UserName = styled.Text`
@@ -107,4 +110,16 @@ export const OptionIcon = styled.View`
   border-radius: 32px;
   align-items: center;
   justify-content: center;
+`;
+
+export const DeleteAccount = styled.TouchableOpacity`
+  background-color: ${(props) => props.theme.secondBackground};
+  width: 100%;
+  height: 70px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 25px;
+  padding-right: 25px;
+  border-radius: 10px;
 `;

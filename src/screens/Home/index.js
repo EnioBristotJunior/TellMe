@@ -42,15 +42,6 @@ export function Home({ navigation }) {
   const user = useUser();
   const areaQuery = useQuery(AreaSchema);
 
-  //Sair da conta
-  function logout() {
-    user.logOut();
-    Toast.show({
-      type: "appChecked",
-      text1: "Sessão encerrada com sucesso!",
-    });
-  }
-
   //Lista de Áreas
   async function fetchAreas() {
     const response = areaQuery.toJSON();
@@ -114,7 +105,7 @@ export function Home({ navigation }) {
         />
       </AreasSection>
 
-      <FastTalk onPress={() => logout()}>
+      <FastTalk>
         <FontAwesome name="microphone" size={24} color="#fff" />
         <TextFastTalk>Conversar</TextFastTalk>
       </FastTalk>

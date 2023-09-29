@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Dimensions, ScrollView } from "react-native";
+import { View, Dimensions } from "react-native";
 import {
   Container,
   ContentView,
@@ -17,18 +17,49 @@ import {
   OptionText,
   OptionIcon,
   OptionsScroll,
+  DeleteAccount,
 } from "./styles";
+
+//Realm
+import { useRealm, useQuery } from "../../databases/";
+import { PhraseSchema } from "../../databases/schemas/PhraseSchema";
+import { AreaSchema } from "../../databases/schemas/AreaSchema";
+import { useUser } from "@realm/react";
 
 //icons
 import { AntDesign } from "@expo/vector-icons";
-
+import { Feather } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
 //Fundo
 import BgSvg from "../../imgs/Profile/backProfile-g9.svg";
+
+import Toast from "react-native-toast-message";
 
 //Tamanho da tela
 const { width, height } = Dimensions.get("screen");
 
 export function Profile() {
+  const user = useUser();
+
+  const areas = useQuery(AreaSchema)
+    .filtered(`userId == '${user.id}'`)
+    .toJSON();
+  const phrases = useQuery(PhraseSchema)
+    .filtered(`userId == '${user.id}'`)
+    .toJSON();
+
+  //Sair da conta
+  function logout() {
+    try {
+      user.logOut();
+      Toast.show({
+        type: "appChecked",
+        text1: "Sessão encerrada com sucesso!",
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
   return (
     <Container>
       <BgSvg
@@ -38,16 +69,18 @@ export function Profile() {
       />
       <Main>
         <Header>
-          <UserImage></UserImage>
-          <UserName>Paulão da Regulagem</UserName>
-          <UserEmail>paulaodaregulagem@gmail.com</UserEmail>
+          <UserImage>
+            <FontAwesome5 name="user" color={"#fff"} size={80} />
+          </UserImage>
+          <UserName>TellMe</UserName>
+          <UserEmail>tme9510@gmail.com</UserEmail>
           <UserContent>
             <ContentView>
-              <NumberContent>4</NumberContent>
+              <NumberContent>{areas.length}</NumberContent>
               <TextContent>Áreas</TextContent>
             </ContentView>
             <ContentView>
-              <NumberContent>12</NumberContent>
+              <NumberContent>{phrases.length}</NumberContent>
               <TextContent>Frases</TextContent>
             </ContentView>
           </UserContent>
@@ -55,12 +88,6 @@ export function Profile() {
 
         <OptionsContainer>
           <OptionsTitle>Conta</OptionsTitle>
-          <Option>
-            <OptionText>Foto</OptionText>
-            <OptionIcon>
-              <AntDesign name="arrowright" size={20} color={"#fff"} />
-            </OptionIcon>
-          </Option>
           <Option>
             <OptionText>Nome</OptionText>
             <OptionIcon>
@@ -73,6 +100,25 @@ export function Profile() {
               <AntDesign name="arrowright" size={20} color={"#fff"} />
             </OptionIcon>
           </Option>
+          <Option>
+            <OptionText>Senha</OptionText>
+            <OptionIcon>
+              <AntDesign name="arrowright" size={20} color={"#fff"} />
+            </OptionIcon>
+          </Option>
+          <OptionsTitle>Geral</OptionsTitle>
+          <Option onPress={logout}>
+            <OptionText>Sair</OptionText>
+            <OptionIcon>
+              <Feather name="log-out" size={18} color={"#fff"} />
+            </OptionIcon>
+          </Option>
+          <DeleteAccount>
+            <OptionText>Excluir Conta</OptionText>
+            <OptionIcon>
+              <FontAwesome5 name="trash-alt" color={"#fff"} size={18} />
+            </OptionIcon>
+          </DeleteAccount>
         </OptionsContainer>
       </Main>
     </Container>
