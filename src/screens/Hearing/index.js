@@ -67,7 +67,7 @@ export function Hearing() {
 
   const startListening = async () => {
     try {
-      await Voice.start("en-US");
+      await Voice.start("pt-BR");
       setListening(true);
     } catch (e) {
       console.log("error -> ", e);
