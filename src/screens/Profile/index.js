@@ -38,7 +38,7 @@ import Toast from "react-native-toast-message";
 //Tamanho da tela
 const { width, height } = Dimensions.get("screen");
 
-export function Profile() {
+export function Profile({ navigation }) {
   const user = useUser();
 
   const areas = useQuery(AreaSchema)
@@ -69,7 +69,7 @@ export function Profile() {
       />
       <Main>
         <Header>
-          <UserImage>
+          <UserImage onPress={() => navigation.navigate("editPicture")}>
             <FontAwesome5 name="user" color={"#fff"} size={80} />
           </UserImage>
           <UserName>TellMe</UserName>
@@ -88,19 +88,19 @@ export function Profile() {
 
         <OptionsContainer>
           <OptionsTitle>Conta</OptionsTitle>
-          <Option>
+          <Option onPress={() => navigation.navigate("editName")}>
             <OptionText>Nome</OptionText>
             <OptionIcon>
               <AntDesign name="arrowright" size={20} color={"#fff"} />
             </OptionIcon>
           </Option>
-          <Option>
+          <Option onPress={() => navigation.navigate("editEmail")}>
             <OptionText>E-mail</OptionText>
             <OptionIcon>
               <AntDesign name="arrowright" size={20} color={"#fff"} />
             </OptionIcon>
           </Option>
-          <Option>
+          <Option onPress={() => navigation.navigate("editPassword")}>
             <OptionText>Senha</OptionText>
             <OptionIcon>
               <AntDesign name="arrowright" size={20} color={"#fff"} />
@@ -113,7 +113,7 @@ export function Profile() {
               <Feather name="log-out" size={18} color={"#fff"} />
             </OptionIcon>
           </Option>
-          <DeleteAccount>
+          <DeleteAccount onPress={() => navigation.navigate("deleteAccount")}>
             <OptionText>Excluir Conta</OptionText>
             <OptionIcon>
               <FontAwesome5 name="trash-alt" color={"#fff"} size={18} />

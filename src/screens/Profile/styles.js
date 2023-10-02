@@ -23,7 +23,7 @@ export const Header = styled.View`
   margin-top: 90px;
 `;
 
-export const UserImage = styled.View`
+export const UserImage = styled.TouchableOpacity`
   background-color: ${(props) => props.theme.background};
   width: 150px;
   height: 150px;
@@ -48,7 +48,7 @@ export const UserContent = styled.View`
   flex-direction: row;
   align-items: center;
   gap: 25px;
-  margin-top: 12px;
+  margin-top: 5px;
 `;
 
 export const ContentView = styled.View`

@@ -7,6 +7,7 @@ const { Screen, Navigator } = createBottomTabNavigator();
 import { Hearing } from "../screens/Hearing";
 import { Profile } from "../screens/Profile";
 import { HomeRoutes } from "./home.routes";
+import { ProfileRoutes } from "./profile.routes";
 
 // import House from "../imgs/components/home-fill.svg";
 export function MainRoutes() {
@@ -55,8 +56,8 @@ export function MainRoutes() {
         }}
       />
       <Screen
-        name="profile"
-        component={Profile}
+        name="profileRoutes"
+        component={ProfileRoutes}
         options={{
           tabBarIcon: ({ color, size }) => (
             <FontAwesome5 name="user" color={color} size={size} />
