@@ -8,12 +8,29 @@ import { Hearing } from "../screens/Hearing";
 import { Profile } from "../screens/Profile";
 import { HomeRoutes } from "./home.routes";
 import { ProfileRoutes } from "./profile.routes";
+import { useEffect, useState } from "react";
+import { getOneboarding, setOneboarding } from "../storage";
 
 // import House from "../imgs/components/home-fill.svg";
 export function MainRoutes() {
+  const [oneboardingVisible, setOneboardingVisible] = useState(false);
+
+  // useEffect(() => {
+  //   const oneboardingStorage = getOneboarding()
+
+  //   if (!oneboardingStorage){
+  //     setOneboardingVisible(false)
+  //   }else{
+  //     setOneboardingVisible(true)
+  //   }
+  // }, [])
+
+  // //Outra tela
+  // setOneboarding({name: SafeArray, age})
+
   return (
     <Navigator
-      initialRouteName="homeRoutes"
+      initialRouteName={oneboardingVisible ? "oneboardingStack" : "homeRoutes"}
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: "#091837",
@@ -32,6 +49,19 @@ export function MainRoutes() {
         },
       }}
     >
+      <Screen
+        name="oneboardingStack"
+        component={HomeRoutes}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Octicons name="home" color={color} size={size} />
+          ),
+          tabBarItemStyle: {
+            display: "none",
+          },
+        }}
+      />
+
       <Screen
         name="homeRoutes"
         component={HomeRoutes}
