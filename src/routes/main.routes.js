@@ -5,7 +5,7 @@ import { Octicons, MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
 const { Screen, Navigator } = createBottomTabNavigator();
 
 import { Hearing } from "../screens/Hearing";
-import { Profile } from "../screens/Profile";
+import { OneBoardingStack } from "./oneboarding.routes";
 import { HomeRoutes } from "./home.routes";
 import { ProfileRoutes } from "./profile.routes";
 import { useEffect, useState } from "react";
@@ -30,7 +30,7 @@ export function MainRoutes() {
 
   return (
     <Navigator
-      initialRouteName={oneboardingVisible ? "oneboardingStack" : "homeRoutes"}
+      initialRouteName={oneboardingVisible ? "oneboardingStack" : "oneboardingStack"}
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: "#091837",
@@ -51,7 +51,7 @@ export function MainRoutes() {
     >
       <Screen
         name="oneboardingStack"
-        component={HomeRoutes}
+        component={OneBoardingStack}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Octicons name="home" color={color} size={size} />

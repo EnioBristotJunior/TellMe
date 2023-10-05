@@ -8,5 +8,5 @@ export function getOneboarding() {
 }
 
 export function setOneboarding(data) {
-  return storage.getString(ONEBOARDING_KEY, JSON.stringify(data));
+  return storage.set(ONEBOARDING_KEY, JSON.stringify(data));
 }
