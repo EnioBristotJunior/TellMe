@@ -2,24 +2,27 @@
 
 <p align="center">Aplicativo de auxílio a pessoas com deficiência auditiva e/ou oral.</p>
 
-<div align="center">
-<img src="https://img.shields.io/badge/status-80%25-orange"/>
-<img src="https://img.shields.io/badge/release date-não tem-orange"/>
-<img src="https://img.shields.io/badge/language-React Native-183790"/>
-<img src="https://img.shields.io/badge/license-ETEC-fc0303"/>
-<img src="https://img.shields.io/badge/Made in-Brazil-033800"/>
-</div>
+
+![Status 80%](https://img.shields.io/badge/Status-80%25-ff7f00)
+![Release Date](https://img.shields.io/badge/Release%20Date-%2F%2F%2F%2F%2F%2F-420001)
+![Language React Native](https://img.shields.io/badge/Language-React%20Native-00a9cf)
+![License](https://img.shields.io/badge/License-ETEC-8c0a0a)
+![Made in Brazil](https://img.shields.io/badge/Made%20in-Brazil-04360d)
+![OS Android](https://img.shields.io/badge/OS-Android-66f00a)
 
 
 
-Table of Contents
+
+Sumário
 =================
 
-  * [Objetivo](#design)
-
-  <a name="design">AOAODO </a>
+  * [Objetivo](#objetivo)
+  * [Descrição do projeto](#descrição-do-projeto)
+  * [Design](#design)
 
 ## Objetivo
+
+
 Dado que a comunicação é algo totalmente essencial para o desenvolvimento social, pessoal e profissional, este projeto oferece a oportunidade de desenvolver um aplicativo para telefones celulares com o principal objetivo reduzir significativamente durações de tempo desnecessárias durante uma conversa entre pessoas com dificuldade auditiva e oral, oferecendo agilidade na hora da comunicação. Tendo em vista que a conversação é crucial no dia a dia das pessoas, a falta de praticidade ao se comunicar é um problema que afeta a maioria das pessoas com deficiência auditiva e oral, um problema que o projeto busca solucionar. O aplicativo propõe trazer praticidade ao usuário no momento da socialização com outras pessoas, atribuindo ao usuário a possiblidade de salvar previamente as frases que ele mais utiliza em seu cotidiano, podendo reproduzi-las rapidamente no momento da conversa, poupando o usuário da necessidade de utilizar métodos improvisados e demorados para se comunicar.
 
 ## Descrição do projeto
