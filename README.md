@@ -28,11 +28,12 @@ Dado que a comunicação é algo totalmente essencial para o desenvolvimento soc
 ## Design
 O Software adota uma identidade visual única e notável, a cor laranja remete a energia, inovação e otimismo, já a cor azul escuro, oferece confiabilidade e, acima de tudo, tranquilidade.
 
-![image](https://github.com/EnioBristotJunior/TellMe/assets/142932338/3e4a8a5a-7cf7-48f9-ab6a-ecaa5db860ac)
-![image](https://github.com/EnioBristotJunior/TellMe/assets/142932338/f64e1264-df98-4602-aca2-71673d691ef6)
-![image](https://github.com/EnioBristotJunior/TellMe/assets/142932338/62477f36-1a78-4087-bdf9-4bdbdced5e6f)
-![image](https://github.com/EnioBristotJunior/TellMe/assets/142932338/92579306-b585-466b-96d2-34f13f7e66f9)
-![image](https://github.com/EnioBristotJunior/TellMe/assets/142932338/3a09c0ca-f640-4af6-89bc-394f00e9da11)
+![Perfil](https://github.com/EnioBristotJunior/TellMe/assets/142932338/34e25b2e-b9fa-475e-ac35-0302b0720321)
+![Falar Frase](https://github.com/EnioBristotJunior/TellMe/assets/142932338/fc2de4d8-3201-4659-806d-1aa4a8909ce4)
+![Tela Ouvir](https://github.com/EnioBristotJunior/TellMe/assets/142932338/e38264b9-9a51-485f-a5c3-3443e2a42ff2)
+![Tela Ouvir 2](https://github.com/EnioBristotJunior/TellMe/assets/142932338/8f5a0f7e-9fa1-4f8f-b79d-03e042ea2586)
+![Criar Área](https://github.com/EnioBristotJunior/TellMe/assets/142932338/9cbe2c8b-f937-4c9f-9a1a-753878ddd1b2)
+![newPerfil](https://github.com/EnioBristotJunior/TellMe/assets/142932338/a1b0c5fe-585b-405a-b7bc-a61558c12213)
 
 
 
