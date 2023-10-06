@@ -1,4 +1,4 @@
-# <p align="center">![Logo da aplicativo](https://github.com/EnioBristotJunior/TellMe/assets/142932338/7ebd088d-0353-4bbc-996b-9d78d85f3e8e)</p>
+# <p align="center">![f2](https://github.com/EnioBristotJunior/TellMe/assets/142932338/1f15cbe3-b59e-4e59-a91a-20a7869925ba)</p>
 
 <p align="center">Aplicativo de auxílio a pessoas com deficiência auditiva e/ou oral.</p>
 
