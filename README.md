@@ -10,14 +10,14 @@
 <img src="https://img.shields.io/badge/Made in-Brazil-033800"/>
 </div>
 
-➥ ./gh-md-toc ~/projects/Dockerfile.vim/README.md
 
 
 Table of Contents
 =================
 
-  * [Objetivo](#Objetivo)
-  
+  * [Objetivo](#design)
+
+  <a name="design">AOAODO </a>
 
 ## Objetivo
 Dado que a comunicação é algo totalmente essencial para o desenvolvimento social, pessoal e profissional, este projeto oferece a oportunidade de desenvolver um aplicativo para telefones celulares com o principal objetivo reduzir significativamente durações de tempo desnecessárias durante uma conversa entre pessoas com dificuldade auditiva e oral, oferecendo agilidade na hora da comunicação. Tendo em vista que a conversação é crucial no dia a dia das pessoas, a falta de praticidade ao se comunicar é um problema que afeta a maioria das pessoas com deficiência auditiva e oral, um problema que o projeto busca solucionar. O aplicativo propõe trazer praticidade ao usuário no momento da socialização com outras pessoas, atribuindo ao usuário a possiblidade de salvar previamente as frases que ele mais utiliza em seu cotidiano, podendo reproduzi-las rapidamente no momento da conversa, poupando o usuário da necessidade de utilizar métodos improvisados e demorados para se comunicar.
