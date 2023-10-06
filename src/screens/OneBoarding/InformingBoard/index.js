@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { useApp, useUser } from "@realm/react";
+import { getOneboarding, setOneboarding } from "../../../storage";
 import {
   Bottom,
   Confirm,
@@ -26,13 +28,16 @@ import Toast from "react-native-toast-message";
 import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
+import { OneBoardingContext } from "../../../context/oneboardingContext";
 
 //Tamanho da tela
 const { width, height } = Dimensions.get("screen");
 
 export function InformingBoard({ navigation }) {
+  const { setOneboardingVisible } = useContext(OneBoardingContext);
   //Estados
   const [username, setUsername] = useState("");
+  const user = useUser();
 
   //Mensagens Toast
 
@@ -43,13 +48,48 @@ export function InformingBoard({ navigation }) {
     });
   }
 
+  function Checked() {
+    Toast.show({
+      type: "appChecked",
+      text1: "Informações armazenadas com sucesso!",
+    });
+  }
+
   //Veficar se o campo está vazio
-  function Verification() {
+  async function Verification(UserName) {
     if (username != "" && username != null) {
+      await writeCustomUserData({ UserName });
+      console.log("foi");
     } else {
       NeedCamps();
     }
   }
+
+  async function writeCustomUserData(newCustomData) {
+    const customUserDataCollection = user
+      .mongoClient("mongodb-atlas")
+      .db("custom-user-data-database")
+      .collection("custom-user-data");
+
+    const filter = {
+      userId: user.id,
+    };
+
+    const updateDoc = {
+      $set: {
+        userId: user.id,
+        ...newCustomData,
+      },
+    };
+
+    const options = { upsert: true };
+    await customUserDataCollection.updateOne(filter, updateDoc, options);
+    const customUserData = await user.refreshCustomData();
+    setOneboarding({ userId: user.id, nome: username });
+    Checked();
+    setOneboardingVisible(false);
+  }
+
   return (
     <Container>
       <BgSvg
@@ -73,12 +113,14 @@ export function InformingBoard({ navigation }) {
               placeholder="Nome completo"
               placeholderTextColor={"#d9d9d9"}
               cursorColor={"#ff7f00"}
+              value={username}
+              onChangeText={setUsername}
             />
             <RequiredAlert>(obrigatório)</RequiredAlert>
           </UsernameContainer>
         </InformSection>
         <Bottom>
-          <Confirm onPress={Verification}>
+          <Confirm onPress={() => Verification(username.trim())}>
             <ConfirmText>Continuar</ConfirmText>
           </Confirm>
         </Bottom>

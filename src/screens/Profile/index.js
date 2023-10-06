@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Dimensions } from "react-native";
 import {
   Container,
@@ -39,8 +39,18 @@ import Toast from "react-native-toast-message";
 const { width, height } = Dimensions.get("screen");
 
 export function Profile({ navigation }) {
+  const [customUserData, setCustomUserData] = useState();
+
   const user = useUser();
 
+  useEffect(() => {
+    // Access current custom user data with `user.customData`
+    // const customUserData = user.refreshCustomData();
+    setCustomUserData(user.customData);
+    console.log(customUserData);
+  }, []);
+
+  //Areas e frases
   const areas = useQuery(AreaSchema)
     .filtered(`userId == '${user.id}'`)
     .toJSON();
@@ -60,6 +70,10 @@ export function Profile({ navigation }) {
       console.error(error);
     }
   }
+
+  function handleOpen(screen, props) {
+    navigation.navigate(screen, { props });
+  }
   return (
     <Container>
       <BgSvg
@@ -72,8 +86,8 @@ export function Profile({ navigation }) {
           <UserImage onPress={() => navigation.navigate("editPicture")}>
             <FontAwesome5 name="user" color={"#fff"} size={80} />
           </UserImage>
-          <UserName>TellMe</UserName>
-          <UserEmail>tme9510@gmail.com</UserEmail>
+          <UserName>{customUserData?.UserName}</UserName>
+          <UserEmail>{user.profile.email}</UserEmail>
           <UserContent>
             <ContentView>
               <NumberContent>{areas.length}</NumberContent>
@@ -88,13 +102,15 @@ export function Profile({ navigation }) {
 
         <OptionsContainer>
           <OptionsTitle>Conta</OptionsTitle>
-          <Option onPress={() => navigation.navigate("editName")}>
+          <Option
+            onPress={() => handleOpen("editName", customUserData?.UserName)}
+          >
             <OptionText>Nome</OptionText>
             <OptionIcon>
               <AntDesign name="arrowright" size={20} color={"#fff"} />
             </OptionIcon>
           </Option>
-          <Option onPress={() => navigation.navigate("editEmail")}>
+          <Option onPress={() => handleOpen("editEmail", user.profile.email)}>
             <OptionText>E-mail</OptionText>
             <OptionIcon>
               <AntDesign name="arrowright" size={20} color={"#fff"} />

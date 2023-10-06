@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Container,
   Main,
@@ -11,14 +11,26 @@ import {
 } from "./styles";
 import { Dimensions, TouchableOpacity } from "react-native";
 
+//Navegação
+import { useRoute } from "@react-navigation/native";
+import { useUser } from "@realm/react";
 import { AntDesign } from "@expo/vector-icons";
 
 import BgSvg from "../../../imgs/Areas/backArea-g9.svg";
+
+import Toast from "react-native-toast-message";
 
 //Tamanho da tela
 const { width, height } = Dimensions.get("screen");
 
 export function EditName({ navigation }) {
+  const route = useRoute();
+  const { props } = route.params;
+
+  const [username, setUsername] = useState(props);
+  const firstUsername = props;
+  console.log("inicial: " + firstUsername);
+  // console.log(username);
   //Remoção do bottom navigator
   useEffect(() => {
     navigation.getParent().setOptions({ tabBarStyle: { display: "none" } });
@@ -39,6 +51,62 @@ export function EditName({ navigation }) {
     };
   }, []);
 
+  const user = useUser();
+
+  //Mensagens Toast
+
+  function NeedCamps() {
+    Toast.show({
+      type: "appError",
+      text1: "Preencha as informações corretamente",
+    });
+  }
+
+  function Checked() {
+    Toast.show({
+      type: "appChecked",
+      text1: "Nome alterado com sucesso!",
+    });
+  }
+
+  //Veficar se o campo está vazio
+  async function Verification(UserName) {
+    if (username != "" && username != null) {
+      await writeCustomUserData({ UserName });
+      console.log("foi");
+    } else {
+      NeedCamps();
+    }
+  }
+
+  async function writeCustomUserData(newCustomData) {
+    try {
+      const customUserDataCollection = user
+        .mongoClient("mongodb-atlas")
+        .db("custom-user-data-database")
+        .collection("custom-user-data");
+
+      const filter = {
+        userId: user.id,
+      };
+
+      const updateDoc = {
+        $set: {
+          userId: user.id,
+          ...newCustomData,
+        },
+      };
+
+      const options = { upsert: true };
+      await customUserDataCollection.updateOne(filter, updateDoc, options);
+      const customUserData = await user.refreshCustomData();
+      setTimeout(() => navigation.navigate("profile"), 1500);
+      Checked();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <Container>
       <BgSvg
@@ -57,12 +125,20 @@ export function EditName({ navigation }) {
           placeholder="Seu nome"
           placeholderTextColor={"#d9d9d9"}
           cursorColor={"#ff7f00"}
+          value={username}
+          onChangeText={setUsername}
         />
       </Main>
       <Bottom>
-        <Confirm>
-          <ConfirmText>Confirmar Alterações</ConfirmText>
-        </Confirm>
+        {firstUsername == username ? (
+          <Confirm onPress={() => navigation.goBack()}>
+            <ConfirmText>Voltar</ConfirmText>
+          </Confirm>
+        ) : (
+          <Confirm onPress={() => Verification(username.trim())}>
+            <ConfirmText>Confirmar Alterações</ConfirmText>
+          </Confirm>
+        )}
       </Bottom>
     </Container>
   );

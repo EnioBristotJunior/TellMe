@@ -41,6 +41,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 
 //Configuração da mensagem Toast
 import Toast from "react-native-toast-message";
+import { OneBoardingProvider } from "./src/context/oneboardingContext";
 
 const config = {
   authError: ({ text1, props }) => (
@@ -262,7 +263,8 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
+   <OneBoardingProvider>
+     <NavigationContainer>
       <ThemeProvider theme={theme}>
         <StatusBar
           backgroundColor="transparent"
@@ -279,5 +281,6 @@ export default function App() {
       </ThemeProvider>
       <Toast config={config} />
     </NavigationContainer>
+   </OneBoardingProvider>
   );
 }
