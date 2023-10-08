@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Container,
   Main,
@@ -19,6 +19,7 @@ import { AntDesign } from "@expo/vector-icons";
 import BgSvg from "../../../imgs/Areas/backArea-g9.svg";
 
 import Toast from "react-native-toast-message";
+import { OneBoardingContext } from "../../../context/oneboardingContext";
 
 //Tamanho da tela
 const { width, height } = Dimensions.get("screen");
@@ -28,8 +29,11 @@ export function EditName({ navigation }) {
   const { props } = route.params;
 
   const [username, setUsername] = useState(props);
+
+  const { setUserCustomData } = useContext(OneBoardingContext);
+
   const firstUsername = props;
-  console.log("inicial: " + firstUsername);
+  // console.log("inicial: " + firstUsername);
   // console.log(username);
   //Remoção do bottom navigator
   useEffect(() => {
@@ -100,6 +104,8 @@ export function EditName({ navigation }) {
       const options = { upsert: true };
       await customUserDataCollection.updateOne(filter, updateDoc, options);
       const customUserData = await user.refreshCustomData();
+      console.log(customUserData);
+      setUserCustomData(customUserData);
       setTimeout(() => navigation.navigate("profile"), 1500);
       Checked();
     } catch (error) {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, Dimensions } from "react-native";
 import {
   Container,
@@ -24,7 +24,7 @@ import {
 import { useRealm, useQuery } from "../../databases/";
 import { PhraseSchema } from "../../databases/schemas/PhraseSchema";
 import { AreaSchema } from "../../databases/schemas/AreaSchema";
-import { useUser } from "@realm/react";
+import { useApp, useUser } from "@realm/react";
 
 //icons
 import { AntDesign } from "@expo/vector-icons";
@@ -34,20 +34,22 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import BgSvg from "../../imgs/Profile/backProfile-g9.svg";
 
 import Toast from "react-native-toast-message";
+import { OneBoardingContext } from "../../context/oneboardingContext";
 
 //Tamanho da tela
 const { width, height } = Dimensions.get("screen");
 
 export function Profile({ navigation }) {
-  const [customUserData, setCustomUserData] = useState();
+  const { userCustomData, setUserCustomData } = useContext(OneBoardingContext);
 
   const user = useUser();
+  const app = useApp();
 
   useEffect(() => {
     // Access current custom user data with `user.customData`
     // const customUserData = user.refreshCustomData();
-    setCustomUserData(user.customData);
-    console.log(customUserData);
+    setUserCustomData(user.customData);
+    console.log(user.customData);
   }, []);
 
   //Areas e frases
@@ -86,7 +88,7 @@ export function Profile({ navigation }) {
           <UserImage onPress={() => navigation.navigate("editPicture")}>
             <FontAwesome5 name="user" color={"#fff"} size={80} />
           </UserImage>
-          <UserName>{customUserData?.UserName}</UserName>
+          <UserName>{userCustomData?.UserName}</UserName>
           <UserEmail>{user.profile.email}</UserEmail>
           <UserContent>
             <ContentView>
@@ -103,19 +105,14 @@ export function Profile({ navigation }) {
         <OptionsContainer>
           <OptionsTitle>Conta</OptionsTitle>
           <Option
-            onPress={() => handleOpen("editName", customUserData?.UserName)}
+            onPress={() => handleOpen("editName", userCustomData?.UserName)}
           >
             <OptionText>Nome</OptionText>
             <OptionIcon>
               <AntDesign name="arrowright" size={20} color={"#fff"} />
             </OptionIcon>
           </Option>
-          <Option onPress={() => handleOpen("editEmail", user.profile.email)}>
-            <OptionText>E-mail</OptionText>
-            <OptionIcon>
-              <AntDesign name="arrowright" size={20} color={"#fff"} />
-            </OptionIcon>
-          </Option>
+
           <Option onPress={() => navigation.navigate("editPassword")}>
             <OptionText>Senha</OptionText>
             <OptionIcon>

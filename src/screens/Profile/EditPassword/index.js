@@ -15,11 +15,15 @@ import { Dimensions, TouchableOpacity } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 
 import BgSvg from "../../../imgs/Areas/backArea-g9.svg";
+import { useApp, useUser } from "@realm/react";
 
 //Tamanho da tela
 const { width, height } = Dimensions.get("screen");
 
 export function EditPassword({ navigation }) {
+  const app = useApp();
+  const user = useUser();
+
   //Remoção do bottom navigator
   useEffect(() => {
     navigation.getParent().setOptions({ tabBarStyle: { display: "none" } });
@@ -39,6 +43,14 @@ export function EditPassword({ navigation }) {
       });
     };
   }, []);
+
+  // async function ResetPassword(email) {
+  //   try {
+  //     await app.emailPasswordAuth.sendResetPasswordEmail({ email });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 
   return (
     <Container>

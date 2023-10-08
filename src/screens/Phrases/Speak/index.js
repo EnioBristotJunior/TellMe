@@ -1,7 +1,7 @@
 //React
 import React, { useState } from "react";
 //Componentes
-import { View, Dimensions, TouchableOpacity } from "react-native";
+import { View, Dimensions, TouchableOpacity, ScrollView } from "react-native";
 //Styled Components
 import {
   Container,
@@ -96,7 +96,9 @@ export function Speak({ navigation }) {
       <Main>
         <NumberTitle>{phraseNumber}</NumberTitle>
         <Title>{phraseTitle}</Title>
-        <Content>{phraseContent}</Content>
+        <ScrollView style={{ maxHeight: 300 }}>
+          <Content>{phraseContent}</Content>
+        </ScrollView>
       </Main>
       <Bottom>
         <DeleteButton onPress={() => setVisible(true)}>

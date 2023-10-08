@@ -29,6 +29,7 @@ export const Content = styled.Text`
   font-size: 12px;
   font-family: "Comfortaa_600SemiBold";
   color: ${(props) => props.theme.background};
+  max-height: 20px;
 `;
 
 //Exibição Grid
