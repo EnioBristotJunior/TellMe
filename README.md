@@ -14,12 +14,12 @@
 Sumário
 =================
 
-  * [Objetivo](#objetivo-🎯)
+  * [Objetivo](#objetivo)
   * [Justificativa](#justificativa)
   * [Sobre o projeto](#sobre-o-projeto)
   * [Design](#design)
 
-## Objetivo 🎯
+## Objetivo
 Dado que a comunicação é algo totalmente essencial para o desenvolvimento social, pessoal e profissional, este projeto oferece a oportunidade de desenvolver um aplicativo para telefones celulares com o principal objetivo reduzir significativamente durações de tempo desnecessárias durante uma conversa entre pessoas com dificuldade auditiva e oral, oferecendo agilidade na hora da comunicação. Tendo em vista que a conversação é crucial no dia a dia das pessoas, a falta de praticidade ao se comunicar é um problema que afeta a maioria das pessoas com deficiência auditiva e oral, um problema que o projeto busca solucionar. O aplicativo propõe trazer praticidade ao usuário no momento da socialização com outras pessoas, atribuindo ao usuário a possiblidade de salvar previamente as frases que ele mais utiliza em seu cotidiano, podendo reproduzi-las rapidamente no momento da conversa, poupando o usuário da necessidade de utilizar métodos improvisados e demorados para se comunicar.
 ![tr23](https://github.com/EnioBristotJunior/TellMe/assets/142932338/ca9a7783-a706-4b03-bd5e-8a95cd5478ff)
 
@@ -29,11 +29,11 @@ A iniciativa do projeto teve como principal objetivo o desenlace de questões so
 Existe o desejo da sociedade por uma comunicação rápida e acessível, esse desejo é perceptível pois cada vez mais pessoas despendem do seu dinheiro para possuírem, todos os dias, maneiras mais rápidas de se comunicar em seu dia a dia. Assim, valorizando a importância do projeto no contexto atual.
 ![tr56](https://github.com/EnioBristotJunior/TellMe/assets/142932338/299d0e1f-9f86-4cda-8549-422d69e05624)
 
-## Sobre o projeto 🛠️
+## Sobre o projeto
 O Software em questão foi desenvolvido utilizando React Native, uma biblioteca da linguagem de programação JavaScript, sendo também um Framework considerável nos dias de hoje, facilitando o processo de criação e também poupando tempo e custos. A ferramenta empregada para produzi-lo foi o Visual Studio Code, elaborado pela Microsoft Corporation.
 ![trm](https://github.com/EnioBristotJunior/TellMe/assets/142932338/36058be4-c197-4e8f-aa46-3d70da25bb8a)
 
-## Design ✒️
+## Design
 O Software adota uma identidade visual única e notável, a cor laranja remete a energia, inovação e otimismo, já a cor azul escuro, oferece confiabilidade e, acima de tudo, tranquilidade.
 
 ![Tela Inicial](https://github.com/EnioBristotJunior/TellMe/assets/142932338/97d90fce-8f7b-4a4f-aa36-1996765035d4)
