@@ -36,8 +36,14 @@ O Software em questão foi desenvolvido utilizando React Native, uma biblioteca 
 ## Design ✒️
 O Software adota uma identidade visual única e notável, a cor laranja remete a energia, inovação e otimismo, já a cor azul escuro, oferece confiabilidade e, acima de tudo, tranquilidade.
 
-![editarFrase - 1 (1)](https://github.com/EnioBristotJunior/TellMe/assets/142932338/dab4c775-27fb-4e0f-acfa-9a9f9602accb)
-
+![Tela Inicial](https://github.com/EnioBristotJunior/TellMe/assets/142932338/97d90fce-8f7b-4a4f-aa36-1996765035d4)
+![Tela Ouvir](https://github.com/EnioBristotJunior/TellMe/assets/142932338/a34d7543-7635-4a4a-b836-877d79f52830)
+![Tela Ouvir 2](https://github.com/EnioBristotJunior/TellMe/assets/142932338/59e6823e-ed1b-43d5-a346-475b83e705c3)
+![Criar Área](https://github.com/EnioBristotJunior/TellMe/assets/142932338/078a4801-02c3-4413-b5f0-96b117617e03)
+![novaFrase - 1](https://github.com/EnioBristotJunior/TellMe/assets/142932338/569ffb9c-2ceb-4525-836d-ebfa0e8ff675)
+![Falar Frase](https://github.com/EnioBristotJunior/TellMe/assets/142932338/46526de2-45f1-491c-9e39-26a38d4f111b)
+![Frases](https://github.com/EnioBristotJunior/TellMe/assets/142932338/c2bd6186-1bfd-4339-ba68-29f3943efbb7)
+![newPerfil](https://github.com/EnioBristotJunior/TellMe/assets/142932338/faaed3f6-a4d7-487b-b534-7e7425ec2826)
 
 
 
