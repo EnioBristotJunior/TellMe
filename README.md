@@ -14,7 +14,7 @@
 Sumário
 =================
 
-  * [Objetivo](#objetivo)
+  * [Objetivo](#objetivo-🎯)
   * [Justificativa](#justificativa)
   * [Sobre o projeto](#sobre-o-projeto)
   * [Design](#design)
