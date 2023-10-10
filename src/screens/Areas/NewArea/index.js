@@ -45,6 +45,8 @@ const { width, height } = Dimensions.get("screen");
 //Image Picker
 import * as ImagePicker from "expo-image-picker";
 import { Image } from "react-native";
+import { storage } from "../../../firebase/config";
+import { ref, uploadBytes } from "firebase/storage";
 
 export function NewArea({ navigation }) {
   //Estados
@@ -87,6 +89,7 @@ export function NewArea({ navigation }) {
 
     if (result.assets) {
       setImage(result.assets[0].uri);
+      getURIExtension(result.assets[0].uri);
     } else {
       CancelUpload();
     }
@@ -117,22 +120,84 @@ export function NewArea({ navigation }) {
       text1: "Limite de caracteres excedido!",
     });
   };
+  const UnknownExtension = () => {
+    Toast.show({
+      type: "appError",
+      text1: "Extensão de arquivo não suportada!",
+    });
+  };
+
+  async function uriToBlob(uri) {
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+
+      // If successful -> return with blob
+      xhr.onload = function () {
+        resolve(xhr.response);
+      };
+
+      // reject on error
+      xhr.onerror = function () {
+        reject(new Error("uriToBlob failed"));
+      };
+
+      // Set the response type to 'blob' - this means the server's response
+      // will be accessed as a binary object
+      xhr.responseType = "blob";
+
+      // Initialize the request. The third argument set to 'true' denotes
+      // that the request is asynchronous
+      xhr.open("GET", uri, true);
+
+      // Send the request. The 'null' argument means that no body content is given for the request
+      xhr.send(null);
+    });
+  }
+
+  function getURIExtension(uri) {
+    // Use uma expressão regular para encontrar a extensão da URL
+    const regex = /\.[A-Za-z0-9]+$/;
+    const extension = uri.match(regex);
+
+    if (extension) {
+      // Retorne a extensão encontrada (sem o ponto inicial)
+      console.log("extensão: " + extension[0].substring(1));
+      return extension[0].substring(1);
+    } else {
+      // Caso a URL não tenha uma extensão válida
+      return "Extensão desconhecida";
+    }
+  }
+
   //Criar área
   async function newArea() {
     try {
-      // console.log(user.id);
-      // console.log(areaTitle);
-      realm.write(() => {
-        realm.create("Area", {
-          _id: uuid.v4(),
-          userId: user.id,
-          title: areaTitle.trim(),
-          imageURl: image,
+      const extension = getURIExtension(image);
+      if (extension != "Extensão desconhecida") {
+        const areaId = uuid.v4();
+
+        //Conversão do arquivo para blob
+        const blob = await uriToBlob(image);
+        //Configuração das referencias (local e nome do arquivo)
+        const storageRef = ref(storage, areaId + "." + extension);
+
+        // 'file' comes from the Blob or File API
+        await uploadBytes(storageRef, blob);
+
+        realm.write(() => {
+          realm.create("Area", {
+            _id: areaId,
+            userId: user.id,
+            title: areaTitle.trim(),
+            imageURl: image,
+          });
         });
-      });
-      setAreaTitle("");
-      ToastNewArea();
-      setTimeout(() => navigation.navigate("home"), 1500);
+        setAreaTitle("");
+        ToastNewArea();
+        setTimeout(() => navigation.navigate("home"), 1500);
+      } else {
+        UnknownExtension();
+      }
     } catch (erro) {
       console.log(erro);
     }
