@@ -172,18 +172,33 @@ export function NewArea({ navigation }) {
   //Criar área
   async function newArea() {
     try {
-      const extension = getURIExtension(image);
-      if (extension != "Extensão desconhecida") {
-        const areaId = uuid.v4();
+      const areaId = uuid.v4();
+      if (image != "" && image != null) {
+        const extension = getURIExtension(image);
+        if (extension != "Extensão desconhecida") {
+          //Conversão do arquivo para blob
+          const blob = await uriToBlob(image);
+          //Configuração das referencias (local e nome do arquivo)
+          const storageRef = ref(storage, areaId + "." + extension);
 
-        //Conversão do arquivo para blob
-        const blob = await uriToBlob(image);
-        //Configuração das referencias (local e nome do arquivo)
-        const storageRef = ref(storage, areaId + "." + extension);
+          // 'file' comes from the Blob or File API
+          await uploadBytes(storageRef, blob);
 
-        // 'file' comes from the Blob or File API
-        await uploadBytes(storageRef, blob);
-
+          realm.write(() => {
+            realm.create("Area", {
+              _id: areaId,
+              userId: user.id,
+              title: areaTitle.trim(),
+              imageURl: image,
+            });
+          });
+          setAreaTitle("");
+          ToastNewArea();
+          setTimeout(() => navigation.navigate("home"), 1500);
+        } else {
+          UnknownExtension();
+        }
+      } else {
         realm.write(() => {
           realm.create("Area", {
             _id: areaId,
@@ -195,8 +210,6 @@ export function NewArea({ navigation }) {
         setAreaTitle("");
         ToastNewArea();
         setTimeout(() => navigation.navigate("home"), 1500);
-      } else {
-        UnknownExtension();
       }
     } catch (erro) {
       console.log(erro);

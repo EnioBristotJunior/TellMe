@@ -21,24 +21,44 @@ import {
   TextAlert,
 } from "./styles";
 
-import { Ionicons } from "@expo/vector-icons";
+import { storage } from "../../firebase/config";
+import { ref, uploadBytes, deleteObject } from "firebase/storage";
 
-export function ConfirmModal({ visible, setVisible, area, navigation }) {
+export function ConfirmModal({
+  visible,
+  setVisible,
+  area,
+  navigation,
+  areaImage,
+}) {
   //Realm
   const realm = useRealm();
   const user = useUser();
   const phrases = useQuery(PhraseSchema);
-
+  // console.log(areaImage);
   //Excluir área
   async function HandleRemove(area) {
     try {
       const phrasesToDelete = phrases
         .filtered(`userId == '${user.id}'`)
         .filtered(`areaId == '${area._id || 372387}'`);
+
+      if (areaImage != "Extensão desconhecida") {
+        const storageRef = ref(storage, area._id + "." + areaImage);
+
+        deleteObject(storageRef)
+          .then(() => {
+            console.log("foi bebe");
+          })
+          .catch((error) => {
+            console.log("deu pau: " + error);
+          });
+      }
       realm.write(() => {
         realm.delete(area);
         realm.delete(phrasesToDelete);
       });
+
       setVisible(false);
       Toast.show({
         type: "appChecked",

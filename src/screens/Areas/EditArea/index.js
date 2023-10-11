@@ -47,6 +47,8 @@ const { width, height } = Dimensions.get("screen");
 import * as ImagePicker from "expo-image-picker";
 import { Image } from "react-native";
 import { ConfirmModal } from "../../../components/ConfirmModal";
+import { storage } from "../../../firebase/config";
+import { ref, uploadBytes, deleteObject } from "firebase/storage";
 
 export function EditArea({ navigation }) {
   const [visible, setVisible] = useState(false);
@@ -116,19 +118,110 @@ export function EditArea({ navigation }) {
       text1: "Limite de caracteres excedido!",
     });
   };
+  const UnknownExtension = () => {
+    Toast.show({
+      type: "appError",
+      text1: "Extensão de arquivo não suportada!",
+    });
+  };
+
+  //Tranformar uri em blob
+  async function uriToBlob(uri) {
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+
+      // If successful -> return with blob
+      xhr.onload = function () {
+        resolve(xhr.response);
+      };
+
+      // reject on error
+      xhr.onerror = function () {
+        reject(new Error("uriToBlob failed"));
+      };
+
+      // Set the response type to 'blob' - this means the server's response
+      // will be accessed as a binary object
+      xhr.responseType = "blob";
+
+      // Initialize the request. The third argument set to 'true' denotes
+      // that the request is asynchronous
+      xhr.open("GET", uri, true);
+
+      // Send the request. The 'null' argument means that no body content is given for the request
+      xhr.send(null);
+    });
+  }
+
+  //Pegar a extensão da imagem
+  function getURIExtension(uri) {
+    // Use uma expressão regular para encontrar a extensão da URL
+    const regex = /\.[A-Za-z0-9]+$/;
+    const extension = uri.match(regex);
+
+    if (extension) {
+      // Retorne a extensão encontrada (sem o ponto inicial)
+      console.log("extensão: " + extension[0].substring(1));
+      return extension[0].substring(1);
+    } else {
+      // Caso a URL não tenha uma extensão válida
+      return "Extensão desconhecida";
+    }
+  }
+
   //Salvar alterações da área
-  function HandleSave(title, image) {
+  async function HandleSave(title, image) {
     try {
-      realm.write(() => {
-        area.title = title;
-        area.imageURl = image;
-        area.updated_at = new Date();
-      });
-      Toast.show({
-        type: "appChecked",
-        text1: "Área modificada com sucesso",
-      });
-      setTimeout(() => navigation.navigate("home"), 1500);
+      if (image != "" && image != null) {
+        const firstExtension = getURIExtension(firstImage);
+        const extension = getURIExtension(image);
+        if (extension != "Extensão desconhecida") {
+          //Conversão do arquivo para blob
+          const blob = await uriToBlob(image);
+          //Configuração das referencias (local e nome do arquivo)
+          const storageRef = ref(storage, area._id + "." + extension);
+          if (firstExtension == extension) {
+            // 'file' comes from the Blob or File API
+            await uploadBytes(storageRef, blob);
+          } else {
+            const desertRef = ref(storage, area._id + "." + firstExtension);
+            // Delete the file
+            deleteObject(desertRef)
+              .then(() => {
+                console.log("foi bebe");
+              })
+              .catch((error) => {
+                console.log("deu pau: " + error);
+              });
+
+            await uploadBytes(storageRef, blob);
+          }
+
+          realm.write(() => {
+            area.title = title;
+            area.imageURl = image;
+            area.updated_at = new Date();
+          });
+          Toast.show({
+            type: "appChecked",
+            text1: "Área modificada com sucesso",
+          });
+          setTimeout(() => navigation.navigate("home"), 1500);
+        } else {
+          UnknownExtension();
+        }
+      } else {
+        realm.write(() => {
+          area.title = title;
+          area.imageURl = image;
+          area.updated_at = new Date();
+        });
+        Toast.show({
+          type: "appChecked",
+          text1: "Área modificada com sucesso",
+        });
+        setTimeout(() => navigation.navigate("home"), 1500);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -228,6 +321,7 @@ export function EditArea({ navigation }) {
         setVisible={setVisible}
         area={area}
         navigation={navigation}
+        areaImage={getURIExtension(image)}
       />
     </Container>
   );
