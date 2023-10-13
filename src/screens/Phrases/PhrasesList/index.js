@@ -1,5 +1,5 @@
 //React
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   Container,
   Header,
@@ -20,21 +20,28 @@ import { AreaSchema } from "../../../databases/schemas/AreaSchema";
 import { PhraseSchema } from "../../../databases/schemas/PhraseSchema";
 import { useUser } from "@realm/react";
 
+import { OneBoardingContext } from "../../../context/oneboardingContext";
+
 //Navegação
 import { useRoute } from "@react-navigation/native";
 
+//Fundo
 import BgSvg from "../../../imgs/Phrases/backPhrase-g9.svg";
 
 //Icons
 import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
+
 import { FlatList } from "react-native";
 import { Phrase } from "../../../components/Phrase";
 
 const { width, height } = Dimensions.get("screen");
 
 export function PhrasesList({ navigation }) {
+  const { gridSentenceView, setGridSentenceView } =
+    useContext(OneBoardingContext);
+
   //Parametros
   const route = useRoute();
   const { id } = route.params;
@@ -134,21 +141,21 @@ export function PhrasesList({ navigation }) {
           <Title>{area.title}</Title>
           <ChangeView>
             <StandartView
-              isSelected={gridExibition}
-              onPress={() => setGridExibition(false)}
+              isSelected={gridSentenceView}
+              onPress={() => setGridSentenceView(false)}
             >
               <FontAwesome5 name="grip-lines" size={25} color={"#091837"} />
             </StandartView>
             <GridView
-              isSelected={gridExibition}
-              onPress={() => setGridExibition(true)}
+              isSelected={gridSentenceView}
+              onPress={() => setGridSentenceView(true)}
             >
               <Ionicons name="grid" size={25} color={"#091837"} />
             </GridView>
           </ChangeView>
         </Header>
         <PhrasesSection>
-          {gridExibition ? (
+          {gridSentenceView ? (
             <FlatList
               data={phrases}
               key={"#"}
@@ -163,7 +170,7 @@ export function PhrasesList({ navigation }) {
                   number={item.number}
                   content={item.content}
                   navigation={() => HandleOpenPhrase(item._id, area._id)}
-                  gridExibition={gridExibition}
+                  gridExibition={gridSentenceView}
                 />
               )}
               ListFooterComponent={() => (
@@ -188,7 +195,7 @@ export function PhrasesList({ navigation }) {
                   number={item.number}
                   content={item.content}
                   navigation={() => HandleOpenPhrase(item._id, area._id)}
-                  gridExibition={gridExibition}
+                  gridExibition={gridSentenceView}
                 />
               )}
               ListFooterComponent={() => (
