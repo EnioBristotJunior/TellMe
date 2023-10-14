@@ -7,12 +7,12 @@ import { View, Dimensions } from "react-native";
 //Estilizições
 import {
   Container,
-  FastTalk,
   Header,
   TextFastTalk,
   Title,
   NewArea,
   AreasSection,
+  FastTalkButton,
 } from "./styles";
 
 //Imagem SVG
@@ -27,7 +27,13 @@ import { useUser } from "@realm/react";
 import { useQuery, useRealm } from "../../databases";
 import { AreaSchema } from "../../databases/schemas/AreaSchema";
 import { FlatList } from "react-native";
+
+//Componente área
 import { Area } from "../../components/Area";
+
+import { FastTalk } from "../../components/FastTalk";
+
+//Mensagem Toast
 import Toast from "react-native-toast-message";
 
 //Dimensão da tela
@@ -36,6 +42,7 @@ const { width, height } = Dimensions.get("screen");
 export function Home({ navigation }) {
   //Estados
   const [areas, setAreas] = useState([]);
+  const [fastTalkVisible, setFastTalkVisible] = useState(false);
 
   //Realm
   const realm = useRealm();
@@ -105,10 +112,15 @@ export function Home({ navigation }) {
         />
       </AreasSection>
 
-      <FastTalk>
+      <FastTalkButton onPress={() => setFastTalkVisible(true)}>
         <FontAwesome name="microphone" size={24} color="#fff" />
         <TextFastTalk>Conversar</TextFastTalk>
-      </FastTalk>
+      </FastTalkButton>
+      <FastTalk visible={fastTalkVisible} setVisible={setFastTalkVisible} />
+      {/* <ConfirmSpeakModal
+        visible={confirmSpeakVisible}
+        setVisible={setConfirmSpeakVisible}
+      /> */}
     </Container>
   );
 }

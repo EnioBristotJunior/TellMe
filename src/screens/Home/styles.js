@@ -40,10 +40,10 @@ export const NewArea = styled.TouchableOpacity`
 `;
 
 //FastTalk
-export const FastTalk = styled.TouchableOpacity`
+export const FastTalkButton = styled.TouchableOpacity`
   width: 200px;
   height: 55px;
-  border-radius: 20px;
+  border-radius: 15px;
   flex-direction: row;
   position: absolute;
   left: 50px;
@@ -54,7 +54,6 @@ export const FastTalk = styled.TouchableOpacity`
   border-width: 2px;
   align-items: center;
   justify-content: space-evenly;
-  display: none;
 `;
 
 export const TextFastTalk = styled.Text`

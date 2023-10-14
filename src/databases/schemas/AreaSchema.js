@@ -7,7 +7,7 @@ export class AreaSchema extends Realm.Object {
         type: "string",
         indexed: true,
       },
-      title: "string",
+      title: { type: "string", indexed: "full-text" },
       imageURl: { type: "string", default: "" },
       userId: "string",
       created_at: { type: "date", default: new Date() },

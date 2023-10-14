@@ -26,8 +26,14 @@ export function MainRoutes() {
     console.log(oneboardingStorage);
 
     if (!oneboardingStorage) {
-      console.log("primeira vez");
-      setOneboardingVisible(true);
+      console.log("não tem no storage");
+      if (user.customData) {
+        setOneboardingVisible(false);
+        console.log("bateu user");
+      } else {
+        setOneboardingVisible(false);
+        console.log("primeira vez");
+      }
     } else {
       const vef = JSON.parse(oneboardingStorage);
       if (vef.userId === user.id) {
