@@ -14,7 +14,7 @@ export const Main = styled.View`
 
 export const Header = styled.View`
   gap: 10px;
-  margin-top: 40px;
+  margin-top: 30px;
 `;
 
 export const Title = styled.Text`
@@ -25,34 +25,34 @@ export const Title = styled.Text`
 
 //Photo
 
-export const UserImage = styled.View`
+export const UserImage = styled.TouchableOpacity`
   background-color: ${(props) => props.theme.background};
-  width: 150px;
-  height: 150px;
+  width: 225px;
+  height: 225px;
   border-radius: 12px;
   align-items: center;
   justify-content: center;
 `;
 
 export const ChangePicture = styled.TouchableOpacity`
-  background-color: transparent;
-  width: 150px;
+  background-color: ${(props) => props.theme.background};
+  width: 225px;
   height: 60px;
   border-radius: 10px;
-  border: 1px solid #fff;
   align-items: center;
   justify-content: center;
   flex-direction: row;
 `;
 
 export const DeletePicture = styled.TouchableOpacity`
-  background-color: ${(props) => props.theme.background};
-  width: 150px;
+  background-color: transparent;
+  width: 225px;
   height: 60px;
   border-radius: 10px;
   align-items: center;
   justify-content: center;
   flex-direction: row;
+  border: 1px solid #fff;
 `;
 
 export const ChangePictureText = styled.Text`

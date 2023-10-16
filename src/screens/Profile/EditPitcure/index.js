@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Container,
   Main,
@@ -12,19 +12,28 @@ import {
   DeletePicture,
   ChangePictureText,
 } from "./styles";
-import { Dimensions, TouchableOpacity } from "react-native";
+import { Dimensions, TouchableOpacity, Image } from "react-native";
+
+//Mensagem Toast
+import Toast from "react-native-toast-message";
 
 //icons
 import { AntDesign } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 
+//Image Picker
+import * as ImagePicker from "expo-image-picker";
+
+//Fundo
 import BgSvg from "../../../imgs/Profile/backPicture-g9.svg";
 
 //Tamanho da tela
 const { width, height } = Dimensions.get("screen");
 
 export function EditPitcure({ navigation }) {
+  const [image, setImage] = useState("");
+
   //Remoção do bottom navigator
   useEffect(() => {
     navigation.getParent().setOptions({ tabBarStyle: { display: "none" } });
@@ -45,6 +54,58 @@ export function EditPitcure({ navigation }) {
     };
   }, []);
 
+  //Mensagens Toast
+
+  const CancelUpload = () => {
+    Toast.show({
+      type: "appError",
+      text1: "Upload de imagem cancelado",
+    });
+  };
+
+  const UnknownExtension = () => {
+    Toast.show({
+      type: "appError",
+      text1: "Extensão de arquivo não suportada!",
+    });
+  };
+
+  //Função para pegar imagem da galeria
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (result.assets) {
+      setImage(result.assets[0].uri);
+      getURIExtension(result.assets[0].uri);
+    } else {
+      CancelUpload();
+    }
+  };
+
+  //Pegar a extensão da url
+  function getURIExtension(uri) {
+    // Use uma expressão regular para encontrar a extensão da URL
+    const regex = /\.[A-Za-z0-9]+$/;
+    const extension = uri.match(regex);
+
+    if (extension) {
+      // Retorne a extensão encontrada (sem o ponto inicial)
+      console.log("extensão: " + extension[0].substring(1));
+      return extension[0].substring(1);
+    } else {
+      // Caso a URL não tenha uma extensão válida
+      return "Extensão desconhecida";
+    }
+  }
+
   return (
     <Container>
       <BgSvg
@@ -59,13 +120,20 @@ export function EditPitcure({ navigation }) {
         <Title>Alterar Foto</Title>
       </Header>
       <Main>
-        <UserImage>
-          <FontAwesome5 name="user" color={"#fff"} size={80} />
+        <UserImage onPress={pickImage}>
+          {image ? (
+            <Image
+              source={{ uri: image }}
+              style={{ width: "100%", height: "100%", borderRadius: 12 }}
+            />
+          ) : (
+            <FontAwesome5 name="user" color={"#fff"} size={120} />
+          )}
         </UserImage>
-        <ChangePicture>
+        <ChangePicture onPress={pickImage}>
           <ChangePictureText>Alterar</ChangePictureText>
         </ChangePicture>
-        <DeletePicture>
+        <DeletePicture onPress={() => setImage("")}>
           <ChangePictureText>Excluir</ChangePictureText>
         </DeletePicture>
       </Main>

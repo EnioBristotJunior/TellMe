@@ -13,8 +13,9 @@ import {
 import { Modal } from "react-native";
 
 import { useUser } from "@realm/react";
-import { useQuery } from "../../databases";
+import { useQuery, useObject } from "../../databases";
 import { PhraseSchema } from "../../databases/schemas/PhraseSchema";
+import { AreaSchema } from "../../databases/schemas/AreaSchema";
 
 import { FontAwesome } from "@expo/vector-icons";
 import { FlatList } from "react-native";
@@ -28,6 +29,7 @@ export function FastTalk({ visible, setVisible }) {
   const [confirmSpeakVisible, setConfirmSpeakVisible] = useState(false);
   const [phrasesRecentUsed, setPhrasesRecentUsed] = useState([]);
   const [phraseToGo, setPhraseToGo] = useState(null);
+  // const [areaName, setAreaName] = useState(null);
 
   const allPhrases = useQuery(PhraseSchema).filtered(`userId == '${user.id}'`);
 
@@ -36,6 +38,17 @@ export function FastTalk({ visible, setVisible }) {
     .toJSON();
 
   // console.log(phrasesRecentUsed);
+
+  // const phrasesToGetArea = allPhrases.toJSON();
+  // console.log(phrasesToGetArea);
+
+  // useEffect(() => {
+  //   phrasesToGetArea.forEach((value, i, array) => {
+  //     let area = phrasesToGetArea[i].areaId
+  //       ? useObject(AreaSchema, phrasesToGetArea[i].areaId)
+  //       : undefined;
+  //   });
+  // }, []);
 
   function openConfirmModal(phrase) {
     setPhraseToGo(phrase);
