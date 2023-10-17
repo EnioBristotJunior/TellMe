@@ -78,6 +78,22 @@ export function Home({ navigation }) {
     navigation.navigate("phrasesList", { id });
   }
 
+  const addSubs = async () => {
+    await realm.subscriptions.update((sub, realm) => {
+        const areaToSync = realm.objects('Area').filtered(`userId == '${user.id}'`)
+        const phraseToSync = realm.objects('Phrase').filtered(`userId == '${user.id}'`)
+   
+
+        sub.add(areaToSync, { name: 'AreaSchema' })
+        sub.add(phraseToSync, { name: 'PhraseSchema' })
+    })
+}
+
+useEffect(() => {
+        addSubs()
+    
+}, [realm])
+
   return (
     <Container>
       <BgSvg

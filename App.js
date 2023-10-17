@@ -42,6 +42,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 //Configuração da mensagem Toast
 import Toast from "react-native-toast-message";
 import { OneBoardingProvider } from "./src/context/oneboardingContext";
+import { syncConfig } from "./src/service/realmSyncConfig";
 
 const config = {
   authError: ({ text1, props }) => (
@@ -262,6 +263,8 @@ export default function App() {
     return null;
   }
 
+
+
   return (
     <OneBoardingProvider>
       <NavigationContainer>
@@ -273,7 +276,7 @@ export default function App() {
           />
           <AppProvider id={"application-0-hfxgp"}>
             <UserProvider fallback={<AuthRoutes />}>
-              <RealmProvider deleteRealmIfMigrationNeeded={true}>
+              <RealmProvider  sync={syncConfig}>
                 <MainRoutes />
               </RealmProvider>
             </UserProvider>
