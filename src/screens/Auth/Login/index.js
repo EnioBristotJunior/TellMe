@@ -1,5 +1,5 @@
 //React
-import { React, useState } from "react";
+import { React, useState, useContext } from "react";
 
 //Realm
 import Realm from "realm";
@@ -30,10 +30,18 @@ import { FontAwesome5 } from "@expo/vector-icons";
 //Mensagem Toast
 import Toast from "react-native-toast-message";
 
+//Contexto
+import { OneBoardingContext } from "../../../context/oneboardingContext";
+
+//Funções de acesso ao storage
+import { getOneboarding, setOneboarding } from "../../../storage";
+
 //Dimensão da tela
 const { width, height } = Dimensions.get("screen");
 
 export function Login({ navigation }) {
+  const { setUserPasswordPreview } = useContext(OneBoardingContext);
+
   //Estados
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -78,6 +86,7 @@ export function Login({ navigation }) {
   async function register(email, password) {
     try {
       await app.logIn(Realm.Credentials.emailPassword(email, password));
+      setUserPasswordPreview(password);
       Logged();
     } catch (error) {
       if (error.message.includes("invalid username/password")) {

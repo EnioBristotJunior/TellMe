@@ -6,6 +6,7 @@ export function OneBoardingProvider({ children }) {
   const [oneboardingVisible, setOneboardingVisible] = useState(false);
   const [userCustomData, setUserCustomData] = useState();
   const [gridSentenceView, setGridSentenceView] = useState(false);
+  const [userPasswordPreview, setUserPasswordPreview] = useState(null);
 
   return (
     <OneBoardingContext.Provider
@@ -16,6 +17,8 @@ export function OneBoardingProvider({ children }) {
         setUserCustomData,
         gridSentenceView,
         setGridSentenceView,
+        userPasswordPreview,
+        setUserPasswordPreview,
       }}
     >
       {children}

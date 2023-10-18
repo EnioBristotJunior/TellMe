@@ -43,14 +43,17 @@ import { Image } from "react-native";
 const { width, height } = Dimensions.get("screen");
 
 export function InformingBoard({ navigation }) {
-  const { setOneboardingVisible } = useContext(OneBoardingContext);
+  const { setOneboardingVisible, userPasswordPreview, setUserPasswordPreview } =
+    useContext(OneBoardingContext);
   //Estados
   const [username, setUsername] = useState("");
   const [image, setImage] = useState("");
   const user = useUser();
 
-  //Mensagens Toast
+  const UserPassword = userPasswordPreview;
+  console.log(UserPassword);
 
+  //Mensagens Toast
   const NeedCamps = () => {
     Toast.show({
       type: "appError",
@@ -118,7 +121,7 @@ export function InformingBoard({ navigation }) {
   //Veficar se o campo está vazio
   async function Verification(UserName) {
     if (username != "" && username != null) {
-      await writeCustomUserData({ UserName });
+      await writeCustomUserData({ UserName, UserPassword });
       console.log("foi");
     } else {
       NeedCamps();
@@ -145,9 +148,10 @@ export function InformingBoard({ navigation }) {
     const options = { upsert: true };
     await customUserDataCollection.updateOne(filter, updateDoc, options);
     const customUserData = await user.refreshCustomData();
-    setOneboarding({ userId: user.id, nome: username });
+    setOneboarding({ userId: user.id, nome: username, senha: UserPassword });
     Checked();
     setOneboardingVisible(false);
+    setUserPasswordPreview(null);
   }
 
   return (

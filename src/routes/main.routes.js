@@ -16,7 +16,7 @@ import { OneBoardingContext } from "../context/oneboardingContext";
 
 // import House from "../imgs/components/home-fill.svg";
 export function MainRoutes() {
-  const { oneboardingVisible, setOneboardingVisible } =
+  const { oneboardingVisible, setOneboardingVisible, setUserPasswordPreview } =
     useContext(OneBoardingContext);
 
   const user = useUser();
@@ -27,18 +27,20 @@ export function MainRoutes() {
 
     if (!oneboardingStorage) {
       console.log("não tem no storage");
-      if (user.customData) {
+      if (user.customData.UserId) {
+        console.log("bateu user do custom data");
         setOneboardingVisible(false);
-        console.log("bateu user");
+        setUserPasswordPreview(null);
       } else {
-        setOneboardingVisible(false);
         console.log("primeira vez");
+        setOneboardingVisible(true);
       }
     } else {
       const vef = JSON.parse(oneboardingStorage);
       if (vef.userId === user.id) {
         console.log("bateu o user");
         setOneboardingVisible(false);
+        setUserPasswordPreview(null);
       } else {
         console.log("não bateu o user");
         setOneboardingVisible(true);
