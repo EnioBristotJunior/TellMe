@@ -1,4 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+
+import {useApp, useUser} from '@realm/react';
+
 import {
   Container,
   Main,
@@ -15,12 +18,42 @@ import { Dimensions, TouchableOpacity } from "react-native";
 
 import { AntDesign } from "@expo/vector-icons";
 
+import Toast from "react-native-toast-message";
+
 import BgSvg from "../../../imgs/Areas/backArea-g9.svg";
 
 //Tamanho da tela
 const { width, height } = Dimensions.get("screen");
 
 export function DeleteAccount({ navigation }) {
+
+    // const [inputPassword,setInputPassword] = useState('');
+
+  //Mensagens Toast
+
+  function NeedCamps() {
+    Toast.show({
+      type: "appError",
+      text1: "Preencha as informações corretamente",
+    });
+  }
+
+  function Checked() {
+    Toast.show({
+      type: "appChecked",
+      text1: "Nome alterado com sucesso!",
+    });
+  }
+
+
+    // function Verification(inputPassword){
+    //   if(inputPassword != ""){
+        
+    //   }else{
+
+    //   }
+    // }
+
   //Remoção do bottom navigator
   useEffect(() => {
     navigation.getParent().setOptions({ tabBarStyle: { display: "none" } });

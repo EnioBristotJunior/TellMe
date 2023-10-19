@@ -40,6 +40,8 @@ import { Ionicons } from "@expo/vector-icons";
 //Mensagem Toast
 import Toast from "react-native-toast-message";
 
+import NetInfo from "@react-native-community/netinfo";
+
 //Dimensão da tela
 const { width, height } = Dimensions.get("screen");
 
@@ -48,7 +50,12 @@ import * as ImagePicker from "expo-image-picker";
 import { Image } from "react-native";
 import { ConfirmModal } from "../../../components/ConfirmModal";
 import { storage } from "../../../firebase/config";
-import { ref, uploadBytes, deleteObject } from "firebase/storage";
+import {
+  ref,
+  uploadBytes,
+  deleteObject,
+  getDownloadURL,
+} from "firebase/storage";
 
 export function EditArea({ navigation }) {
   const [visible, setVisible] = useState(false);
@@ -64,6 +71,16 @@ export function EditArea({ navigation }) {
   //Estados
   const [areaTitle, setAreaTitle] = useState(area?.title);
   const [image, setImage] = useState(area?.imageURl);
+  console.log("imagem : " + image);
+
+  let isConnected;
+
+  const unsubscribe = NetInfo.addEventListener((state) => {
+    console.log("Connection type", state.type);
+    console.log("Is connected?", state.isConnected);
+    isConnected = state.isConnected;
+    console.log(isConnected);
+  });
 
   //Remoção do bottom navigator
   useEffect(() => {
@@ -180,9 +197,14 @@ export function EditArea({ navigation }) {
           const blob = await uriToBlob(image);
           //Configuração das referencias (local e nome do arquivo)
           const storageRef = ref(storage, area._id + "." + extension);
+          unsubscribe();
+          let urlImage = "";
           if (firstExtension == extension) {
             // 'file' comes from the Blob or File API
-            await uploadBytes(storageRef, blob);
+            if (isConnected == true) {
+              await uploadBytes(storageRef, blob);
+              urlImage = await getDownloadURL(storageRef);
+            }
           } else {
             const desertRef = ref(storage, area._id + "." + firstExtension);
             // Delete the file
@@ -194,12 +216,15 @@ export function EditArea({ navigation }) {
                 console.log("deu pau: " + error);
               });
 
-            await uploadBytes(storageRef, blob);
+            if (isConnected == true) {
+              await uploadBytes(storageRef, blob);
+              urlImage = await getDownloadURL(storageRef);
+            }
           }
 
           realm.write(() => {
             area.title = title;
-            area.imageURl = image;
+            area.imageURl = urlImage;
             area.updated_at = new Date();
           });
           Toast.show({
@@ -321,7 +346,7 @@ export function EditArea({ navigation }) {
         setVisible={setVisible}
         area={area}
         navigation={navigation}
-        areaImage={getURIExtension(image)}
+        areaImage={image}
       />
     </Container>
   );

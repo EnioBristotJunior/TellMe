@@ -11,6 +11,8 @@ import { View, Dimensions, TouchableOpacity } from "react-native";
 
 import uuid from "react-native-uuid";
 
+import NetInfo from "@react-native-community/netinfo";
+
 //Componentes
 import {
   AlertView,
@@ -46,15 +48,26 @@ const { width, height } = Dimensions.get("screen");
 import * as ImagePicker from "expo-image-picker";
 import { Image } from "react-native";
 import { storage } from "../../../firebase/config";
-import { ref, uploadBytes } from "firebase/storage";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 export function NewArea({ navigation }) {
   //Estados
   const [areaTitle, setAreaTitle] = useState("");
   const [image, setImage] = useState("");
+
   //Realm
   const user = useUser();
   const realm = useRealm();
+  let isConnected;
+
+  const unsubscribe = NetInfo.addEventListener((state) => {
+    console.log("Connection type", state.type);
+    console.log("Is connected?", state.isConnected);
+    isConnected = state.isConnected;
+    console.log(isConnected);
+  });
+
+  // console.log(isConnected);
   //Remoção do bottom navigator
   useEffect(() => {
     navigation.getParent().setOptions({ tabBarStyle: { display: "none" } });
@@ -182,14 +195,19 @@ export function NewArea({ navigation }) {
           const storageRef = ref(storage, areaId + "." + extension);
 
           // 'file' comes from the Blob or File API
-          await uploadBytes(storageRef, blob);
+          unsubscribe();
+          let urlImage = "";
+          if (isConnected == true) {
+            await uploadBytes(storageRef, blob);
+            urlImage = await getDownloadURL(storageRef);
+          }
 
           realm.write(() => {
             realm.create("Area", {
               _id: areaId,
               userId: user.id,
               title: areaTitle.trim(),
-              imageURl: image,
+              imageURl: urlImage,
             });
           });
           setAreaTitle("");

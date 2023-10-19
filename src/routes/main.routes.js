@@ -27,7 +27,7 @@ export function MainRoutes() {
 
     if (!oneboardingStorage) {
       console.log("não tem no storage");
-      if (user.customData.UserId) {
+      if (user.customData.userId) {
         console.log("bateu user do custom data");
         setOneboardingVisible(false);
         setUserPasswordPreview(null);
@@ -42,8 +42,14 @@ export function MainRoutes() {
         setOneboardingVisible(false);
         setUserPasswordPreview(null);
       } else {
-        console.log("não bateu o user");
-        setOneboardingVisible(true);
+        if (user.customData) {
+          console.log("bateu o user");
+          setOneboardingVisible(false);
+          setUserPasswordPreview(null);
+        } else {
+          console.log("não bateu o user");
+          setOneboardingVisible(true);
+        }
       }
     }
   }, []);

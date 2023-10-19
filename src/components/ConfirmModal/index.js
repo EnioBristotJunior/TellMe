@@ -36,6 +36,7 @@ export function ConfirmModal({
   const user = useUser();
   const phrases = useQuery(PhraseSchema);
   // console.log(areaImage);
+  // console.log(areaImage);
   //Excluir área
   async function HandleRemove(area) {
     try {
@@ -43,8 +44,8 @@ export function ConfirmModal({
         .filtered(`userId == '${user.id}'`)
         .filtered(`areaId == '${area._id || 372387}'`);
 
-      if (areaImage != "Extensão desconhecida") {
-        const storageRef = ref(storage, area._id + "." + areaImage);
+      if (areaImage) {
+        const storageRef = ref(storage, areaImage);
 
         deleteObject(storageRef)
           .then(() => {
