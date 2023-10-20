@@ -35,6 +35,7 @@ import BgSvg from "../../imgs/Profile/backProfile-g9.svg";
 
 import Toast from "react-native-toast-message";
 import { OneBoardingContext } from "../../context/oneboardingContext";
+import { Image } from "expo-image";
 
 //Tamanho da tela
 const { width, height } = Dimensions.get("screen");
@@ -86,7 +87,16 @@ export function Profile({ navigation }) {
       <Main>
         <Header>
           <UserImage onPress={() => navigation.navigate("editPicture")}>
+            {userCustomData?.UserImage 
+            ?  
+            <Image source={{ uri: userCustomData?.UserImage  }}
+            style={{ width: "100%", height: "100%", borderRadius: 12 }}>
+            </Image> 
+            : 
             <FontAwesome5 name="user" color={"#fff"} size={80} />
+            }
+           
+            
           </UserImage>
           <UserName>{userCustomData?.UserName}</UserName>
           <UserEmail>{user.profile.email}</UserEmail>

@@ -76,10 +76,10 @@ export function EditArea({ navigation }) {
   let isConnected;
 
   const unsubscribe = NetInfo.addEventListener((state) => {
-    console.log("Connection type", state.type);
-    console.log("Is connected?", state.isConnected);
+    // console.log("Connection type", state.type);
+    // console.log("Is connected?", state.isConnected);
     isConnected = state.isConnected;
-    console.log(isConnected);
+    // console.log(isConnected);
   });
 
   //Remoção do bottom navigator
@@ -189,9 +189,9 @@ export function EditArea({ navigation }) {
   //Salvar alterações da área
   async function HandleSave(title, image) {
     try {
-      if (image != "" && image != null) {
-        const firstExtension = getURIExtension(firstImage);
+      if (image != "" && image != null && firstImage != image) {
         const extension = getURIExtension(image);
+        console.log("extensão:" + extension);
         if (extension != "Extensão desconhecida") {
           //Conversão do arquivo para blob
           const blob = await uriToBlob(image);
@@ -199,14 +199,8 @@ export function EditArea({ navigation }) {
           const storageRef = ref(storage, area._id + "." + extension);
           unsubscribe();
           let urlImage = "";
-          if (firstExtension == extension) {
-            // 'file' comes from the Blob or File API
-            if (isConnected == true) {
-              await uploadBytes(storageRef, blob);
-              urlImage = await getDownloadURL(storageRef);
-            }
-          } else {
-            const desertRef = ref(storage, area._id + "." + firstExtension);
+          if (isConnected == true) {
+            const desertRef = ref(storage, firstImage);
             // Delete the file
             deleteObject(desertRef)
               .then(() => {
@@ -216,10 +210,11 @@ export function EditArea({ navigation }) {
                 console.log("deu pau: " + error);
               });
 
-            if (isConnected == true) {
-              await uploadBytes(storageRef, blob);
-              urlImage = await getDownloadURL(storageRef);
-            }
+            // 'file' comes from the Blob or File API
+
+            await uploadBytes(storageRef, blob);
+            console.log("chegou aqui");
+            urlImage = await getDownloadURL(storageRef);
           }
 
           realm.write(() => {

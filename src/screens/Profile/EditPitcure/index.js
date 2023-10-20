@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   Container,
   Main,
@@ -12,18 +12,36 @@ import {
   DeletePicture,
   ChangePictureText,
 } from "./styles";
-import { Dimensions, TouchableOpacity, Image } from "react-native";
+import { Dimensions, TouchableOpacity } from "react-native";
+
+import { Image } from "expo-image";
 
 //Mensagem Toast
 import Toast from "react-native-toast-message";
+
+import NetInfo from "@react-native-community/netinfo";
 
 //icons
 import { AntDesign } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 
+//Navegação
+import { useRoute } from "@react-navigation/native";
+import { useUser } from "@realm/react";
+
+import { storage } from "../../../firebase/config";
+
+import {
+  getDownloadURL,
+  ref,
+  uploadBytes,
+  deleteObject,
+} from "firebase/storage";
 //Image Picker
 import * as ImagePicker from "expo-image-picker";
+
+import { OneBoardingContext } from "../../../context/oneboardingContext";
 
 //Fundo
 import BgSvg from "../../../imgs/Profile/backPicture-g9.svg";
@@ -32,8 +50,20 @@ import BgSvg from "../../../imgs/Profile/backPicture-g9.svg";
 const { width, height } = Dimensions.get("screen");
 
 export function EditPitcure({ navigation }) {
-  const [image, setImage] = useState("");
+  const user = useUser();
+  const [image, setImage] = useState(user.customData.UserImage || "");
+  const { setUserCustomData } = useContext(OneBoardingContext);
+  const firstImage = user.customData.UserImage || "";
+  let isConnected;
 
+  const unsubscribe = NetInfo.addEventListener((state) => {
+    // console.log("Connection type", state.type);
+    // console.log("Is connected?", state.isConnected);
+    isConnected = state.isConnected;
+    // console.log(isConnected);
+  });
+
+  console.log("image:" + image);
   //Remoção do bottom navigator
   useEffect(() => {
     navigation.getParent().setOptions({ tabBarStyle: { display: "none" } });
@@ -69,6 +99,13 @@ export function EditPitcure({ navigation }) {
       text1: "Extensão de arquivo não suportada!",
     });
   };
+
+  function Checked() {
+    Toast.show({
+      type: "appChecked",
+      text1: "Foto alterado com sucesso!",
+    });
+  }
 
   //Função para pegar imagem da galeria
   const pickImage = async () => {
@@ -106,6 +143,125 @@ export function EditPitcure({ navigation }) {
     }
   }
 
+  async function uriToBlob(uri) {
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+
+      // If successful -> return with blob
+      xhr.onload = function () {
+        resolve(xhr.response);
+      };
+
+      // reject on error
+      xhr.onerror = function () {
+        reject(new Error("uriToBlob failed"));
+      };
+
+      // Set the response type to 'blob' - this means the server's response
+      // will be accessed as a binary object
+      xhr.responseType = "blob";
+
+      // Initialize the request. The third argument set to 'true' denotes
+      // that the request is asynchronous
+      xhr.open("GET", uri, true);
+
+      // Send the request. The 'null' argument means that no body content is given for the request
+      xhr.send(null);
+    });
+  }
+
+  function getURIExtension(uri) {
+    // Use uma expressão regular para encontrar a extensão da URL
+    const regex = /\.[A-Za-z0-9]+$/;
+    const extension = uri.match(regex);
+
+    if (extension) {
+      // Retorne a extensão encontrada (sem o ponto inicial)
+      console.log("extensão: " + extension[0].substring(1));
+      return extension[0].substring(1);
+    } else {
+      // Caso a URL não tenha uma extensão válida
+      return "Extensão desconhecida";
+    }
+  }
+
+  async function writeCustomUserData(newCustomData) {
+    try {
+      const customUserDataCollection = user
+        .mongoClient("mongodb-atlas")
+        .db("custom-user-data-database")
+        .collection("custom-user-data");
+
+      const filter = {
+        userId: user.id,
+      };
+
+      const updateDoc = {
+        $set: {
+          userId: user.id,
+          ...newCustomData,
+        },
+      };
+      const options = { upsert: true };
+      await customUserDataCollection.updateOne(filter, updateDoc, options);
+      const customUserData = await user.refreshCustomData();
+      console.log(customUserData);
+      setUserCustomData(customUserData);
+      setTimeout(() => navigation.navigate("profile"), 1500);
+      Checked();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function Verification() {
+    let urlImage = "";
+    if (image != "") {
+      //Verificação da imagem
+      const extension = getURIExtension(image);
+      if (extension != "Extensão desconhecida") {
+        const storageRef = ref(
+          storage,
+          "UserPhotos/" + user.id + "." + extension
+        );
+        //Conversão do arquivo para blob
+        const blob = await uriToBlob(image);
+        //Configuração das referencias (local e nome do arquivo)
+        // 'file' comes from the Blob or File API
+        unsubscribe();
+
+        if (isConnected == true) {
+          if (firstImage != "") {
+            const desertRef = ref(storage, firstImage);
+            deleteObject(desertRef)
+              .then(() => {
+                console.log("foi bebe");
+              })
+              .catch((error) => {
+                console.log("deu pau: " + error);
+              });
+          }
+
+          await uploadBytes(storageRef, blob);
+          urlImage = await getDownloadURL(storageRef);
+        }
+        writeCustomUserData({ UserImage: urlImage });
+      }
+    } else {
+      console.log("caiu aqui");
+
+      const desertRef = ref(storage, firstImage);
+      deleteObject(desertRef)
+        .then(() => {
+          console.log("foi bebe");
+        })
+        .catch((error) => {
+          console.log("deu pau: " + error);
+        });
+      writeCustomUserData({ UserImage: urlImage });
+    }
+  }
+
   return (
     <Container>
       <BgSvg
@@ -139,9 +295,15 @@ export function EditPitcure({ navigation }) {
       </Main>
 
       <Bottom>
-        <Confirm>
-          <ConfirmText>Confirmar Alterações</ConfirmText>
-        </Confirm>
+        {image != firstImage ? (
+          <Confirm onPress={Verification}>
+            <ConfirmText>Confirmar Alterações</ConfirmText>
+          </Confirm>
+        ) : (
+          <Confirm onPress={() => navigation.goBack()}>
+            <ConfirmText>Voltar</ConfirmText>
+          </Confirm>
+        )}
       </Bottom>
     </Container>
   );
