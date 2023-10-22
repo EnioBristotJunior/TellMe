@@ -42,7 +42,7 @@ export function MainRoutes() {
         setOneboardingVisible(false);
         setUserPasswordPreview(null);
       } else {
-        if (user.customData) {
+        if (user.customData.userId) {
           console.log("bateu o user");
           setOneboardingVisible(false);
           setUserPasswordPreview(null);

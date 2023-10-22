@@ -158,9 +158,6 @@ export function Login({ navigation }) {
               </TouchableOpacity>
             )}
           </View>
-          <TouchableOpacity>
-            <ForgotPassword>Esqueceu a senha?</ForgotPassword>
-          </TouchableOpacity>
         </Form>
         <NextContainer>
           <Title>Login</Title>

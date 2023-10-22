@@ -246,6 +246,8 @@ export function EditPitcure({ navigation }) {
           urlImage = await getDownloadURL(storageRef);
         }
         writeCustomUserData({ UserImage: urlImage });
+      } else {
+        UnknownExtension();
       }
     } else {
       console.log("caiu aqui");

@@ -20,7 +20,7 @@ export const Title = styled.Text`
 `;
 
 export const InformSection = styled.View`
-  gap: 40px;
+  gap: 25px;
 `;
 
 export const UserImageContainer = styled.View`

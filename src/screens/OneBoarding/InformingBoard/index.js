@@ -27,6 +27,8 @@ import ArrowRight from "../../../imgs/components/arrow-right.svg";
 //Mensagem Toast
 import Toast from "react-native-toast-message";
 
+import NetInfo from "@react-native-community/netinfo";
+
 //Icons
 import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -34,6 +36,15 @@ import { Ionicons } from "@expo/vector-icons";
 
 //Contexto
 import { OneBoardingContext } from "../../../context/oneboardingContext";
+
+import { storage } from "../../../firebase/config";
+
+import {
+  getDownloadURL,
+  ref,
+  uploadBytes,
+  deleteObject,
+} from "firebase/storage";
 
 //Image Picker
 import * as ImagePicker from "expo-image-picker";
@@ -52,6 +63,14 @@ export function InformingBoard({ navigation }) {
 
   const UserPassword = userPasswordPreview;
   console.log(UserPassword);
+  let isConnected;
+
+  const unsubscribe = NetInfo.addEventListener((state) => {
+    // console.log("Connection type", state.type);
+    // console.log("Is connected?", state.isConnected);
+    isConnected = state.isConnected;
+    // console.log(isConnected);
+  });
 
   //Mensagens Toast
   const NeedCamps = () => {
@@ -118,10 +137,65 @@ export function InformingBoard({ navigation }) {
     }
   }
 
+  async function uriToBlob(uri) {
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+
+      // If successful -> return with blob
+      xhr.onload = function () {
+        resolve(xhr.response);
+      };
+
+      // reject on error
+      xhr.onerror = function () {
+        reject(new Error("uriToBlob failed"));
+      };
+
+      // Set the response type to 'blob' - this means the server's response
+      // will be accessed as a binary object
+      xhr.responseType = "blob";
+
+      // Initialize the request. The third argument set to 'true' denotes
+      // that the request is asynchronous
+      xhr.open("GET", uri, true);
+
+      // Send the request. The 'null' argument means that no body content is given for the request
+      xhr.send(null);
+    });
+  }
+
   //Veficar se o campo está vazio
   async function Verification(UserName) {
     if (username != "" && username != null) {
-      await writeCustomUserData({ UserName, UserPassword });
+      if (image == "") {
+        await writeCustomUserData({ UserName, UserPassword });
+      } else {
+        let urlImage = "";
+        const extension = getURIExtension(image);
+        if (extension != "Extensão desconhecida") {
+          const storageRef = ref(
+            storage,
+            "UserPhotos/" + user.id + "." + extension
+          );
+          //Conversão do arquivo para blob
+          const blob = await uriToBlob(image);
+
+          unsubscribe();
+
+          if (isConnected == true) {
+            await uploadBytes(storageRef, blob);
+            urlImage = await getDownloadURL(storageRef);
+          }
+          await writeCustomUserData({
+            UserName,
+            UserPassword,
+            UserImage: urlImage,
+          });
+        } else {
+          UnknownExtension();
+        }
+      }
+
       console.log("foi");
     } else {
       NeedCamps();
@@ -167,6 +241,10 @@ export function InformingBoard({ navigation }) {
           <UserImageContainer>
             <Title>Selecionar foto de perfil</Title>
             <OptionalAlert>(Opcional)</OptionalAlert>
+            <OptionalAlert>
+              A foto de usuário somente será salva se houver conexão com
+              internet.
+            </OptionalAlert>
             <UserImage onPress={pickImage}>
               {image ? (
                 <Image

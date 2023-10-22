@@ -21,13 +21,17 @@ import { AntDesign } from "@expo/vector-icons";
 import Toast from "react-native-toast-message";
 
 import BgSvg from "../../../imgs/Areas/backArea-g9.svg";
+import { ConfirmDeleteModal } from "../../../components/ConfirmDeleteModal";
 
 //Tamanho da tela
 const { width, height } = Dimensions.get("screen");
 
 export function DeleteAccount({ navigation }) {
 
-    // const [inputPassword,setInputPassword] = useState('');
+  const [inputPassword,setInputPassword] = useState('');
+  const [visible, setVisible] = useState(false);
+
+  const user = useUser();
 
   //Mensagens Toast
 
@@ -41,19 +45,27 @@ export function DeleteAccount({ navigation }) {
   function Checked() {
     Toast.show({
       type: "appChecked",
-      text1: "Nome alterado com sucesso!",
+      text1: "Conta excluída com sucesso!",
     });
   }
 
-
-    // function Verification(inputPassword){
-    //   if(inputPassword != ""){
-        
-    //   }else{
-
-    //   }
-    // }
-
+  function IncorrectPassword() {
+    Toast.show({
+      type: "appError",
+      text1: "Senha incorreta!",
+    });
+  }
+    function Verification(inseredPassword){
+      if(inseredPassword != ""){
+        if(inseredPassword === user.customData.UserPassword){
+          setVisible(true)
+        }else{
+          IncorrectPassword()
+        }
+      }else{
+        NeedCamps();
+      }
+    }
   //Remoção do bottom navigator
   useEffect(() => {
     navigation.getParent().setOptions({ tabBarStyle: { display: "none" } });
@@ -99,13 +111,16 @@ export function DeleteAccount({ navigation }) {
           placeholder="Sua Senha"
           placeholderTextColor={"#d9d9d9"}
           cursorColor={"#ff7f00"}
+          value={inputPassword}
+          onChangeText={setInputPassword}
         />
       </Main>
       <Bottom>
-        <Confirm>
+        <Confirm onPress={() => Verification(inputPassword)}>
           <ConfirmText>Confirmar Exclusão</ConfirmText>
         </Confirm>
       </Bottom>
+      <ConfirmDeleteModal visible={visible} setVisible={setVisible}/>
     </Container>
   );
 }
