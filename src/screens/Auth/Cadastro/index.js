@@ -165,14 +165,14 @@ export function Cadastro({ navigation }) {
               />
               {secureText ? (
                 <TouchableOpacity
-                  style={{ position: "absolute", right: 20, top: 17.5 }}
+                  style={{ position: "absolute", right: 38, top: 17.5 }}
                   onPress={() => setSecureText(false)}
                 >
                   <Ionicons name="eye" size={25} color={"#d9d9d9"} />
                 </TouchableOpacity>
               ) : (
                 <TouchableOpacity
-                  style={{ position: "absolute", right: 20, top: 17.5 }}
+                  style={{ position: "absolute", right: 38, top: 17.5 }}
                   onPress={() => setSecureText(true)}
                 >
                   <Ionicons name="eye-off-outline" size={25} color={"#fff"} />
@@ -196,14 +196,14 @@ export function Cadastro({ navigation }) {
               />
               {confirmSecureText ? (
                 <TouchableOpacity
-                  style={{ position: "absolute", right: 20, top: 17.5 }}
+                  style={{ position: "absolute", right: 38, top: 17.5 }}
                   onPress={() => setConfirmSecureText(false)}
                 >
                   <Ionicons name="eye" size={25} color={"#d9d9d9"} />
                 </TouchableOpacity>
               ) : (
                 <TouchableOpacity
-                  style={{ position: "absolute", right: 20, top: 17.5 }}
+                  style={{ position: "absolute", right: 38, top: 17.5 }}
                   onPress={() => setConfirmSecureText(true)}
                 >
                   <Ionicons name="eye-off-outline" size={25} color={"#fff"} />
@@ -212,14 +212,14 @@ export function Cadastro({ navigation }) {
             </View>
           </Form>
           <NextContainer>
-            <Title>Cadastrar</Title>
-            <TouchableOpacity onPress={() => navigation.navigate("login")}>
-              <SignIn>Já tem uma conta?</SignIn>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => verification()}
-              style={{ position: "absolute", right: -40, bottom: 100 }}
-            >
+            <View style={{ gap: 20 }}>
+              <Title>Cadastrar</Title>
+              <TouchableOpacity onPress={() => navigation.navigate("login")}>
+                <SignIn>Já tem uma conta?</SignIn>
+              </TouchableOpacity>
+            </View>
+
+            <TouchableOpacity onPress={() => verification()}>
               <ArrowRight color={"#fff"} width={50} height={35} />
             </TouchableOpacity>
           </NextContainer>
