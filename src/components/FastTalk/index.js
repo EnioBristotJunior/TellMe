@@ -5,10 +5,6 @@ import {
   Input,
   RecentlyText,
   PhrasesSection,
-  PhraseContainer,
-  PhraseNumber,
-  PhraseText,
-  AreaName,
 } from "./styles";
 import { Modal } from "react-native";
 
@@ -21,6 +17,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { FlatList } from "react-native";
 import { View } from "react-native";
 import { ConfirmSpeakModal } from "../ConfirmSpeakModal";
+import { FastTalkPhrase } from "../FastTalkPhrase";
 
 export function FastTalk({ visible, setVisible }) {
   const user = useUser();
@@ -77,13 +74,13 @@ export function FastTalk({ visible, setVisible }) {
               keyExtractor={(item) => item._id}
               style={{ maxHeight: 250 }}
               renderItem={({ item }) => (
-                <PhraseContainer onPress={() => openConfirmModal(item)}>
-                  <PhraseNumber>{item.number}</PhraseNumber>
-                  <View>
-                    <PhraseText>{item.title}</PhraseText>
-                    <AreaName>{item.areaId}</AreaName>
-                  </View>
-                </PhraseContainer>
+                <FastTalkPhrase
+                  id={item._id}
+                  areaId={item.areaId}
+                  title={item.title}
+                  number={item.number}
+                  isEnabled={() => openConfirmModal(item)}
+                />
               )}
             />
           </PhrasesSection>
@@ -97,13 +94,13 @@ export function FastTalk({ visible, setVisible }) {
               keyExtractor={(item) => item._id}
               style={{ maxHeight: 250 }}
               renderItem={({ item }) => (
-                <PhraseContainer onPress={() => openConfirmModal(item)}>
-                  <PhraseNumber>{item?.number}</PhraseNumber>
-                  <View>
-                    <PhraseText>{item?.title}</PhraseText>
-                    <AreaName>{item?.areaId}</AreaName>
-                  </View>
-                </PhraseContainer>
+                <FastTalkPhrase
+                  id={item._id}
+                  areaId={item.areaId}
+                  title={item.title}
+                  number={item.number}
+                  isEnabled={() => openConfirmModal(item)}
+                />
               )}
             />
           </PhrasesSection>
