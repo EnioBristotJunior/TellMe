@@ -87,16 +87,14 @@ export function Profile({ navigation }) {
       <Main>
         <Header>
           <UserImage onPress={() => navigation.navigate("editPicture")}>
-            {userCustomData?.UserImage 
-            ?  
-            <Image source={{ uri: userCustomData?.UserImage  }}
-            style={{ width: "100%", height: "100%", borderRadius: 12 }}>
-            </Image> 
-            : 
-            <FontAwesome5 name="user" color={"#fff"} size={80} />
-            }
-           
-            
+            {userCustomData?.UserImage ? (
+              <Image
+                source={{ uri: userCustomData?.UserImage }}
+                style={{ width: "100%", height: "100%", borderRadius: 12 }}
+              ></Image>
+            ) : (
+              <FontAwesome5 name="user" color={"#fff"} size={80} />
+            )}
           </UserImage>
           <UserName>{userCustomData?.UserName}</UserName>
           <UserEmail>{user.profile.email}</UserEmail>
@@ -122,13 +120,13 @@ export function Profile({ navigation }) {
               <AntDesign name="arrowright" size={20} color={"#fff"} />
             </OptionIcon>
           </Option>
-
-          <Option onPress={() => navigation.navigate("editPassword")}>
-            <OptionText>Senha</OptionText>
+          <Option onPress={() => navigation.navigate("editPicture")}>
+            <OptionText>Foto</OptionText>
             <OptionIcon>
               <AntDesign name="arrowright" size={20} color={"#fff"} />
             </OptionIcon>
           </Option>
+
           <OptionsTitle>Geral</OptionsTitle>
           <Option onPress={logout}>
             <OptionText>Sair</OptionText>

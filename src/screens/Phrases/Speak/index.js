@@ -38,6 +38,8 @@ import { ConfirmPhraseModal } from "../../../components/ConfirmPhraseModal";
 import { Area } from "../../../components/ConfirmModal/styles";
 import { AreaSchema } from "../../../databases/schemas/AreaSchema";
 
+import { getOneboarding, setOneboarding } from "../../../storage";
+
 //Tamanho da tela
 const { width, height } = Dimensions.get("screen");
 
@@ -52,6 +54,9 @@ export function Speak({ navigation }) {
   const [phraseNumber, setPhraseNumber] = useState(phrase?.number);
   const [phraseTitle, setPhraseTitle] = useState(phrase?.title);
   const [phraseContent, setPhraseContent] = useState(phrase?.content);
+
+  const oneBoarging = getOneboarding();
+  console.log(oneBoarging);
 
   function HandleOpenEdit(phraseId, areaId) {
     navigation.navigate("editPhrase", { phraseId, areaId });
@@ -78,9 +83,35 @@ export function Speak({ navigation }) {
       console.log(content);
       Speech.speak(content);
       ToastIsSpeaking();
+      setRecentUsed(phrase);
     } catch (error) {
       console.log(error);
       ToastSpeakError();
+    }
+  }
+
+  function setRecentUsed(phraseToSet) {
+    if (oneBoarging != undefined) {
+      if (oneBoarging.includes(phraseToSet._id)) {
+        console.log("inclui");
+        const oneBoardingObject = JSON.parse(oneBoarging);
+        const lastElement = oneBoardingObject.pop();
+        console.log(lastElement);
+        if (lastElement.includes(phraseToSet._id)) {
+          const array = [lastElement, oneBoarging];
+          console.log(array);
+          setOneboarding(array);
+        } else {
+          console.log("caiu no else");
+        }
+      } else {
+        console.log("não tem a frase");
+        const itensToSet = [oneBoarging, phraseToSet];
+        setOneboarding(itensToSet);
+      }
+    } else {
+      console.log("é undefined");
+      setOneboarding(phraseToSet);
     }
   }
   return (
