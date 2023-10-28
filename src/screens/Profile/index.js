@@ -32,16 +32,16 @@ import { Feather } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 //Fundo
 import BgSvg from "../../imgs/Profile/backProfile-g9.svg";
-
-import Toast from "react-native-toast-message";
 import { OneBoardingContext } from "../../context/oneboardingContext";
 import { Image } from "expo-image";
+import { ConfirmLogOutModal } from "../../components/ConfirmLogOutModal";
 
 //Tamanho da tela
 const { width, height } = Dimensions.get("screen");
 
 export function Profile({ navigation }) {
   const { userCustomData, setUserCustomData } = useContext(OneBoardingContext);
+  const [logOutVisible, setLogOutVisible] = useState(false);
 
   const user = useUser();
   const app = useApp();
@@ -60,19 +60,6 @@ export function Profile({ navigation }) {
   const phrases = useQuery(PhraseSchema)
     .filtered(`userId == '${user.id}'`)
     .toJSON();
-
-  //Sair da conta
-  function logout() {
-    try {
-      user.logOut();
-      Toast.show({
-        type: "appChecked",
-        text1: "Sessão encerrada com sucesso!",
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  }
 
   function handleOpen(screen, props) {
     navigation.navigate(screen, { props });
@@ -128,7 +115,7 @@ export function Profile({ navigation }) {
           </Option>
 
           <OptionsTitle>Geral</OptionsTitle>
-          <Option onPress={logout}>
+          <Option onPress={() => setLogOutVisible(true)}>
             <OptionText>Sair</OptionText>
             <OptionIcon>
               <Feather name="log-out" size={18} color={"#fff"} />
@@ -142,6 +129,7 @@ export function Profile({ navigation }) {
           </DeleteAccount>
         </OptionsContainer>
       </Main>
+      <ConfirmLogOutModal visible={logOutVisible} setVisible={setLogOutVisible}/>
     </Container>
   );
 }

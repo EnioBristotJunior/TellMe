@@ -18,7 +18,7 @@ export const Main = styled.View`
 
 export const Header = styled.View`
   align-items: center;
-  gap: 18px;
+  gap: 12px;
   flex: 1;
   margin-top: 90px;
 `;

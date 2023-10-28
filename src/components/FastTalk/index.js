@@ -18,13 +18,13 @@ import { FlatList } from "react-native";
 import { View } from "react-native";
 import { ConfirmSpeakModal } from "../ConfirmSpeakModal";
 import { FastTalkPhrase } from "../FastTalkPhrase";
+import { getHistoric } from "../../storage";
 
 export function FastTalk({ visible, setVisible }) {
   const user = useUser();
 
   const [searchText, setSearchText] = useState("");
   const [confirmSpeakVisible, setConfirmSpeakVisible] = useState(false);
-  const [phrasesRecentUsed, setPhrasesRecentUsed] = useState([]);
   const [phraseToGo, setPhraseToGo] = useState(null);
   // const [areaName, setAreaName] = useState(null);
 
@@ -34,18 +34,8 @@ export function FastTalk({ visible, setVisible }) {
     .filtered("title CONTAINS[c] $0", searchText)
     .toJSON();
 
-  // console.log(phrasesRecentUsed);
-
-  // const phrasesToGetArea = allPhrases.toJSON();
-  // console.log(phrasesToGetArea);
-
-  // useEffect(() => {
-  //   phrasesToGetArea.forEach((value, i, array) => {
-  //     let area = phrasesToGetArea[i].areaId
-  //       ? useObject(AreaSchema, phrasesToGetArea[i].areaId)
-  //       : undefined;
-  //   });
-  // }, []);
+  const phrasesRecentUsed = JSON.parse(getHistoric())
+  console.log(phrasesRecentUsed);
 
   function openConfirmModal(phrase) {
     setPhraseToGo(phrase);
@@ -86,9 +76,9 @@ export function FastTalk({ visible, setVisible }) {
           </PhrasesSection>
         ) : (
           <PhrasesSection>
-            <RecentlyText>Suas frases</RecentlyText>
+            <RecentlyText>Frases Recentemente usadas</RecentlyText>
             <FlatList
-              data={allPhrases}
+              data={phrasesRecentUsed}
               key={"-"}
               showsVerticalScrollIndicator={false}
               keyExtractor={(item) => item._id}

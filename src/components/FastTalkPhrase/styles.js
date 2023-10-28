@@ -27,5 +27,5 @@ export const PhraseText = styled.Text`
 export const AreaName = styled.Text`
   color: ${(props) => props.theme.background};
   font-family: "Comfortaa_700Bold";
-  font-size: 10px;
+  font-size: 11px;
 `;

@@ -38,7 +38,7 @@ import { ConfirmPhraseModal } from "../../../components/ConfirmPhraseModal";
 import { Area } from "../../../components/ConfirmModal/styles";
 import { AreaSchema } from "../../../databases/schemas/AreaSchema";
 
-import { getOneboarding, setOneboarding } from "../../../storage";
+import { clean, getOneboarding, setOneboarding, getHistoric, setHistoric } from "../../../storage";
 
 //Tamanho da tela
 const { width, height } = Dimensions.get("screen");
@@ -55,8 +55,8 @@ export function Speak({ navigation }) {
   const [phraseTitle, setPhraseTitle] = useState(phrase?.title);
   const [phraseContent, setPhraseContent] = useState(phrase?.content);
 
-  const oneBoarging = getOneboarding();
-  console.log(oneBoarging);
+  const historic = JSON.parse(getHistoric() || '[]') 
+  console.log(historic);
 
   function HandleOpenEdit(phraseId, areaId) {
     navigation.navigate("editPhrase", { phraseId, areaId });
@@ -91,28 +91,17 @@ export function Speak({ navigation }) {
   }
 
   function setRecentUsed(phraseToSet) {
-    if (oneBoarging != undefined) {
-      if (oneBoarging.includes(phraseToSet._id)) {
-        console.log("inclui");
-        const oneBoardingObject = JSON.parse(oneBoarging);
-        const lastElement = oneBoardingObject.pop();
-        console.log(lastElement);
-        if (lastElement.includes(phraseToSet._id)) {
-          const array = [lastElement, oneBoarging];
-          console.log(array);
-          setOneboarding(array);
-        } else {
-          console.log("caiu no else");
-        }
-      } else {
-        console.log("não tem a frase");
-        const itensToSet = [oneBoarging, phraseToSet];
-        setOneboarding(itensToSet);
-      }
-    } else {
-      console.log("é undefined");
-      setOneboarding(phraseToSet);
+    const index = historic.findIndex(v => v._id === phraseToSet._id)
+    const alreadyExists = index > -1
+    
+    
+    if (alreadyExists){
+      historic.splice(index, 1)
     }
+
+    historic.unshift(phraseToSet)
+    console.log(historic)
+    setHistoric(historic)
   }
   return (
     <Container>
