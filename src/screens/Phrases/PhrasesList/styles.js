@@ -69,6 +69,18 @@ export const NewPhraseOne = styled.TouchableOpacity`
   flex-direction: row;
 `;
 
+export const NewPhraseTwo = styled.TouchableOpacity`
+  width: 100%;
+  height: 150px;
+  border-radius: 12px;
+  background-color: transparent;
+  border-width: 2px;
+  border-color: ${(props) => props.theme.secondBackground};
+  align-items: center;
+  justify-content: space-evenly;
+  flex-direction: row;
+`;
+
 export const NewPhraseText = styled.Text`
   font-size: 20px;
   font-family: "ComicNeue_700Bold";

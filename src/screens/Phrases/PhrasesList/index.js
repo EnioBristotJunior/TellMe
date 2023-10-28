@@ -11,6 +11,7 @@ import {
   PhrasesSection,
   StandartView,
   GridView,
+  NewPhraseTwo,
 } from "./styles";
 import { Dimensions, View, TouchableOpacity } from "react-native";
 
@@ -174,12 +175,11 @@ export function PhrasesList({ navigation }) {
                 />
               )}
               ListFooterComponent={() => (
-                <NewPhraseOne
+                <NewPhraseTwo
                   onPress={() => HandleNewPhrase(area._id, phrases.length)}
                 >
-                  <FontAwesome5 name="plus" size={25} color={"#fff"} />
-                  <NewPhraseText>Adicionar nova frase</NewPhraseText>
-                </NewPhraseOne>
+                  <FontAwesome5 name="plus" size={50} color={"#fff"} />
+                </NewPhraseTwo>
               )}
             />
           ) : (
