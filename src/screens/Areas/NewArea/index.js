@@ -21,6 +21,7 @@ import {
   Container,
   Form,
   Header,
+  ImageAlert,
   Input,
   Main,
   SelectImage,
@@ -293,6 +294,12 @@ export function NewArea({ navigation }) {
               </View>
             )}
           </SelectImage>
+          <AlertView>
+            <Ionicons name="alert-circle-outline" size={24} color="#FF7F00" />
+            <TextAlert>
+              A imagem somente será salva se houver conexão com internet!
+            </TextAlert>
+          </AlertView>
           <View style={{ gap: 8 }}>
             <Input
               placeholder="Título da área"

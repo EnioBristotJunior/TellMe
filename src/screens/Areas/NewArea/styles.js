@@ -88,3 +88,9 @@ export const TextButton = styled.Text`
   font-family: "ComicNeue_700Bold";
   color: ${(props) => props.theme.background};
 `;
+
+export const ImageAlert = styled.Text`
+  font-size: 13px;
+  font-family: "Comfortaa_700Bold";
+  color: ${(props) => props.theme.color};
+`;
