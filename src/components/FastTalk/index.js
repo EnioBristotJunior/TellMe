@@ -34,8 +34,14 @@ export function FastTalk({ visible, setVisible }) {
     .filtered("title CONTAINS[c] $0", searchText)
     .toJSON();
 
-  const phrasesRecentUsed = JSON.parse(getHistoric())
-  console.log(phrasesRecentUsed);
+  const historic = getHistoric();
+  let phrasesRecentUsed = [];
+  if (historic != undefined) {
+    phrasesRecentUsed = JSON.parse(historic);
+    // console.log("caiu no if" + phrasesRecentUsed);
+  }
+
+  // console.log("nao caiu do if" + phrasesRecentUsed);
 
   function openConfirmModal(phrase) {
     setPhraseToGo(phrase);
@@ -54,7 +60,7 @@ export function FastTalk({ visible, setVisible }) {
           value={searchText}
           onChangeText={setSearchText}
         />
-        {searchText != "" ? (
+        {searchText != "" || phrasesRecentUsed == undefined ? (
           <PhrasesSection>
             <RecentlyText>Resultado</RecentlyText>
             <FlatList
