@@ -16,6 +16,7 @@ import { useUser, useApp } from "@realm/react";
 import { storage } from "../../firebase/config";
 import Toast from "react-native-toast-message";
 import { Restart } from "fiction-expo-restart";
+import { clean } from "../../storage";
 
 import {
   ref,
@@ -110,6 +111,7 @@ export function ConfirmDeleteModal({ visible, setVisible }) {
 
   async function removeAccount() {
     try {
+      clean();
       await removeAreas();
       await removePhrases();
       await removeUserData();

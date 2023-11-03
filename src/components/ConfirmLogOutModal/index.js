@@ -1,17 +1,26 @@
-import React from 'react';
-import { Modal } from 'react-native';
-import { Container, TapClose, Title, Operators, CancelButton, TextButton, ConfirmButton } from './styles';
-import { useUser } from '@realm/react';
+import React from "react";
+import { Modal } from "react-native";
+import {
+  Container,
+  TapClose,
+  Title,
+  Operators,
+  CancelButton,
+  TextButton,
+  ConfirmButton,
+} from "./styles";
+import { useUser } from "@realm/react";
 import Toast from "react-native-toast-message";
+import { clean } from "../../storage";
 
-export function ConfirmLogOutModal({visible, setVisible}) {
+export function ConfirmLogOutModal({ visible, setVisible }) {
+  const user = useUser();
 
-    const user = useUser();
-
-    //Sair da conta
+  //Sair da conta
   function logout() {
     try {
       user.logOut();
+      clean();
       Toast.show({
         type: "appChecked",
         text1: "Sessão encerrada com sucesso!",
@@ -25,9 +34,7 @@ export function ConfirmLogOutModal({visible, setVisible}) {
     <Modal transparent animationType="fade" visible={visible}>
       <TapClose onPress={() => setVisible(false)} />
       <Container>
-        <Title>
-            Deseja sair de sua conta?
-        </Title>
+        <Title>Deseja sair de sua conta?</Title>
         <Operators>
           <CancelButton onPress={() => setVisible(false)}>
             <TextButton>Cancelar</TextButton>
