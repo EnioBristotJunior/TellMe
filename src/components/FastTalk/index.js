@@ -41,7 +41,7 @@ export function FastTalk({ visible, setVisible }) {
     // console.log("caiu no if" + phrasesRecentUsed);
   }
 
-  // console.log("nao caiu do if" + phrasesRecentUsed);
+  //console.log("nao caiu do if" + phrasesRecentUsed);
 
   function openConfirmModal(phrase) {
     setPhraseToGo(phrase);
@@ -61,45 +61,57 @@ export function FastTalk({ visible, setVisible }) {
           onChangeText={setSearchText}
         />
         {searchText != "" || phrasesRecentUsed == undefined ? (
-          <PhrasesSection>
-            <RecentlyText>Resultado</RecentlyText>
-            <FlatList
-              data={phrases}
-              key={"#"}
-              showsVerticalScrollIndicator={false}
-              keyExtractor={(item) => item._id}
-              style={{ maxHeight: 250 }}
-              renderItem={({ item }) => (
-                <FastTalkPhrase
-                  id={item._id}
-                  areaId={item.areaId}
-                  title={item.title}
-                  number={item.number}
-                  isEnabled={() => openConfirmModal(item)}
+          <View>
+            {allPhrases.toJSON() != "" ? (
+              <PhrasesSection>
+                <RecentlyText>Resultado</RecentlyText>
+                <FlatList
+                  data={phrases}
+                  key={"#"}
+                  showsVerticalScrollIndicator={false}
+                  keyExtractor={(item) => item._id}
+                  style={{ maxHeight: 250 }}
+                  renderItem={({ item }) => (
+                    <FastTalkPhrase
+                      id={item._id}
+                      areaId={item.areaId}
+                      title={item.title}
+                      number={item.number}
+                      isEnabled={() => openConfirmModal(item)}
+                    />
+                  )}
                 />
-              )}
-            />
-          </PhrasesSection>
+              </PhrasesSection>
+            ) : (
+              <RecentlyText>Nenhuma frase foi adicionada ainda</RecentlyText>
+            )}
+          </View>
         ) : (
-          <PhrasesSection>
-            <RecentlyText>Frases Recentemente usadas</RecentlyText>
-            <FlatList
-              data={phrasesRecentUsed}
-              key={"-"}
-              showsVerticalScrollIndicator={false}
-              keyExtractor={(item) => item._id}
-              style={{ maxHeight: 250 }}
-              renderItem={({ item }) => (
-                <FastTalkPhrase
-                  id={item._id}
-                  areaId={item.areaId}
-                  title={item.title}
-                  number={item.number}
-                  isEnabled={() => openConfirmModal(item)}
+          <View>
+            {allPhrases.toJSON() != "" ? (
+              <PhrasesSection>
+                <RecentlyText>Frases Recentemente usadas</RecentlyText>
+                <FlatList
+                  data={phrasesRecentUsed}
+                  key={"-"}
+                  showsVerticalScrollIndicator={false}
+                  keyExtractor={(item) => item._id}
+                  style={{ maxHeight: 250 }}
+                  renderItem={({ item }) => (
+                    <FastTalkPhrase
+                      id={item._id}
+                      areaId={item.areaId}
+                      title={item.title}
+                      number={item.number}
+                      isEnabled={() => openConfirmModal(item)}
+                    />
+                  )}
                 />
-              )}
-            />
-          </PhrasesSection>
+              </PhrasesSection>
+            ) : (
+              <RecentlyText>Nenhuma frase foi adicionada ainda</RecentlyText>
+            )}
+          </View>
         )}
       </Container>
       <ConfirmSpeakModal

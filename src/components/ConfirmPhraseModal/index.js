@@ -15,6 +15,7 @@ import {
   Confirm,
 } from "./styles";
 import { Modal } from "react-native";
+import { getHistoric, setHistoric } from "../../storage";
 
 import Toast from "react-native-toast-message";
 
@@ -31,15 +32,20 @@ export function ConfirmPhraseModal({
     .filtered(`userId == '${user.id}'`)
     .filtered(`areaId == '${area._id}'`);
 
+  const historic = JSON.parse(getHistoric() || "[]");
+  // console.log(historic);
+
   //Excluir Frase
   async function HandleRemove(phrase) {
     try {
+      RemoveRecentUsed(phrase);
       realm.write(() => {
         realm.delete(phrase);
         for (let i = 0; i < phrases.toJSON().length; i++) {
           phrases[i].number = i + 1;
         }
       });
+
       setVisible(false);
       Toast.show({
         type: "appChecked",
@@ -50,6 +56,16 @@ export function ConfirmPhraseModal({
       }, 1500);
     } catch (error) {
       console.log(error);
+    }
+  }
+
+  function RemoveRecentUsed(phraseToSet) {
+    const index = historic.findIndex((v) => v._id === phraseToSet._id);
+    const alreadyExists = index > -1;
+
+    if (alreadyExists) {
+      historic.splice(index, 1);
+      setHistoric(historic);
     }
   }
   return (

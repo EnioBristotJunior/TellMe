@@ -38,7 +38,13 @@ import { ConfirmPhraseModal } from "../../../components/ConfirmPhraseModal";
 import { Area } from "../../../components/ConfirmModal/styles";
 import { AreaSchema } from "../../../databases/schemas/AreaSchema";
 
-import { clean, getOneboarding, setOneboarding, getHistoric, setHistoric } from "../../../storage";
+import {
+  clean,
+  getOneboarding,
+  setOneboarding,
+  getHistoric,
+  setHistoric,
+} from "../../../storage";
 
 //Tamanho da tela
 const { width, height } = Dimensions.get("screen");
@@ -55,8 +61,8 @@ export function Speak({ navigation }) {
   const [phraseTitle, setPhraseTitle] = useState(phrase?.title);
   const [phraseContent, setPhraseContent] = useState(phrase?.content);
 
-  const historic = JSON.parse(getHistoric() || '[]') 
-  console.log(historic);
+  const historic = JSON.parse(getHistoric() || "[]");
+  // console.log(historic);
 
   function HandleOpenEdit(phraseId, areaId) {
     navigation.navigate("editPhrase", { phraseId, areaId });
@@ -91,17 +97,16 @@ export function Speak({ navigation }) {
   }
 
   function setRecentUsed(phraseToSet) {
-    const index = historic.findIndex(v => v._id === phraseToSet._id)
-    const alreadyExists = index > -1
-    
-    
-    if (alreadyExists){
-      historic.splice(index, 1)
+    const index = historic.findIndex((v) => v._id === phraseToSet._id);
+    const alreadyExists = index > -1;
+
+    if (alreadyExists) {
+      historic.splice(index, 1);
     }
 
-    historic.unshift(phraseToSet)
-    console.log(historic)
-    setHistoric(historic)
+    historic.unshift(phraseToSet);
+    console.log(historic);
+    setHistoric(historic);
   }
   return (
     <Container>

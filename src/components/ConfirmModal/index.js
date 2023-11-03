@@ -23,6 +23,7 @@ import {
 
 import { storage } from "../../firebase/config";
 import { ref, uploadBytes, deleteObject } from "firebase/storage";
+import { getHistoric, setHistoric } from "../../storage";
 
 export function ConfirmModal({
   visible,
@@ -38,6 +39,8 @@ export function ConfirmModal({
   // console.log(areaImage);
   // console.log(areaImage);
   //Excluir área
+
+  const historic = JSON.parse(getHistoric() || "[]");
   async function HandleRemove(area) {
     try {
       const phrasesToDelete = phrases
@@ -55,6 +58,37 @@ export function ConfirmModal({
             console.log("deu pau: " + error);
           });
       }
+
+      if (historic) {
+        console.log("caiu aqui em bebe");
+        // for (let i = 0; i < historic.length; i++) {
+        //   console.log("rodou");
+        //   const index = historic.findIndex(
+        //     (v) => v._id === phrasesToDelete[i]._id
+        //   );
+        //   const alreadyExists = index > -1;
+
+        //   if (alreadyExists) {
+        //     historic.splice(index, 1);
+        //     console.log("existe");
+        //   }
+        //   setHistoric(historic);
+        // }
+        for (let i = 0; i < historic.length; i++) {
+          for (let j = 0; j < phrasesToDelete.length; j++) {
+            const index = historic.findIndex(
+              (v) => v._id === phrasesToDelete[j]._id
+            );
+
+            const alreadyExists = index > -1;
+
+            if (alreadyExists) {
+              historic.splice(index, 1);
+            }
+          }
+        }
+        setHistoric(historic);
+      }
       realm.write(() => {
         realm.delete(area);
         realm.delete(phrasesToDelete);
@@ -68,6 +102,16 @@ export function ConfirmModal({
       setTimeout(() => navigation.navigate("home"), 1500);
     } catch (error) {
       console.log(error);
+    }
+  }
+
+  function RemoveRecentUsed(phraseToSet) {
+    const index = historic.findIndex((v) => v._id === phraseToSet._id);
+    const alreadyExists = index > -1;
+
+    if (alreadyExists) {
+      historic.splice(index, 1);
+      setHistoric(historic);
     }
   }
   return (
