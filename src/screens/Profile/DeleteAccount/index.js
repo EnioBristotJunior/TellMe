@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import {useApp, useUser} from '@realm/react';
+import { useApp, useUser } from "@realm/react";
 
 import {
   Container,
@@ -27,8 +27,7 @@ import { ConfirmDeleteModal } from "../../../components/ConfirmDeleteModal";
 const { width, height } = Dimensions.get("screen");
 
 export function DeleteAccount({ navigation }) {
-
-  const [inputPassword,setInputPassword] = useState('');
+  const [inputPassword, setInputPassword] = useState("");
   const [visible, setVisible] = useState(false);
 
   const user = useUser();
@@ -55,17 +54,17 @@ export function DeleteAccount({ navigation }) {
       text1: "Senha incorreta!",
     });
   }
-    function Verification(inseredPassword){
-      if(inseredPassword != ""){
-        if(inseredPassword === user.customData.UserPassword){
-          setVisible(true)
-        }else{
-          IncorrectPassword()
-        }
-      }else{
-        NeedCamps();
+  function Verification(inseredPassword) {
+    if (inseredPassword != "") {
+      if (inseredPassword === user.customData.UserPassword) {
+        setVisible(true);
+      } else {
+        IncorrectPassword();
       }
+    } else {
+      NeedCamps();
     }
+  }
   //Remoção do bottom navigator
   useEffect(() => {
     navigation.getParent().setOptions({ tabBarStyle: { display: "none" } });
@@ -113,6 +112,7 @@ export function DeleteAccount({ navigation }) {
           cursorColor={"#ff7f00"}
           value={inputPassword}
           onChangeText={setInputPassword}
+          secureTextEntry={true}
         />
       </Main>
       <Bottom>
@@ -120,7 +120,7 @@ export function DeleteAccount({ navigation }) {
           <ConfirmText>Confirmar Exclusão</ConfirmText>
         </Confirm>
       </Bottom>
-      <ConfirmDeleteModal visible={visible} setVisible={setVisible}/>
+      <ConfirmDeleteModal visible={visible} setVisible={setVisible} />
     </Container>
   );
 }
