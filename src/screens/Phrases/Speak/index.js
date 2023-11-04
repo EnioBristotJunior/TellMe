@@ -31,9 +31,12 @@ import BgSvg from "../../../imgs/SpeakPhrase/backSpeakPhrase-g9.svg";
 import Toast from "react-native-toast-message";
 
 //Icons
-import { AntDesign } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
-import { FontAwesome5 } from "@expo/vector-icons";
+import {
+  AntDesign,
+  FontAwesome,
+  FontAwesome5,
+  Ionicons,
+} from "@expo/vector-icons";
 import { ConfirmPhraseModal } from "../../../components/ConfirmPhraseModal";
 import { Area } from "../../../components/ConfirmModal/styles";
 import { AreaSchema } from "../../../databases/schemas/AreaSchema";
@@ -61,6 +64,8 @@ export function Speak({ navigation }) {
   const [phraseTitle, setPhraseTitle] = useState(phrase?.title);
   const [phraseContent, setPhraseContent] = useState(phrase?.content);
 
+  const [isSpeaking, setIsSpeaking] = useState(false);
+
   const historic = JSON.parse(getHistoric() || "[]");
   // console.log(historic);
 
@@ -84,15 +89,28 @@ export function Speak({ navigation }) {
     });
   }
 
-  function StartSpeak(content) {
+  async function StartSpeak(content) {
     try {
       console.log(content);
-      Speech.speak(content);
+      Speech.speak(content, {
+        language: "pt-br",
+        onStart: () => setIsSpeaking(true),
+        onDone: () => setIsSpeaking(false),
+        onStopped: () => setIsSpeaking(false),
+      });
       ToastIsSpeaking();
       setRecentUsed(phrase);
     } catch (error) {
       console.log(error);
       ToastSpeakError();
+    }
+  }
+
+  async function StopSpeak() {
+    try {
+      Speech.stop();
+    } catch (error) {
+      console.log(error);
     }
   }
 
@@ -105,7 +123,7 @@ export function Speak({ navigation }) {
     }
 
     historic.unshift(phraseToSet);
-    console.log(historic);
+    // console.log(historic);
     setHistoric(historic);
   }
   return (
@@ -132,10 +150,17 @@ export function Speak({ navigation }) {
         <EditButton onPress={() => HandleOpenEdit(phrase._id, area._id)}>
           <FontAwesome5 name="pen" size={24} color="#fff" />
         </EditButton>
-        <SpeakPhrase onPress={() => StartSpeak(phraseContent)}>
-          <SpeakPhraseText>Falar Frase</SpeakPhraseText>
-          <FontAwesome name="microphone" size={30} color={"#fff"} />
-        </SpeakPhrase>
+        {!isSpeaking ? (
+          <SpeakPhrase onPress={() => StartSpeak(phraseContent)}>
+            <SpeakPhraseText>Falar Frase</SpeakPhraseText>
+            <FontAwesome name="microphone" size={30} color={"#fff"} />
+          </SpeakPhrase>
+        ) : (
+          <SpeakPhrase onPress={() => Speech.stop()}>
+            <SpeakPhraseText>Parar</SpeakPhraseText>
+            <Ionicons name="stop-circle-outline" size={35} color={"#fff"} />
+          </SpeakPhrase>
+        )}
       </Bottom>
       <ConfirmPhraseModal
         visible={visible}
